@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <color name="menu_text_color">#494949</color>
+    <color name="menu_background_color">#E8ECEB</color>
+    <color name="menu_divider_color_bright">#091717</color>
+
+    <color name="menu_background_color_dark">#0A0909</color>
+    <color name="menu_divider_color_dark">#E8ECEB</color>
+
+    <color name="menu_button_solid_color_default_exit">#C6C6C6</color>
+    <color name="menu_button_stroke_color_default_exit">#99AEAEAE</color>
+
+    <color name="menu_button_solid_color_pressed_exit">#99CDCDCD</color>
+    <color name="menu_button_stroke_color_pressed_exit">#99CDCDCD</color>
+
+    <color name="menu_button_solid_color_disabled_exit">#997A7A7A</color>
+    <color name="menu_button_stroke_color_disabled_exit">#99DCDCDC</color>
+
+
+    <color name="menu_button_solid_color_default">#99C6C6C6</color>
+    <color name="menu_button_stroke_color_default">#99AEAEAE</color>
+    <color name="menu_button_text_color_default">#999FA6A6</color>
+
+    <color name="menu_button_solid_color_pressed">#99CDCDCD</color>
+    <color name="menu_button_stroke_color_pressed">#99CDCDCD</color>
+    <color name="menu_button_text_color_pressed">#99D6DCDC</color>
+
+    <color name="menu_button_solid_color_disabled">#5EC6C6C6</color>
+    <color name="menu_button_stroke_color_disabled">#5EAEAEAE</color>
+    <color name="menu_button_text_color_disabled">#5E9FA6A6</color>
+
+
+    <color name="training_text_color">#052B2B</color>
+    <color name="training_background_color">#B3B3B3</color>
+    <color name="i">#183E3E</color>
+
+    <color name="training_button_solid_color_default">#80C6C6C6</color>
+    <color name="training_button_stroke_color_default">#80AEAEAE</color>
+    <color name="training_button_text_color_default">#809FA6A6</color>
+
+    <color name="training_button_solid_color_pressed">#80CDCDCD</color>
+    <color name="training_button_stroke_color_pressed">#34CDCDCD</color>
+    <color name="training_button_text_color_pressed">#80D6DCDC</color>
+
+    <color name="training_button_solid_color_disabled">#61C6C6C6</color>
+    <color name="training_button_stroke_color_disabled">#80AEAEAE</color>
+    <color name="training_button_text_color_disabled">#7A9FA6A6</color>
+
+
+    <color name="training_button_solid_color_default_exit">#99A5A5A5</color>
+    <color name="training_button_stroke_color_default_exit">#99F1EFEF</color>
+
+    <color name="training_button_solid_color_pressed_exit">#99CDCDCD</color>
+    <color name="training_button_stroke_color_pressed_exit">#99CDCDCD</color>
+
+    <color name="training_button_solid_color_disabled_exit">#997A7A7A</color>
+    <color name="training_button_stroke_color_disabled_exit">#99DCDCDC</color>
+
+    <color name="radio_default">#AEAEAE</color>
+    <color name="radio_selected">#656565</color>
+    <color name="radio_disabled">#41AEAEAE</color>
+
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="buttonGrey">#090808</color>
+    <color name="buttonTextColor">#7C7A7A</color>
+    <color name="button_save_enabled">#7DC970</color>
+    <color name="button_save_disabled">#DDDDDD</color>
+    <color name="border_color_no_position">#929191</color>
+    <color name="border_color_default">#000000</color>
+    <color name="inputBorderColor">#174458</color>
+    <color name="noPositionModeBackgroundColor">#090808</color>
+    <color name="training_settings_btn_color_dark">#B1B1B1</color>
+
+    <color name="transparent">#0081514D</color>
+
+    <color name="zero">#FFFFFF</color>
+    <color name="one">#FFD600</color>
+    <color name="two">#FF6D00</color>
+    <color name="three">#A60000</color>
+<!--    <color name="four">#64DD17</color>-->
+    <color name="four">#03491C</color>
+    <color name="five">#6200EA</color>
+    <color name="six">#1235B3</color>
+    <color name="seven">#533A15</color>
+    <color name="eight">#838588</color>
+    <color name="nine">#E09E9E</color>
+<!--    <color name="ten">#065C2A</color>-->
+    <color name="ten">#64DD17</color>
+
+
+    <color name="caparol_yellow">#fcfc40</color>
+    <color name="square_color_three">#FFAB00</color>
+    <color name="square_color_two">#FF6D00</color>
+
+    <color name="square_color_one">#00BFA5</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="square_color_four">#0091EA</color>
+    <color name="square_color_five">#2962FF</color>
+
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="eleven">#1A43AC</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="training_button_solid_color_dark">#444242</color>
+    <color name="training_button_stroke_color_dark">#7C7979</color>
+    <color name="training_text_color_dark">#B6ACAB</color>
+    <color name="training_button_stroke_color_pressed_dark">#3F3B3B</color>
+    <color name="training_button_solid_color_pressed_dark">#5E5B5B</color>
+    <color name="training_button_stroke_color_default_dark">#555251</color>
+    <color name="training_button_solid_color_default_dark">#837F7F</color>
+    <color name="training_button_solid_color_disabled_dark">#4B4646</color>
+    <color name="training_button_stroke_color_disabled_dark">#817D7D</color>
+    <color name="buttonTextColor_dark">#585555</color>
+    <color name="menu_button_stroke_color_dark">#4E4E4E</color>
+    <color name="menu_button_stroke_color_dark_2">#323131</color>
+    <color name="menu_button_stroke_color_dark_3">#131313</color>
+    <color name="menu_button_stroke_color_dark_4">#191818</color>
+    <color name="border_color_no_position_dark">#929191</color>
+    <color name="carmin">#DD2C00</color>
+    <color name="carmin2">#D50000</color>
+
+    <color name="zeroX">#FFFFFF</color>
+    <color name="zeroXII">#000000</color>
+    <color name="oneX">#FFD600</color>
+    <color name="twoX">#FF6D00</color>
+    <color name="threeX">#F44336</color>
+    <color name="FFFFFFX">#FFFFFF</color>
+    <color name="fourX">#64DD17</color>
+<!--    <color name="fiveX">#6200EA</color>-->
+<!--    <color name="four">#065C2A</color>-->
+    <color name="fiveX">#03491C</color>
+    <color name="sixX">#1235B3</color>
+<!--    <color name="sixX">#0026FF</color>-->
+    <color name="sevenX">#533A15</color>
+    <color name="nineX">#838588</color>
+    <color name="eightX">#5A5A5A</color>
+    <!--    <color name="ten">#FFFFFF</color>-->
+
+</resources>

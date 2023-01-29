@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/menu_background_color">
+
+
+
+
+    <RadioGroup
+        android:id="@+id/radioButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@+id/editTextDuration"
+        app:layout_constraintTop_toBottomOf="@+id/dividerMenu1">
+
+        <RadioButton
+            android:id="@+id/radioButtonPort"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checked="true"
+            android:minHeight="48dp"
+            android:textColor="@color/menu_text_color"
+            android:theme="@style/RadioButtonStyle"
+            android:text="@string/radiobuttonPortText" />
+
+        <RadioButton
+            android:id="@+id/radioButtonLand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:theme="@style/RadioButtonStyle"
+            android:textColor="@color/menu_text_color"
+            android:text="@string/radiobuttonLandText" />
+    </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextNBackLevel"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/input_border"
+        android:gravity="center"
+        android:inputType="number"
+        android:text="@string/standard_value_nback"
+        android:textColor="@color/menu_text_color"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/hintTextViewNBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/input_border_label"
+        android:text="@string/nback"
+        android:textColor="@color/menu_text_color"
+        app:layout_constraintBottom_toTopOf="@+id/editTextNBackLevel"
+        app:layout_constraintStart_toStartOf="@+id/editTextNBackLevel"
+        app:layout_constraintTop_toTopOf="@+id/editTextNBackLevel" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextDuration"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/input_border"
+        android:gravity="center"
+        android:inputType="number"
+        android:tag="@string/nback"
+        android:text="@string/standard_value_duration"
+        android:textSize="24sp"
+        android:textColor="@color/menu_text_color"
+        app:layout_constraintStart_toStartOf="@+id/hintTextViewDuration"
+        app:layout_constraintTop_toTopOf="@+id/hintTextViewDuration" />
+
+    <TextView
+        android:id="@+id/hintTextViewDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/input_border_label"
+        android:textColor="@color/menu_text_color"
+        android:text="@string/durationAsTrial"
+        app:layout_constraintStart_toStartOf="@+id/hintTextViewNBack"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNBackLevel" />
+
+    <Switch
+        android:id="@+id/switchColor"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/include_color"
+        android:textSize="24sp"
+        android:textColor="@color/menu_text_color"
+        android:theme="@style/RadioButtonStyle"
+        app:layout_constraintStart_toStartOf="@+id/switchAudio"
+        app:layout_constraintTop_toBottomOf="@+id/switchAudio" />
+
+
+    <Switch
+        android:id="@+id/switchPosition"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:checked="true"
+        android:minHeight="48dp"
+        android:text="@string/include_position"
+        android:textSize="24sp"
+        android:textColor="@color/menu_text_color"
+        android:theme="@style/RadioButtonStyle"
+        app:layout_constraintStart_toStartOf="@+id/radioButtons"
+        app:layout_constraintTop_toBottomOf="@+id/dividerMenu2" />
+
+    <Switch
+        android:id="@+id/switchAudio"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:minHeight="48dp"
+        android:text="@string/include_audio"
+        android:textSize="24sp"
+        android:textColor="@color/menu_text_color"
+        android:theme="@style/RadioButtonStyle"
+        app:layout_constraintStart_toStartOf="@+id/switchPosition"
+        app:layout_constraintTop_toBottomOf="@+id/switchPosition" />
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_button_training"
+        android:textColor="@color/buttonTextColor"
+        android:text="@string/start"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/switchColor"
+        app:layout_constraintTop_toBottomOf="@+id/dividerMenu3" />
+
+    <Button
+        android:id="@+id/btnResults"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/custom_button_training"
+        android:textColor="@color/buttonTextColor"
+        android:text="@string/results"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/btnStart"
+        app:layout_constraintTop_toBottomOf="@+id/btnStart" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/custom_button_training"
+        android:textColor="@color/buttonTextColor"
+        android:enabled="false"
+        android:text="@string/save"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/btnResults"
+        app:layout_constraintTop_toBottomOf="@+id/btnResults" />
+
+    <View
+        android:id="@+id/dividerMenu1"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="1dp"
+        android:background="?android:attr/listDivider"
+        android:backgroundTint="@color/menu_divider_color_bright"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchColor" />
+
+    <View
+        android:id="@+id/dividerMenu2"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="1dp"
+        android:background="?android:attr/listDivider"
+        android:backgroundTint="@color/menu_divider_color_bright"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDuration" />
+
+    <View
+        android:id="@+id/dividerMenu3"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="1dp"
+        android:background="?android:attr/listDivider"
+        android:backgroundTint="@color/menu_divider_color_bright"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioButtons" />
+
+    <TextView
+        android:id="@+id/infoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center|top"
+        android:text="@string/info_textview_text"
+        android:textAlignment="gravity"
+        android:textSize="60sp"
+        android:textColor="@color/menu_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/menu_text_color"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextDuration"
+        app:layout_constraintStart_toEndOf="@+id/editTextDuration"
+        app:layout_constraintTop_toTopOf="@+id/editTextDuration" />
+
+    <ImageView
+        android:id="@+id/nouImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.447"
+        tools:srcCompat="@tools:sample/avatars" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

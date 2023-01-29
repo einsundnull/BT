@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/drawable/input_border.xml" value="0.266" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/drawable/outline.xml" value="0.266" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/drawable/pause_label.xml" value="0.266" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/layout-land/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/layout-land/activity_main_ii.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/layout-land/menu_main.xml" value="0.18" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/layout/activity_main_II.xml" value="0.33" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/layout/activity_main_ii.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/layout/activity_menu.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/layout/menu_main.xml" value="0.18" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/layout/settings_activity.xml" value="0.2609375" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2) - prearrange random/app/src/main/res/xml/root_preferences.xml" value="0.25" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2)/app/src/main/res/layout-land/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Kopie (2)/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version - Kopie/app/src/main/res/drawable/data_point.xml" value="0.1025" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version - Kopie/app/src/main/res/layout/activity_activitiy_results.xml" value="0.4810009267840593" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/alert_backround.xml" value="0.1045" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_btnsound_trainging_off.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_btnsound_trainging_on.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_disabled.xml" value="0.1465" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_menu_default.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_menu_disabled.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_menu_pressed.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_pressed.xml" value="0.199" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_style_save.xml" value="0.265" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_text.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_training_default.xml" value="0.178" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_training_default_exit.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_training_disabled.xml" value="0.178" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_training_disabled_exit.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_training_pressed.xml" value="0.178" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/button_training_pressed_exit.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/curved_window.xml" value="0.103" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/custom_button.xml" value="0.199" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/custom_button_menu.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/custom_button_sound_of.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/custom_button_training.xml" value="0.178" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/custom_button_training_exit.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/custom_button_training_exitBtn.xml" value="0.103" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/custom_button_training_sound_off.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/custom_radio.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/devider_dark.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/divider_dark.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/ic_baseline_radio_button_checked_24.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1705" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/input_border.xml" value="0.199" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/input_border_label.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/radio_default.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/radio_disabled.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/radio_text.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/shape_button.xml" value="0.1705" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/training_background.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/training_background_bright.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/drawable/training_background_dark.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout-land/activity_menu_bright.xml" value="0.33" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout-land/activity_training_bright.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout-land/menu_main.xml" value="0.25" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/activity_about.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/activity_about2.xml" value="0.25" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/activity_about_ii.xml" value="0.2610734757686295" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/activity_activitiy_results.xml" value="0.33" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/activity_main_bright.xml" value="0.48040201005025124" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/activity_main_ii.xml" value="0.4309545875810936" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/activity_main_ii_bright.xml" value="0.33" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/activity_menu_bright.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/activity_menu_dark.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/activity_training_bright.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/activity_training_dark.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/alert_box_layout.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/menu_main.xml" value="0.25" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/menu_main_layout_bright.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/view_about.xml" value="0.5" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/view_alert_box.xml" value="0.22" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/layout/view_menu.xml" value="0.488328664799253" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT - Working Version/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/BT/app/src/main/res/layout/activity_main.xml" value="0.5" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.22" />
+      </ProjectState>
+    </option>
+  </component>
+</project>

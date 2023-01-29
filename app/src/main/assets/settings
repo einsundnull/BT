@@ -1,0 +1,13 @@
+squareSize 150
+decreaseThreshold 0.75
+increaseThreshold 0.85
+duration 5
+maxPresentations 40
+nBackBegin 1
+speedPercentage 1
+countDownIntervalDefault 1333
+durationSessionTimer 1000000
+randomIndexIncreaseFactor 5
+includePosition true
+includeAudio    true
+includeColor    false

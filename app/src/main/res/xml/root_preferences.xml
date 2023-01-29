@@ -1,0 +1,78 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Main Menu">
+
+
+        <EditTextPreference
+            android:id="@+id/editTextDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="38dp"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:defaultValue="5"
+            app:key="parameters"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/duration"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:id="@+id/editTextNBackLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="13dp"
+            android:inputType="phone"
+            android:digits="0123456789"
+            android:defaultValue="1"
+            app:key="parameters"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextDuration"
+            app:title="@string/nback"
+            app:useSimpleSummaryProvider="true" />
+
+
+        <!--        <EditTextPreference-->
+        <!--            app:key="signature"-->
+        <!--            app:title="@string/signature_title"-->
+        <!--            app:useSimpleSummaryProvider="true" />-->
+        <!--        <EditTextPreference-->
+        <!--            app:key="signature"-->
+        <!--            app:title="@string/signature_title"-->
+        <!--            app:useSimpleSummaryProvider="true" />-->
+        <!--        <EditTextPreference-->
+        <!--            app:key="signature"-->
+        <!--            app:title="@string/signature_title"-->
+        <!--            app:useSimpleSummaryProvider="true" />-->
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/mode">
+
+        <!--        <SwitchPreferenceCompat-->
+        <!--            app:key="Include"-->
+        <!--            app:title="@string/sync_title" />-->
+
+        <SwitchPreferenceCompat
+            android:id="@+id/include_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:title="@string/include_position" />
+        <SwitchPreferenceCompat
+            android:id="@+id/include_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:title="@string/include_audio" />
+        <SwitchPreferenceCompat
+            android:id="@+id/include_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:title="@string/include_color" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "233389406838",
+    "project_id": "nback-a4deb",
+    "storage_bucket": "nback-a4deb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233389406838:android:a2d58da18b9f47e12efd57",
+        "android_client_info": {
+          "package_name": "com.notorein.bt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233389406838-gcp4ct3c1k0ghsjnfu0cbcgki55r6l6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARuP1ZlFFtetsdur7czCL0dxfw6gjVCck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233389406838-gcp4ct3c1k0ghsjnfu0cbcgki55r6l6m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

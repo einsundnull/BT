@@ -1,0 +1,180 @@
+<resources>
+    <string name="app_name">BT</string>
+    <string name="increase">Increase</string>
+    <string name="hint_text_nback">n-Back</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Settings Preferences -->
+    <string name="include_audio">Audio</string>
+    <string name="include_color">Color</string>
+    <string name="include_position">Position</string>
+    <string name="mode">Modes</string>
+    <string name="nback">N-Back</string>
+    <string name="duration">Duration</string>
+    <string name="durationAsTrial">Trials</string>
+    <string name="results">Results</string>
+    <string name="start">Start</string>
+    <string name="manual">Manual</string>
+    <string name="about">About</string>
+    <string name="close_app">Close App</string>
+    <string name="save">Save</string>
+    <string name="btnExitText">Exit</string>
+    <string name="radiobuttonPortText">Portrait</string>
+    <string name="radiobuttonLandText">Landscape</string>
+    <string name="standard_value_duration">5</string>
+    <string name="standard_value_nback">1</string>
+    <string name="info_textview_text">\≡</string>
+    <string name="btn_go_back_text">Go Back</string>
+    <string name="btn_continue_training_text">Quit Training</string>
+    <string name="interrupt_session_text">\nYou want to quit?\n\nAll results will be lost!"</string>
+    <string name="string_btn_go_back_text">Go Back</string>
+    <string name="title_activity_about">ActivityAbout</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">Program Sequence\n\n
+A run takes a minimum of 120 seconds. A square is seen every two seconds and one of eight
+letters can be heard. A minimum of 22 squares and 22 letters is presented. If there was a match
+without the user pressing the corresponding key, this is considered incorrect. In case that one of
+the buttons is pressed without 2 match, this is also considered incorrect. If the corresponding
+key is pressed in the event of a match, this is considered correct, Also considered correct is if
+there was no match and no key was pressed, Multiple keystrokes are not counted twice, When
+at least 85% in the visual and auditory part is rated as correct, the program increases the level
+of difficulty, If less than 70% in the auditory or visual part is rated as correct, the program
+lowers the level of difficult. When the rate of correct answers is between 70% and 85%, the
+level of difficulty does not change. To guarantee a constant probability of possible matches, the
+training time changes with each level by 3 x n-back seconds, Eg,\n\n
+
+3-back +3 x3=120+ 9seconds. Total time = 129 seconds.\n\n
+
+4+ back — 4 x 3 = 120 + 12 seconds. Total 132 seconds.\n\n
+
+\n\nTraining recommendation\n\n
+Make sure that the environment is calm and that there is no distraction during the task. For
+therapeutic purposes, itis recommended to exercise no less than twice and na more than three
+times a week for 20-30 minutes. Training that is too rare leads to a lack of training success and
+consequently to a loss of motivation. Too long training leads to excessive demands with loss of
+motivation. Exercising too often can lead to habituation and consequently boredom and also to
+a loss of motivation. Nevertheless, decide on a case-by-case basis which workload you trust
+your clients to do, The training time of a unit, once selected, should only be changed in
+exceptional cases to ensure the comparability of the training results, The effective training time,
+ie, how many units are trained, can adapt to the respective performance. An effective training
+time over half an hour can eg. to be staggered\n\n
+
+
+10min + 10min + 10min or 15min + 15min\n\n
+
+In both cases, effective training time is half an hour. The break between the units allows the test
+subjects to regenerate. Decide on a case-by-case basis how long this break is. For individual
+and private training purposes, you can train as often and as long as your stamina and
+motivation allow. Please also note the time you have chosen ance, over the length of the units,
+if possible, only change in exceptional cases\n\n
+
+        About the program\n\n
+
+The n-back program was first introduced in 1958. In 2008, a study was carried out at the
+University of Cognitive Sciences in Bern (Switzerland) using this program. In this study, it was
+shown for the first time that the so-called fluid intelligence can be trained. Later stucies
+partially confirm this resull, Programming offers a variety of design options, So it is eg, possible
+to write a pragram in which you have to remember the position of the squares and the letters,
+colour, and shape. The dual n-back training is sufficient in its simple form. It is extremely
+demanding and clients often has to overcome to start training, Observations in training show
+that a multitude of options also offers a multitude of possibilities for distraction. With
+humerous options, this means that the clients often try out new options instead of working
+consistently with the settings that they have been started with, To exclude this from the outset,
+this program is reduced to the minimum of setting options\n\n
+
+Please donate.\n\n
+
+notorein@gmail.de</string>
+
+
+</resources>
