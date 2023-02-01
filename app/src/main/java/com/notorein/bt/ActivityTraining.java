@@ -2024,8 +2024,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         // Set the drawable for the button
         btnSoundOff.setImageDrawable(getResources().getDrawable(drawableResourceId));
         // Show a toast message indicating the current sound setting
-        String toastMessage = playButtonSoundDuringTraining ? Strings.sound_click_training_on : Strings.sound_click_training_off;
-        Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_SHORT).show();
+//        String toastMessage = playButtonSoundDuringTraining ? Strings.sound_click_training_on : Strings.sound_click_training_off;
+//        Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_SHORT).show();
     }
 
 

@@ -28,40 +28,40 @@ import java.util.Scanner;
 public class ResultsFiles {
 
     private static ArrayList<String> results;
-    public static    ArrayList<Double> listTrialsNBack = new ArrayList<>();
-    public static    ArrayList<Double> listTrialsPercentage = new ArrayList<>();
+    public static ArrayList<Double> listTrialsNBack = new ArrayList<>();
+    public static ArrayList<Double> listTrialsPercentage = new ArrayList<>();
 
-    public static   ArrayList<Double> listTrialsNBackTemp = new ArrayList<>();
-    public static   ArrayList<Double> listTrialsPercentageTemp = new ArrayList<>();
+    public static ArrayList<Double> listTrialsNBackTemp = new ArrayList<>();
+    public static ArrayList<Double> listTrialsPercentageTemp = new ArrayList<>();
     //##############
-    public static   ArrayList<ArrayList<Double>> listSessionsNBack = new ArrayList<>();
-    public static   ArrayList<ArrayList<Double>> listSessionsPercentage = new ArrayList<>();
+    public static ArrayList<ArrayList<Double>> listSessionsNBack = new ArrayList<>();
+    public static ArrayList<ArrayList<Double>> listSessionsPercentage = new ArrayList<>();
 
-    public static   ArrayList<ArrayList<Double>> listSessionsNBackTemp = new ArrayList<>();
-    public static   ArrayList<ArrayList<Double>> listSessionsPercentageTemp = new ArrayList<>();
+    public static ArrayList<ArrayList<Double>> listSessionsNBackTemp = new ArrayList<>();
+    public static ArrayList<ArrayList<Double>> listSessionsPercentageTemp = new ArrayList<>();
 
-    public static   ArrayList<Double> listSessionsNBackMax = new ArrayList<>();
-    public static   ArrayList<Double> listSessionsNBackMaxTemp = new ArrayList<>();
-    public static  ArrayList<ArrayList<Double>> listDaysNBackMaxTemp = new ArrayList<>();
-    public static  ArrayList<Double> listDaysNBackMax = new ArrayList<>();
+    public static ArrayList<Double> listSessionsNBackMax = new ArrayList<>();
+    public static ArrayList<Double> listSessionsNBackMaxTemp = new ArrayList<>();
+    public static ArrayList<ArrayList<Double>> listDaysNBackMaxTemp = new ArrayList<>();
+    public static ArrayList<Double> listDaysNBackMax = new ArrayList<>();
 
 
-    public static   ArrayList<Double> listDayAverageNBack = new ArrayList<>();
-    public static   ArrayList<Double> listDayAveragePercentage = new ArrayList<>();
+    public static ArrayList<Double> listDayAverageNBack = new ArrayList<>();
+    public static ArrayList<Double> listDayAveragePercentage = new ArrayList<>();
 
-    public static  ArrayList<ArrayList<ArrayList<Double>>> listDayNBack = new ArrayList<>();
-    public static   ArrayList<ArrayList<ArrayList<Double>>> listDayPercentages = new ArrayList<>();
+    public static ArrayList<ArrayList<ArrayList<Double>>> listDayNBack = new ArrayList<>();
+    public static ArrayList<ArrayList<ArrayList<Double>>> listDayPercentages = new ArrayList<>();
 
     static double sessionAveragePercentage = 0;
     static double sessionAverageNBack = 0;
 
-    static  double dayAveragePercentage = 0;
-    static  double dayAverageNBack = 0;
+    static double dayAveragePercentage = 0;
+    static double dayAverageNBack = 0;
 
-    static  double nBackMaxSession = 0;
-    static   double nBackMaxDay = 0;
+    static double nBackMaxSession = 0;
+    static double nBackMaxDay = 0;
     public static double nBackMaxAbsolute = 0;
-    static   int trialCounter = 0;
+    static int trialCounter = 0;
 
 
     public static void readResultsAndCalculatePercentage() {
@@ -255,170 +255,418 @@ public class ResultsFiles {
 
     public static void calculateResultsForDisplay() {
 
-        String dayNextSessionMarker = "";
-        String daySessionEndMarker = "";
-        resetValues();
-        String temp = "";
-        double tempNBack = 0;
-        double tempPercentage = 0;
-        double sessionAverageNBack = 0;
-        double sessionAveragePercentage = 0;
-        double dayAverageNBack = 0;
-        double dayAveragePercentage = 0;
-        int trialCounter = 0;
-        double nBackMaxSession = 0;
-        List<List<Double>> listDaysNBackMaxTemp = new ArrayList<>();
-        List<Double> listSessionsNBackMax = new ArrayList<>();
-        List<Double> listSessionsNBackMaxTemp = new ArrayList<>();
-        List<Double> listDayAverageNBack = new ArrayList<>();
-        List<Double> listDayAveragePercentage = new ArrayList<>();
-        int size = results.size();
+        String timeOne = "";
+        String timeTwo = "";
+        String dayOne = "";
+        String dayTwo = "";
+        String value = "";
+        ArrayList<Double> trialsPerc = new ArrayList<>();
+        ArrayList<Double> trialsPercTemp = new ArrayList<>();
+        List<Double> trialsNBack = new ArrayList<>();
+        List<Double> trialsNBackTemp = new ArrayList<>();
+        ArrayList<Double> sessionsPerc = new ArrayList<>();
+        ArrayList<Double> sessionsPercTemp = new ArrayList<>();
+        ArrayList<Double> sessionsNBack = new ArrayList<>();
+        ArrayList<Double> sessionsNBackTemp = new ArrayList<>();
+        ArrayList<Double> days = new ArrayList<>();
 
-        for (int i = 0; i < size; i++) {
-            temp = results.get(i);
+        for (int i = 0; i < results.size(); i++) {
+            value = results.get(i);
 
-            if (temp.equals(SessionParameters.nBackTrialMarker)) {
+            if (value.equals(SessionParameters.timeSessionMarker)) {
                 i++;
-                tempNBack = Integer.parseInt(results.get(i));
-                listTrialsNBack.add(tempNBack);
-                listTrialsNBackTemp.add(tempNBack);
-
-                listTrialsPercentage.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
-                listTrialsPercentageTemp.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
+                value = results.get(i);
+                Log.i(TAG, "value: " + value);
+                timeTwo = value;
+                if (!timeTwo.equals(timeOne)) {
+                    Log.i(TAG, "value +++: " + value);
+                    double average = getAverage(trialsPercTemp);
+                    sessionsPerc.add(average);
+                    sessionsPercTemp.add(average);
+                    trialsPercTemp.clear();
+                }
+                timeOne = timeTwo;
             }
-            if (temp.equals(SessionParameters.daySessionEndMarker)) {
-                listSessionsNBack.add(listTrialsNBackTemp);
-                listSessionsPercentage.add(listTrialsPercentageTemp);
-                listSessionsNBackTemp.add(listTrialsNBackTemp);
-                listSessionsPercentageTemp.add(listTrialsPercentageTemp);
-                listTrialsNBackTemp = new ArrayList<>();
-                listTrialsPercentageTemp = new ArrayList<>();
-            }
-            if (temp.equals(SessionParameters.daySessionEndMarker)) {
+            if (value.equals(SessionParameters.daySessionMarker)) {
                 i++;
-                daySessionEndMarker = results.get(i);
+                value = results.get(i);
+
+            }
+            if (value.equals(SessionParameters.percentageTrialMarker)) {
+                i++;
+                value = results.get(i);
+                trialsPerc.add(Double.parseDouble(value));
+                trialsPercTemp.add(Double.parseDouble(value));
+            }
+            if (value.equals(SessionParameters.nBackTrialMarker)) {
+                i++;
+                value = results.get(i);
+                trialsNBack.add(Double.parseDouble(value));
+                trialsNBackTemp.add(Double.parseDouble(value));
+            }
+            if (value.equals(SessionParameters.daySessionEndMarker)) {
+                i++;
+                value = results.get(i);
                 try {
-                    dayNextSessionMarker = results.get(i + 4);
-                    if (!compareIfDatasAreTheSame("Found daySessionEndMarker ", daySessionEndMarker, dayNextSessionMarker)) {
-                        listDayNBack.add(listSessionsNBackTemp);
-                        listDayPercentages.add(listSessionsPercentageTemp);
-                        listSessionsPercentageTemp = new ArrayList<>();
-                        listSessionsNBackTemp = new ArrayList<>();
-                    }
-                } catch (Exception e) {
-                    Log.i(TAG, "calculateResultsForDisplay: " + " noNextDay");
-                    listDayNBack.add(listSessionsNBackTemp);
-                    listDayPercentages.add(listSessionsPercentageTemp);
-                    listSessionsPercentageTemp = new ArrayList<>();
-                    listSessionsNBackTemp = new ArrayList<>();
+                    dayTwo =  results.get(i+4);
+                } catch ( Exception e){
+
                 }
-            }
-        }
-
-        for (int i = 0; i < size; i++) {
-            temp = results.get(i);
-
-            if (temp.equals(SessionParameters.nBackTrialMarker)) {
-                i++;
-                tempNBack = Integer.parseInt(results.get(i));
-                listTrialsNBack.add(tempNBack);
-                listTrialsNBackTemp.add(tempNBack);
-                listTrialsPercentage.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
-                listTrialsPercentageTemp.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
-            }
-            if (temp.equals(SessionParameters.daySessionEndMarker)) {
-                listSessionsNBack.add(listTrialsNBackTemp);
-                listSessionsPercentage.add(listTrialsPercentageTemp);
-                listSessionsNBackTemp.add(listTrialsNBackTemp);
-                listSessionsPercentageTemp.add(listTrialsPercentageTemp);
-                listTrialsNBackTemp = new ArrayList<>();
-                listTrialsPercentageTemp = new ArrayList<>();
-            }
-            if (temp.equals(SessionParameters.daySessionEndMarker)) {
-                i++;
-                daySessionEndMarker = results.get(i);
-                try {
-                    dayNextSessionMarker = results.get(i + 4);
-                    if (!compareIfDatasAreTheSame("Found daySessionEndMarker ", daySessionEndMarker, dayNextSessionMarker)) {
-                        listDayNBack.add(listSessionsNBackTemp);
-                        listDayPercentages.add(listSessionsPercentageTemp);
-                        listSessionsPercentageTemp = new ArrayList<>();
-                        listSessionsNBackTemp = new ArrayList<>();
-                    }
-                } catch (Exception e) {
-                    Log.i(TAG, "calculateResultsForDisplay: " + " noNextDay");
-                    listDayNBack.add(listSessionsNBackTemp);
-                    listDayPercentages.add(listSessionsPercentageTemp);
-                    listSessionsPercentageTemp = new ArrayList<>();
-                    listSessionsNBackTemp = new ArrayList<>();
+                if (!dayTwo.equals(dayOne)) {
+                    double average = getAverage(sessionsPercTemp);
+                    days.add(average);
+                    sessionsPercTemp.clear();
                 }
+
             }
+
         }
-
-
-
-        for (int d = 0; d < listDayNBack.size(); d++) {
-            for (int s = 0; s < listDayNBack.get(d).size(); s++) {
-                for (int t = 0; t < listDayNBack.get(d).get(s).size(); t++) {
-                    double nBack = listDayNBack.get(d).get(s).get(t);
-                    double percentage = listDayPercentages.get(d).get(s).get(t);
-                    sessionAverageNBack += nBack;
-                    nBackMaxSession = Math.max(nBackMaxSession, nBack);
-                    sessionAveragePercentage += percentage;
-                    trialCounter++;
-                }
-                listSessionsNBackMax.add(nBackMaxSession);
-                listSessionsNBackMaxTemp.add(nBackMaxSession);
-            }
-            listDaysNBackMaxTemp.add(listSessionsNBackMaxTemp);
-            listSessionsNBackMaxTemp = new ArrayList<>();
-            dayAverageNBack += sessionAverageNBack / trialCounter;
-            dayAveragePercentage += sessionAveragePercentage / trialCounter;
-            listDayAverageNBack.add(dayAverageNBack);
-            listDayAveragePercentage.add(dayAveragePercentage);
-            trialCounter = 0;
-            sessionAverageNBack = 0;
-            sessionAveragePercentage = 0;
-            dayAverageNBack = 0;
-            dayAveragePercentage = 0;
-            nBackMaxSession = 0;
-        }
-
-        List<Double> listDaysNBackMax = new ArrayList<>();
-        for (int d = 0; d < listDayNBack.size(); d++) {
-            double maxNBackDay = 0;
-            for (int s = 0; s < listDayNBack.get(d).size(); s++) {
-                for (int t = 0; t < listDayNBack.get(d).get(s).size(); t++) {
-                    maxNBackDay = Math.max(maxNBackDay, listDayNBack.get(d).get(s).get(t));
-                }
-            }
-            listDaysNBackMax.add(maxNBackDay);
-        }
-
-        // Here I get the absolute highest nback value. It is important to display the
-        // results in a proper scale.
-        for (int m = 0; m < listDaysNBackMax.size(); m++) {
-            if (nBackMaxAbsolute < listDaysNBackMax.get(m)) {
-                nBackMaxAbsolute = listDaysNBackMax.get(m);
-            }
-        }
-//        Log.i(TAG, "\n");
-//        Log.i(TAG, "listTrialsNBack " + listTrialsNBack);
-//        Log.i(TAG, "listTrialsPercentage " + listTrialsPercentage);
-//        Log.i(TAG, "listSessionsNBack " + listSessionsNBack);
-//        Log.i(TAG, "listSessionsPercentage " + listSessionsPercentage);
-//        Log.i(TAG, "listSessionsNBackMax " + listSessionsNBackMax);
-//
-//        Log.i(TAG, "listDayNBack " + listDayNBack);
-//        Log.i(TAG, "listDayPercentages " + listDayPercentages);
-//        Log.i(TAG, "listDayAverageNBack:  " + listDayAverageNBack + "\n");
-//        Log.i(TAG, "listDayAverage:  " + listDayAveragePercentage + "\n");
-//        Log.i(TAG, "listDaysNBackMax:  " + listDaysNBackMax + "\n");
-//        Log.i(TAG, "nBackMaxAbsolute:  " + nBackMaxAbsolute + "\n");
-//        Log.i(TAG, "\n");
-
-
+        Log.e(TAG, "calculateResultsForDisplay +++: " + sessionsPerc);
+        Log.i(TAG, "calculateResultsForDisplay +++: " + days);
     }
+
+    private static Double getAverage(ArrayList<Double> trialsTemp) {
+        double value = 0;
+        for (int i = 0; i < trialsTemp.size(); i++) {
+            value = value + trialsTemp.get(i);
+        }
+        return value / trialsTemp.size();
+    }
+
+
+//    public static void calculateResultsForDisplay() {
+//
+//        String dayNextSessionMarker = "";
+//        String daySessionEndMarker = "";
+//        resetValues();
+//        String temp = "";
+//        double tempNBack = 0;
+//        double tempPercentage = 0;
+//        double sessionAverageNBack = 0;
+//        double sessionAveragePercentage = 0;
+//        double dayAverageNBack = 0;
+//        double dayAveragePercentage = 0;
+//        int trialCounter = 0;
+//        double nBackMaxSession = 0;
+//        List<List<Double>> listDaysNBackMaxTemp = new ArrayList<>();
+//        List<Double> listSessionsNBackMax = new ArrayList<>();
+//        List<Double> listSessionsNBackMaxTemp = new ArrayList<>();
+//        List<Double> listDayAverageNBack = new ArrayList<>();
+//        List<Double> listDayAveragePercentage = new ArrayList<>();
+//        int size = results.size();
+//
+//        for (int i = 0; i < size; i++) {
+//            temp = results.get(i);
+//
+//            if (temp.equals(SessionParameters.nBackTrialMarker)) {
+//                i++;
+//                tempNBack = Integer.parseInt(results.get(i));
+//                listTrialsNBack.add(tempNBack);
+//                listTrialsNBackTemp.add(tempNBack);
+//
+//                listTrialsPercentage.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
+//                listTrialsPercentageTemp.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
+//            }
+//            if (temp.equals(SessionParameters.daySessionEndMarker)) {
+//                listSessionsNBack.add(listTrialsNBackTemp);
+//                listSessionsPercentage.add(listTrialsPercentageTemp);
+//                listSessionsNBackTemp.add(listTrialsNBackTemp);
+//                listSessionsPercentageTemp.add(listTrialsPercentageTemp);
+//                listTrialsNBackTemp = new ArrayList<>();
+//                listTrialsPercentageTemp = new ArrayList<>();
+//            }
+//            if (temp.equals(SessionParameters.daySessionEndMarker)) {
+//                i++;
+//                daySessionEndMarker = results.get(i);
+//                try {
+//                    dayNextSessionMarker = results.get(i + 4);
+//                    if (!compareIfDatasAreTheSame("Found daySessionEndMarker ", daySessionEndMarker, dayNextSessionMarker)) {
+//                        listDayNBack.add(listSessionsNBackTemp);
+//                        listDayPercentages.add(listSessionsPercentageTemp);
+//                        listSessionsPercentageTemp = new ArrayList<>();
+//                        listSessionsNBackTemp = new ArrayList<>();
+//                    }
+//                } catch (Exception e) {
+//                    Log.i(TAG, "calculateResultsForDisplay: " + " noNextDay");
+//                    listDayNBack.add(listSessionsNBackTemp);
+//                    listDayPercentages.add(listSessionsPercentageTemp);
+//                    listSessionsPercentageTemp = new ArrayList<>();
+//                    listSessionsNBackTemp = new ArrayList<>();
+//                }
+//            }
+//        }
+//
+//        for (int i = 0; i < size; i++) {
+//            temp = results.get(i);
+//
+//            if (temp.equals(SessionParameters.nBackTrialMarker)) {
+//                i++;
+//                tempNBack = Integer.parseInt(results.get(i));
+//                listTrialsNBack.add(tempNBack);
+//                listTrialsNBackTemp.add(tempNBack);
+//                listTrialsPercentage.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
+//                listTrialsPercentageTemp.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
+//            }
+////            if (temp.equals(SessionParameters.daySessionEndMarker)) {
+////                listSessionsNBack.add(listTrialsNBackTemp);
+////                listSessionsPercentage.add(listTrialsPercentageTemp);
+////                listSessionsNBackTemp.add(listTrialsNBackTemp);
+////                listSessionsPercentageTemp.add(listTrialsPercentageTemp);
+////                listTrialsNBackTemp = new ArrayList<>();
+////                listTrialsPercentageTemp = new ArrayList<>();
+////            }
+//            if (temp.equals(SessionParameters.daySessionEndMarker)) {
+//                i++;
+//                daySessionEndMarker = results.get(i);
+//                try {
+//                    dayNextSessionMarker = results.get(i + 4);
+//                    if (!compareIfDatasAreTheSame("Found daySessionEndMarker ", daySessionEndMarker, dayNextSessionMarker)) {
+//                        listDayNBack.add(listSessionsNBackTemp);
+//                        listDayPercentages.add(listSessionsPercentageTemp);
+//                        listSessionsPercentageTemp = new ArrayList<>();
+//                        listSessionsNBackTemp = new ArrayList<>();
+//                    }
+//                } catch (Exception e) {
+//                    Log.i(TAG, "calculateResultsForDisplay: " + " noNextDay");
+//                    listDayNBack.add(listSessionsNBackTemp);
+//                    listDayPercentages.add(listSessionsPercentageTemp);
+//                    listSessionsPercentageTemp = new ArrayList<>();
+//                    listSessionsNBackTemp = new ArrayList<>();
+//                }
+//            }
+//        }
+//
+//
+//
+////        for (int d = 0; d < listDayNBack.size(); d++) {
+////            for (int s = 0; s < listDayNBack.get(d).size(); s++) {
+////                for (int t = 0; t < listDayNBack.get(d).get(s).size(); t++) {
+////                    double nBack = listDayNBack.get(d).get(s).get(t);
+////                    double percentage = listDayPercentages.get(d).get(s).get(t);
+////                    sessionAverageNBack += nBack;
+////                    nBackMaxSession = Math.max(nBackMaxSession, nBack);
+////                    sessionAveragePercentage += percentage;
+////                    trialCounter++;
+////                }
+////                listSessionsNBackMax.add(nBackMaxSession);
+////                listSessionsNBackMaxTemp.add(nBackMaxSession);
+////            }
+////            listDaysNBackMaxTemp.add(listSessionsNBackMaxTemp);
+////            listSessionsNBackMaxTemp = new ArrayList<>();
+////            dayAverageNBack += sessionAverageNBack / trialCounter;
+////            dayAveragePercentage += sessionAveragePercentage / trialCounter;
+////            listDayAverageNBack.add(dayAverageNBack);
+////            listDayAveragePercentage.add(dayAveragePercentage);
+////            trialCounter = 0;
+////            sessionAverageNBack = 0;
+////            sessionAveragePercentage = 0;
+////            dayAverageNBack = 0;
+////            dayAveragePercentage = 0;
+////            nBackMaxSession = 0;
+////        }
+//
+//        List<Double> listDaysNBackMax = new ArrayList<>();
+//        for (int d = 0; d < listDayNBack.size(); d++) {
+//            double maxNBackDay = 0;
+//            for (int s = 0; s < listDayNBack.get(d).size(); s++) {
+//                for (int t = 0; t < listDayNBack.get(d).get(s).size(); t++) {
+//                    maxNBackDay = Math.max(maxNBackDay, listDayNBack.get(d).get(s).get(t));
+//                }
+//            }
+//            listDaysNBackMax.add(maxNBackDay);
+//        }
+//
+//        // Here I get the absolute highest nback value. It is important to display the
+//        // results in a proper scale.
+//        for (int m = 0; m < listDaysNBackMax.size(); m++) {
+//            if (nBackMaxAbsolute < listDaysNBackMax.get(m)) {
+//                nBackMaxAbsolute = listDaysNBackMax.get(m);
+//            }
+//        }
+////        Log.i(TAG, "\n");
+////        Log.i(TAG, "listTrialsNBack " + listTrialsNBack);
+////        Log.i(TAG, "listTrialsPercentage " + listTrialsPercentage);
+////        Log.i(TAG, "listSessionsNBack " + listSessionsNBack);
+////        Log.i(TAG, "listSessionsPercentage " + listSessionsPercentage);
+////        Log.i(TAG, "listSessionsNBackMax " + listSessionsNBackMax);
+////
+////        Log.i(TAG, "listDayNBack " + listDayNBack);
+////        Log.i(TAG, "listDayPercentages " + listDayPercentages);
+////        Log.i(TAG, "listDayAverageNBack:  " + listDayAverageNBack + "\n");
+////        Log.i(TAG, "listDayAverage:  " + listDayAveragePercentage + "\n");
+////        Log.i(TAG, "listDaysNBackMax:  " + listDaysNBackMax + "\n");
+////        Log.i(TAG, "nBackMaxAbsolute:  " + nBackMaxAbsolute + "\n");
+////        Log.i(TAG, "\n");
+//
+//
+//    }
+
+//    public static void calculateResultsForDisplay() {
+//
+//        String dayNextSessionMarker = "";
+//        String daySessionEndMarker = "";
+//        resetValues();
+//        String temp = "";
+//        double tempNBack = 0;
+//        double tempPercentage = 0;
+//        double sessionAverageNBack = 0;
+//        double sessionAveragePercentage = 0;
+//        double dayAverageNBack = 0;
+//        double dayAveragePercentage = 0;
+//        int trialCounter = 0;
+//        double nBackMaxSession = 0;
+//        List<List<Double>> listDaysNBackMaxTemp = new ArrayList<>();
+//        List<Double> listSessionsNBackMax = new ArrayList<>();
+//        List<Double> listSessionsNBackMaxTemp = new ArrayList<>();
+//        List<Double> listDayAverageNBack = new ArrayList<>();
+//        List<Double> listDayAveragePercentage = new ArrayList<>();
+//        int size = results.size();
+//
+//        for (int i = 0; i < size; i++) {
+//            temp = results.get(i);
+//
+//            if (temp.equals(SessionParameters.nBackTrialMarker)) {
+//                i++;
+//                tempNBack = Integer.parseInt(results.get(i));
+//                listTrialsNBack.add(tempNBack);
+//                listTrialsNBackTemp.add(tempNBack);
+//
+//                listTrialsPercentage.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
+//                listTrialsPercentageTemp.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
+//            }
+//            if (temp.equals(SessionParameters.daySessionEndMarker)) {
+//                listSessionsNBack.add(listTrialsNBackTemp);
+//                listSessionsPercentage.add(listTrialsPercentageTemp);
+//                listSessionsNBackTemp.add(listTrialsNBackTemp);
+//                listSessionsPercentageTemp.add(listTrialsPercentageTemp);
+//                listTrialsNBackTemp = new ArrayList<>();
+//                listTrialsPercentageTemp = new ArrayList<>();
+////            }
+////            if (temp.equals(SessionParameters.daySessionEndMarker)) {
+//                i++;
+//                daySessionEndMarker = results.get(i);
+//                try {
+//                    dayNextSessionMarker = results.get(i + 4);
+//                    if (!compareIfDatasAreTheSame("Found daySessionEndMarker ", daySessionEndMarker, dayNextSessionMarker)) {
+//                        listDayNBack.add(listSessionsNBackTemp);
+//                        listDayPercentages.add(listSessionsPercentageTemp);
+//                        listSessionsPercentageTemp = new ArrayList<>();
+//                        listSessionsNBackTemp = new ArrayList<>();
+//                    }
+//                } catch (Exception e) {
+//                    Log.i(TAG, "calculateResultsForDisplay: " + " noNextDay");
+//                    listDayNBack.add(listSessionsNBackTemp);
+//                    listDayPercentages.add(listSessionsPercentageTemp);
+//                    listSessionsPercentageTemp = new ArrayList<>();
+//                    listSessionsNBackTemp = new ArrayList<>();
+//                }
+//            }
+//        }
+//
+//        for (int i = 0; i < size; i++) {
+//            temp = results.get(i);
+//
+//            if (temp.equals(SessionParameters.nBackTrialMarker)) {
+//                i++;
+//                tempNBack = Integer.parseInt(results.get(i));
+//                listTrialsNBack.add(tempNBack);
+//                listTrialsNBackTemp.add(tempNBack);
+//                listTrialsPercentage.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
+//                listTrialsPercentageTemp.add((tempNBack ) + Double.parseDouble(results.get(i + 2)));
+//            }
+//            if (temp.equals(SessionParameters.daySessionEndMarker)) {
+//                listSessionsNBack.add(listTrialsNBackTemp);
+//                listSessionsPercentage.add(listTrialsPercentageTemp);
+//                listSessionsNBackTemp.add(listTrialsNBackTemp);
+//                listSessionsPercentageTemp.add(listTrialsPercentageTemp);
+//                listTrialsNBackTemp = new ArrayList<>();
+//                listTrialsPercentageTemp = new ArrayList<>();
+//            }
+//            if (temp.equals(SessionParameters.daySessionEndMarker)) {
+//                i++;
+//                daySessionEndMarker = results.get(i);
+//                try {
+//                    dayNextSessionMarker = results.get(i + 4);
+//                    if (!compareIfDatasAreTheSame("Found daySessionEndMarker ", daySessionEndMarker, dayNextSessionMarker)) {
+//                        listDayNBack.add(listSessionsNBackTemp);
+//                        listDayPercentages.add(listSessionsPercentageTemp);
+//                        listSessionsPercentageTemp = new ArrayList<>();
+//                        listSessionsNBackTemp = new ArrayList<>();
+//                    }
+//                } catch (Exception e) {
+//                    Log.i(TAG, "calculateResultsForDisplay: " + " noNextDay");
+//                    listDayNBack.add(listSessionsNBackTemp);
+//                    listDayPercentages.add(listSessionsPercentageTemp);
+//                    listSessionsPercentageTemp = new ArrayList<>();
+//                    listSessionsNBackTemp = new ArrayList<>();
+//                }
+//            }
+//        }
+//
+//
+//
+//        for (int d = 0; d < listDayNBack.size(); d++) {
+//            for (int s = 0; s < listDayNBack.get(d).size(); s++) {
+//                for (int t = 0; t < listDayNBack.get(d).get(s).size(); t++) {
+//                    double nBack = listDayNBack.get(d).get(s).get(t);
+//                    double percentage = listDayPercentages.get(d).get(s).get(t);
+//                    sessionAverageNBack += nBack;
+//                    nBackMaxSession = Math.max(nBackMaxSession, nBack);
+//                    sessionAveragePercentage += percentage;
+//                    trialCounter++;
+//                }
+//                listSessionsNBackMax.add(nBackMaxSession);
+//                listSessionsNBackMaxTemp.add(nBackMaxSession);
+//            }
+//            listDaysNBackMaxTemp.add(listSessionsNBackMaxTemp);
+//            listSessionsNBackMaxTemp = new ArrayList<>();
+//            dayAverageNBack += sessionAverageNBack / trialCounter;
+//            dayAveragePercentage += sessionAveragePercentage / trialCounter;
+//            listDayAverageNBack.add(dayAverageNBack);
+//            listDayAveragePercentage.add(dayAveragePercentage);
+//            trialCounter = 0;
+//            sessionAverageNBack = 0;
+//            sessionAveragePercentage = 0;
+//            dayAverageNBack = 0;
+//            dayAveragePercentage = 0;
+//            nBackMaxSession = 0;
+//        }
+//
+//        List<Double> listDaysNBackMax = new ArrayList<>();
+//        for (int d = 0; d < listDayNBack.size(); d++) {
+//            double maxNBackDay = 0;
+//            for (int s = 0; s < listDayNBack.get(d).size(); s++) {
+//                for (int t = 0; t < listDayNBack.get(d).get(s).size(); t++) {
+//                    maxNBackDay = Math.max(maxNBackDay, listDayNBack.get(d).get(s).get(t));
+//                }
+//            }
+//            listDaysNBackMax.add(maxNBackDay);
+//        }
+//
+//        // Here I get the absolute highest nback value. It is important to display the
+//        // results in a proper scale.
+//        for (int m = 0; m < listDaysNBackMax.size(); m++) {
+//            if (nBackMaxAbsolute < listDaysNBackMax.get(m)) {
+//                nBackMaxAbsolute = listDaysNBackMax.get(m);
+//            }
+//        }
+////        Log.i(TAG, "\n");
+////        Log.i(TAG, "listTrialsNBack " + listTrialsNBack);
+////        Log.i(TAG, "listTrialsPercentage " + listTrialsPercentage);
+////        Log.i(TAG, "listSessionsNBack " + listSessionsNBack);
+////        Log.i(TAG, "listSessionsPercentage " + listSessionsPercentage);
+////        Log.i(TAG, "listSessionsNBackMax " + listSessionsNBackMax);
+////
+////        Log.i(TAG, "listDayNBack " + listDayNBack);
+////        Log.i(TAG, "listDayPercentages " + listDayPercentages);
+////        Log.i(TAG, "listDayAverageNBack:  " + listDayAverageNBack + "\n");
+////        Log.i(TAG, "listDayAverage:  " + listDayAveragePercentage + "\n");
+////        Log.i(TAG, "listDaysNBackMax:  " + listDaysNBackMax + "\n");
+////        Log.i(TAG, "nBackMaxAbsolute:  " + nBackMaxAbsolute + "\n");
+////        Log.i(TAG, "\n");
+//
+//
+//    }
 
     private static void resetValues() {
         listTrialsNBack = new ArrayList<>();
