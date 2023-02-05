@@ -33,7 +33,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import java.util.ArrayList;
 
-public class ActivityResults extends AppCompatActivity implements View.OnClickListener {
+public class ActivityResultsOLD extends AppCompatActivity implements View.OnClickListener {
 
     TextView[] datapointTrialPerc;
     TextView[] divider;
@@ -71,8 +71,8 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         setting_button_result_screen = findViewById(R.id.setting_button_result_screen);
         setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image);
         // This part was in onClick ResultsBtn in ActivityMain
-        stringToStoreInitial = ResultsFiles.readResults(ActivityResults.this);
-        ResultsFiles.calculateResultsForDisplay();
+//        stringToStoreInitial = ResultsFiles.readResults(ActivityResultsOLD.this);
+//        ResultsFiles.calculateResultsForDisplay();
         stringToStore = stringToStoreInitial + stringToStore;
         if (resultLineColorIndex == 0) {
             resultLineColorIndex = 4;

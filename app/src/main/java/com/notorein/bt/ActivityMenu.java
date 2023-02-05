@@ -50,7 +50,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 
-
 public class ActivityMenu extends AppCompatActivity implements View.OnClickListener {
 
     private Button btnStart;
@@ -60,6 +59,8 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private Button btn_manual;
     private Button btn_about;
     private Button btn_exit;
+
+    private Button test;
 
     private EditText editTextNBackLevel;
     private EditText editTextDuration;
@@ -91,7 +92,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private int buttonSound;
     private int dingSound;
     private View decorView;
-
 
 
     @Override
@@ -146,7 +146,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             appSounds = new SoundPool(2, AudioAttributes.CONTENT_TYPE_MUSIC, 0);
         }
         buttonSound = appSounds.load(this, R.raw.click, 1);
-        dingSound = appSounds.load(this,R.raw.ding,1);
+        dingSound = appSounds.load(this, R.raw.ding, 1);
 
     }
 
@@ -177,9 +177,10 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
     private void getViews() {
 
-        layout = (ConstraintLayout)findViewById(R.id.menu_layout);
+        layout = (ConstraintLayout) findViewById(R.id.menu_layout);
         nouImage = (ImageView) findViewById(R.id.nouImage);
 
+        test = (Button) findViewById(R.id.test);
         btnStart = (Button) findViewById(R.id.btnStart);
         btnResults = (Button) findViewById(R.id.btnResults);
         btnSave = (Button) findViewById(R.id.btnSave);
@@ -214,6 +215,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setOnClickListeners() {
+        test.setOnClickListener(this);
         btnStart.setOnClickListener(this);
         btnResults.setOnClickListener(this);
         btnSave.setOnClickListener(this);
@@ -236,7 +238,10 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             startButtonLogic();
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
         }
-
+        if (v.getId() == R.id.test) {
+            btnSave.setEnabled(true);
+            ResultsFiles.test = !ResultsFiles.test;
+        }
         if (v.getId() == R.id.btnResults) {
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
             stringToStore = stringToStoreInitial + stringToStore;
@@ -400,11 +405,11 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setTransitionToBlack() {
-        if(darkModeTraining) {
+        if (darkModeTraining) {
             TransitionActivityAToB transitionActivityAToB = new TransitionActivityAToB();
             int colorFrom = getResources().getColor(R.color.menu_background_color);
             int colorTo = getResources().getColor(R.color.black);
-            transitionActivityAToB.setTransitionToBlack(this,layout,colorFrom,colorTo, false);
+            transitionActivityAToB.setTransitionToBlack(this, layout, colorFrom, colorTo, false);
         }
     }
 
@@ -530,7 +535,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-
 
 
     private void setFadeInAnimationFirst(long duration, long delay, View... v) {
