@@ -52,22 +52,22 @@ public class ResultsFiles {
 //    public static ArrayList<ArrayList<ArrayList<Double>>> listDayPercentages = new ArrayList<>();
 
 
-    static ArrayList<Double> trialsNBack = new ArrayList<>();
-    static ArrayList<ArrayList<Double>> sessionsNBack = new ArrayList<>();
-    static ArrayList<ArrayList<ArrayList<Double>>> daysNBack = new ArrayList<>();
+    static ArrayList<Double> trialsNBack;
+    static ArrayList<ArrayList<Double>> sessionsNBack;
+    static ArrayList<ArrayList<ArrayList<Double>>> daysNBack;
 
-    static ArrayList<Double> trialsNBackTemp = new ArrayList<>();
-    static ArrayList<ArrayList<Double>> sessionsNBackTemp = new ArrayList<>();
-    static ArrayList<ArrayList<ArrayList<Double>>> dayNBackTemp = new ArrayList<>();
+    static ArrayList<Double> trialsNBackTemp;
+    static ArrayList<ArrayList<Double>> sessionsNBackTemp;
+    static ArrayList<ArrayList<ArrayList<Double>>> daysNBackTemp;
 
     //##################################################################################
-    static ArrayList<Double> trialsPerc = new ArrayList<>();
-    static ArrayList<ArrayList<Double>> sessionsPerc = new ArrayList<>();
-    static ArrayList<ArrayList<ArrayList<Double>>> daysPerc = new ArrayList<>();
+    static ArrayList<Double> trialsPerc;
+    static ArrayList<ArrayList<Double>> sessionsPerc;
+    static ArrayList<ArrayList<ArrayList<Double>>> daysPerc;
 
-    static ArrayList<Double> trialsPercTemp = new ArrayList<>();
-    static ArrayList<ArrayList<Double>> sessionsPercTemp = new ArrayList<>();
-    static ArrayList<ArrayList<ArrayList<Double>>> daysPercTemp = new ArrayList<>();
+    static ArrayList<Double> trialsPercTemp;
+    static ArrayList<ArrayList<Double>> sessionsPercTemp;
+    static ArrayList<ArrayList<ArrayList<Double>>> daysPercTemp;
 
 
     static double sessionAveragePercentage = 0;
@@ -82,6 +82,9 @@ public class ResultsFiles {
     static int trialCounter = 0;
     private static ArrayList<ArrayList<Double>> daysPercII = new ArrayList<>();
     public static boolean test;
+    private static ArrayList<ArrayList<Double>> daysNBackII;
+    private static ArrayList<Double> trialsPercTempII;
+    private static ArrayList<Double> trialsNBackTempII;
 
 
     public static void readResultsAndCalculatePercentage() {
@@ -292,7 +295,7 @@ public class ResultsFiles {
 
         trialsNBackTemp = new ArrayList<>();
         sessionsNBackTemp = new ArrayList<>();
-        dayNBackTemp = new ArrayList<>();
+        daysNBackTemp = new ArrayList<>();
 
 //##################################################################################
         trialsPerc = new ArrayList<>();
@@ -302,40 +305,48 @@ public class ResultsFiles {
         trialsPercTemp = new ArrayList<>();
         sessionsPercTemp = new ArrayList<>();
         daysPercTemp = new ArrayList<>();
+//##################################################################################
+        daysNBackII = new ArrayList<>();
+        daysPercII = new ArrayList<>();
 
+        trialsPercTempII = new ArrayList<>();
+        trialsNBackTempII = new ArrayList<>();
+        daysPerc.add(new ArrayList<>());
+        daysNBack.add(new ArrayList<>());
 
-        ArrayList<ArrayList<Double>> day = new ArrayList<>();
         for (int i = 0; i < results.size(); i++) {
             value = results.get(i);
-
-            if (value.equals(SessionParameters.daySessionMarker)) {
+            if (i == 0) {
                 i++;
                 value = results.get(i);
+                timeTwo = value;
+                timeOne = value;
                 // Here I make sure that the first day is recognized as the first day
-                if (i == 3) {
-                    dayTwo = value;
-                    dayOne = value;
-                    Log.i(TAG, "calculateResultsForDisplay: " + dayOne + " " + dayTwo);
-                }
+                dayTwo = results.get(i + 2);
+                dayOne = results.get(i + 2);
             }
+
             if (value.equals(SessionParameters.timeSessionMarker)) {
                 i++;
                 value = results.get(i);
                 timeTwo = value;
                 // In this line it recognizes that a new session has started.
                 if (!timeTwo.equals(timeOne)) {
-                    Log.i(TAG, "calculateResultsForDisplay: ++++++++++++++++++++++++++ Time");
                     // If I don't add this if statement it creates an Array list with list.get(0) = NAN;
-//                    if (trialsPercTemp.size() > 0) {
                     // Here I get the average of the trial
                     sessionsPerc.add(trialsPercTemp);
                     sessionsPercTemp.add(trialsPercTemp);
                     sessionsNBack.add(trialsNBackTemp);
-                    sessionsNBackTemp.add(trialsPercTemp);
-                    trialsPercTemp.clear();
-                    trialsNBackTemp.clear();
-//                    }
+                    sessionsNBackTemp.add(trialsNBackTemp);
+                    for (int m = 0; m < trialsPercTemp.size(); m++) {
+                        daysPercII.get(daysPercII.size() - 1).add(trialsPercTemp.get(m));
+                        daysNBackII.get(daysNBackII.size() - 1).add(trialsNBackTemp.get(m));
+                    }
+                    trialsPercTemp = new ArrayList<>();
+                    trialsNBackTemp = new ArrayList<>();
                 }
+                trialsPercTempII = trialsPercTemp;
+                trialsNBackTempII = trialsNBackTemp;
                 timeOne = timeTwo;
             }
 
@@ -345,30 +356,27 @@ public class ResultsFiles {
                 try {
                     dayTwo = results.get(i + 4);
                 } catch (Exception e) {
-                    e.printStackTrace();
 //                    dayTwo = dayOne;
-                    daysPerc.add(sessionsPercTemp);
-                    daysNBack.add(sessionsNBackTemp);
-                    sessionsPercTemp.clear();
-                    sessionsNBackTemp.clear();
+                    e.printStackTrace();
+                    sessionsPerc.add(trialsPercTemp);
+                    sessionsNBack.add(trialsNBackTemp);
+                    if (dayTwo.equals(dayOne)) {
+                        daysPercII.add(new ArrayList<Double>());
+                        daysNBackII.add(new ArrayList<Double>());
+                    }
+                    for (int m = 0; m < trialsPercTempII.size(); m++) {
+                        daysPercII.get(daysPercII.size() - 1).add(trialsPercTempII.get(m));
+                        daysNBackII.get(daysNBackII.size() - 1).add(trialsNBackTempII.get(m));
+                    }
+                    sessionsPercTemp = new ArrayList<>();
+                    sessionsNBackTemp = new ArrayList<>();
                 }
                 // In this line it recognizes that a new day has started.
-                if (!dayTwo.equals(dayOne)) {
-                    Log.i(TAG, "calculateResultsForDisplay: ############################");
-//                    daysPercII.add(sessionsPerc.get(sessionsPerc.size()-1));
-                    daysPerc.add(sessionsPercTemp);
-                    daysNBack.add(sessionsNBackTemp);
-                    sessionsPercTemp.clear();
-                    sessionsNBackTemp.clear();
-//                    double average = getAverage(sessionsPercTemp);
-//                    day.add(average);
-//                    sessionsPercTemp.clear();
-//                    day.add(sessionsPerc);
-//                    daysPerc.add(getAverage(sessionsPerc));
-//                    returnValues = getMaxValue(sessionsNBackMaxTemp, returnValues[1]);
-//                    daysNBackMax.add(returnValues[1]);
-//                    sessionsNBackMaxTemp.clear();
+                if (dayTwo.equals(dayOne)) {
+                    daysPercII.add(new ArrayList<Double>());
+                    daysNBackII.add(new ArrayList<Double>());
                 }
+
                 dayOne = dayTwo;
             }
 
@@ -384,14 +392,16 @@ public class ResultsFiles {
             }
             Log.i(TAG, "calculateResultsForDisplay: " + i);
         }
-
+        daysPercII.remove(daysPercII.size() - 1);
+        daysNBackII.remove(daysNBackII.size() - 1);
 //        Log.e(TAG, "trialsPerc: " + trialsPerc);
 //        Log.e(TAG, "trialsPercTemp: " + trialsPercTemp);
         Log.e(TAG, "trialsNBack " + trialsNBack);
 //        Log.e(TAG, "sessionsPerc: " + sessionsPerc);
         Log.e(TAG, "sessionsNBack: " + sessionsNBack);
 //        Log.i(TAG, "daysPerc: " + daysPerc);
-        Log.i(TAG, "daysNBack: " + daysNBack);
+//        Log.i(TAG, "daysNBack: " + daysNBack);
+        Log.i(TAG, "daysNBackII: " + daysNBackII);
         Log.i(TAG, "returnValues[1]: " + returnValues[1]);
     }
 
