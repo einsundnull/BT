@@ -53,21 +53,30 @@ public class ResultsFiles {
 
 
     static ArrayList<Double> trialsNBack;
+    private static ArrayList<Double> trialsNBackTempII;
     static ArrayList<ArrayList<Double>> sessionsNBack;
-    static ArrayList<ArrayList<ArrayList<Double>>> daysNBack;
+    private static ArrayList<ArrayList<Double>> daysNBack;
 
     static ArrayList<Double> trialsNBackTemp;
+    private static ArrayList<Double> trialsPercTempII;
     static ArrayList<ArrayList<Double>> sessionsNBackTemp;
     static ArrayList<ArrayList<ArrayList<Double>>> daysNBackTemp;
 
     //##################################################################################
     static ArrayList<Double> trialsPerc;
-    static ArrayList<ArrayList<Double>> sessionsPerc;
-    static ArrayList<ArrayList<ArrayList<Double>>> daysPerc;
+//    static ArrayList<ArrayList<Double>> sessionsPerc;
+//    private static ArrayList<ArrayList<Double>> daysPerc;
 
     static ArrayList<Double> trialsPercTemp;
-    static ArrayList<ArrayList<Double>> sessionsPercTemp;
+    //    static ArrayList<ArrayList<Double>> sessionsPercTemp;
     static ArrayList<ArrayList<ArrayList<Double>>> daysPercTemp;
+
+    private static ArrayList<Double> sessionsPercAverage;
+    //    private static ArrayList<Double> sessionsNBackAverage;
+    private static ArrayList<Double> sessionsPercMax;
+    private static ArrayList<Double> sessionsNBackMax;
+    private static ArrayList<Double> daysNBackMax;
+    private static ArrayList<Double> daysPercAverage;
 
 
     static double sessionAveragePercentage = 0;
@@ -80,11 +89,9 @@ public class ResultsFiles {
     static double nBackMaxDay = 0;
     public static double nBackMaxAbsolute = 0;
     static int trialCounter = 0;
-    private static ArrayList<ArrayList<Double>> daysPercII = new ArrayList<>();
+
     public static boolean test;
-    private static ArrayList<ArrayList<Double>> daysNBackII;
-    private static ArrayList<Double> trialsPercTempII;
-    private static ArrayList<Double> trialsNBackTempII;
+    private static double maxNBack = 0;
 
 
     public static void readResultsAndCalculatePercentage() {
@@ -284,14 +291,12 @@ public class ResultsFiles {
         String dayTwo = "";
         String value = "";
 
-        double maxNBack = 0;
-        double[] returnValues = new double[2];
-
         // The  Array trialsPercTemp is used to get the average of a trial or session
 
         trialsNBack = new ArrayList<>();
         sessionsNBack = new ArrayList<>();
         daysNBack = new ArrayList<>();
+        daysNBackMax = new ArrayList<>();
 
         trialsNBackTemp = new ArrayList<>();
         sessionsNBackTemp = new ArrayList<>();
@@ -299,20 +304,16 @@ public class ResultsFiles {
 
 //##################################################################################
         trialsPerc = new ArrayList<>();
-        sessionsPerc = new ArrayList<>();
-        daysPerc = new ArrayList<>();
+        sessionsPercAverage = new ArrayList<>();
+        daysPercAverage = new ArrayList<>();
 
         trialsPercTemp = new ArrayList<>();
-        sessionsPercTemp = new ArrayList<>();
         daysPercTemp = new ArrayList<>();
 //##################################################################################
-        daysNBackII = new ArrayList<>();
-        daysPercII = new ArrayList<>();
+
 
         trialsPercTempII = new ArrayList<>();
         trialsNBackTempII = new ArrayList<>();
-        daysPerc.add(new ArrayList<>());
-        daysNBack.add(new ArrayList<>());
 
         for (int i = 0; i < results.size(); i++) {
             value = results.get(i);
@@ -334,13 +335,10 @@ public class ResultsFiles {
                 if (!timeTwo.equals(timeOne)) {
                     // If I don't add this if statement it creates an Array list with list.get(0) = NAN;
                     // Here I get the average of the trial
-                    sessionsPerc.add(trialsPercTemp);
-                    sessionsPercTemp.add(trialsPercTemp);
                     sessionsNBack.add(trialsNBackTemp);
                     sessionsNBackTemp.add(trialsNBackTemp);
                     for (int m = 0; m < trialsPercTemp.size(); m++) {
-                        daysPercII.get(daysPercII.size() - 1).add(trialsPercTemp.get(m));
-                        daysNBackII.get(daysNBackII.size() - 1).add(trialsNBackTemp.get(m));
+                        daysNBack.get(daysNBack.size() - 1).add(trialsNBackTemp.get(m));
                     }
                     trialsPercTemp = new ArrayList<>();
                     trialsNBackTemp = new ArrayList<>();
@@ -356,25 +354,19 @@ public class ResultsFiles {
                 try {
                     dayTwo = results.get(i + 4);
                 } catch (Exception e) {
-//                    dayTwo = dayOne;
                     e.printStackTrace();
-                    sessionsPerc.add(trialsPercTemp);
                     sessionsNBack.add(trialsNBackTemp);
                     if (dayTwo.equals(dayOne)) {
-                        daysPercII.add(new ArrayList<Double>());
-                        daysNBackII.add(new ArrayList<Double>());
+                        daysNBack.add(new ArrayList<Double>());
                     }
                     for (int m = 0; m < trialsPercTempII.size(); m++) {
-                        daysPercII.get(daysPercII.size() - 1).add(trialsPercTempII.get(m));
-                        daysNBackII.get(daysNBackII.size() - 1).add(trialsNBackTempII.get(m));
+                        daysNBack.get(daysNBack.size() - 1).add(trialsNBackTempII.get(m));
                     }
-                    sessionsPercTemp = new ArrayList<>();
                     sessionsNBackTemp = new ArrayList<>();
                 }
                 // In this line it recognizes that a new day has started.
                 if (dayTwo.equals(dayOne)) {
-                    daysPercII.add(new ArrayList<Double>());
-                    daysNBackII.add(new ArrayList<Double>());
+                    daysNBack.add(new ArrayList<Double>());
                 }
 
                 dayOne = dayTwo;
@@ -392,42 +384,112 @@ public class ResultsFiles {
             }
             Log.i(TAG, "calculateResultsForDisplay: " + i);
         }
-        daysPercII.remove(daysPercII.size() - 1);
-        daysNBackII.remove(daysNBackII.size() - 1);
+        // If i don't add these lines the calculated arrays contain an empty array in the end
+        daysNBack.remove(daysNBack.size() - 1);
+
+        // In these steps I reduce the arrays to the display values
+        maxNBack = getMaxValue(trialsNBack);
+        sessionsNBackMax = getMaxValueArray(sessionsNBack);
+        daysNBackMax = getMaxValueArray(daysNBack);
+
+        sessionsPercAverage = getAverage(sessionsNBack);
+        daysPercAverage = getAverage(daysNBack);
+
 //        Log.e(TAG, "trialsPerc: " + trialsPerc);
 //        Log.e(TAG, "trialsPercTemp: " + trialsPercTemp);
         Log.e(TAG, "trialsNBack " + trialsNBack);
 //        Log.e(TAG, "sessionsPerc: " + sessionsPerc);
         Log.e(TAG, "sessionsNBack: " + sessionsNBack);
 //        Log.i(TAG, "daysPerc: " + daysPerc);
-//        Log.i(TAG, "daysNBack: " + daysNBack);
-        Log.i(TAG, "daysNBackII: " + daysNBackII);
-        Log.i(TAG, "returnValues[1]: " + returnValues[1]);
+        Log.i(TAG, "daysNBack: " + daysNBack);
+        Log.i(TAG, "");
+        Log.e(TAG, "maxNBack: " + maxNBack);
+        Log.e(TAG, "trialsPerc: " + trialsPerc);
+        Log.e(TAG, "trialsNBack: " + trialsNBack);
+        Log.e(TAG, "sessionsPercAverage: " + sessionsPercAverage);
+        Log.e(TAG, "sessionsNBackMax: " + sessionsNBackMax);
+        Log.e(TAG, "daysPercAverage: " + daysPercAverage);
+        Log.e(TAG, "daysNBackMax: " + daysNBackMax);
+
     }
 
-    private static double[] getMaxValue(ArrayList<Double> values, double maxNBack) {
+
+    private static double getMaxValue(ArrayList<Double> values) {
         double value = 0;
         double max = 0;
-        double[] returnValue = {0, 0};
+        double maxNBack = 0;
+
         for (int i = 0; i < values.size(); i++) {
-            value = values.get(i);
-            if (value > max) {
-                max = value;
-                returnValue[0] = value;
-                if (maxNBack < max) {
-                    returnValue[1] = max;
+            for (int n = 0; n < values.size(); n++) {
+                value = values.get(n);
+                if (value > max) {
+                    max = value;
+                    if (maxNBack < max) {
+                        maxNBack = max;
+                    }
                 }
             }
         }
-        return returnValue;
+        return maxNBack;
     }
 
-    private static Double getAverage(ArrayList<Double> trialsTemp) {
+    private static ArrayList<Double> getMaxValueArray(ArrayList<ArrayList<Double>> values) {
         double value = 0;
-        for (int i = 0; i < trialsTemp.size(); i++) {
-            value = value + trialsTemp.get(i);
+        double max = 0;
+        double maxNBack = 0;
+        ArrayList<Double> maxArray = new ArrayList();
+        for (int i = 0; i < values.size(); i++) {
+            max = 0;
+            maxNBack = 0;
+            for (int n = 0; n < values.get(i).size(); n++) {
+                value = values.get(i).get(n);
+                if (value > max) {
+                    max = value;
+                    if (maxNBack < max) {
+                        maxNBack = max;
+                        maxArray.add(maxNBack);
+                    }
+                }
+            }
         }
-        return value / trialsTemp.size();
+        return maxArray;
+    }
+
+//    private static double[] getMaxValue(ArrayList<Double> values, double maxNBack) {
+//        double value = 0;
+//        double max = 0;
+//        double[] returnValue = {0, 0};
+//        for (int i = 0; i < values.size(); i++) {
+//            value = values.get(i);
+//            if (value > max) {
+//                max = value;
+//                returnValue[0] = value;
+//                if (maxNBack < max) {
+//                    returnValue[1] = max;
+//                }
+//            }
+//        }
+//        return returnValue;
+//    }
+
+    public static ArrayList<Double> getAverage(ArrayList<ArrayList<Double>> list) {
+        ArrayList<Double> average = new ArrayList<>();
+        double value = 0;
+        for (int i = 0; i < list.size(); i++) {
+            value = 0;
+            for (int n = 0; n < list.get(n).size(); n++) {
+                try {
+                    value = value + list.get(i).get(n);
+                } catch (Exception e) {
+
+                }
+
+            }
+            value = value / list.get(i).size();
+            average.add(value);
+        }
+        return average;
+
     }
 
 
