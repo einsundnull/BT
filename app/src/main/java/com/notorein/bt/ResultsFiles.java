@@ -274,7 +274,6 @@ public class ResultsFiles {
 
         daysPercTemp = new ArrayList<>();
         trialsNBackTempII = new ArrayList<>();
-
         nBackMaxAbsolute = 0;
 
         for (int i = 0; i < results.size(); i++) {
@@ -300,9 +299,17 @@ public class ResultsFiles {
                     sessionsNBack.add(trialsNBackTemp);
                     sessionsNBackTemp.add(trialsNBackTemp);
                     for (int m = 0; m < trialsNBackTemp.size(); m++) {
-                        daysNBack.get(daysNBack.size() - 1).add(trialsNBackTemp.get(m));
+                        try {
+                            daysNBack.get(daysNBack.size() - 1).add(trialsNBackTemp.get(m));
+                        } catch (Exception e) {
+//                            daysNBack.add(new ArrayList<>());
+//                            daysNBack.get(daysNBack.size() - 1).add(trialsNBackTemp.get(m));
+                            e.printStackTrace();
+                        }
                     }
                     trialsNBackTemp = new ArrayList<>();
+                    // It looks like I have to have these methods twice
+//                    trialsNBackTempII = trialsNBackTemp;
                 }
                 trialsNBackTempII = trialsNBackTemp;
                 timeOne = timeTwo;
@@ -317,10 +324,21 @@ public class ResultsFiles {
                     e.printStackTrace();
                     sessionsNBack.add(trialsNBackTemp);
                     if (dayTwo.equals(dayOne)) {
-                        daysNBack.add(new ArrayList<Double>());
-                    }
-                    for (int m = 0; m < trialsNBackTempII.size(); m++) {
-                        daysNBack.get(daysNBack.size() - 1).add(trialsNBackTempII.get(m));
+//                                                daysNBack.add(new ArrayList<Double>());
+//                        for (int m = 0; m < trialsNBackTempII.size(); m++) {
+//                            daysNBack.get(daysNBack.size() - 1).add(trialsNBackTempII.get(m));
+//                        }
+                        try {
+                            for (int m = 0; m < trialsNBackTempII.size(); m++) {
+                                daysNBack.get(daysNBack.size() - 1).add(trialsNBackTempII.get(m));
+                            }
+                        } catch (Exception ze){
+                            daysNBack.add(new ArrayList<Double>());
+                            for (int m = 0; m < trialsNBackTempII.size(); m++) {
+                                daysNBack.get(daysNBack.size() - 1).add(trialsNBackTempII.get(m));
+                            }
+                        }
+
                     }
                     sessionsNBackTemp = new ArrayList<>();
                 }
@@ -349,7 +367,10 @@ public class ResultsFiles {
             Log.i(TAG, "calculateResultsForDisplay: " + i);
         }
         // If i don't add these lines the calculated arrays contain an empty array in the end
-        daysNBack.remove(daysNBack.size() - 1);
+//        if (daysNBack.size() > 1) {
+//            daysNBack.remove(daysNBack.size() - 1);
+//        }
+
 
         // In these steps I reduce the arrays to the display values
         maxNBack = getMaxValue(trialsNBack);
@@ -370,11 +391,13 @@ public class ResultsFiles {
 
         // This represents the arrays I want to display
         Log.e(TAG, "maxNBack: " + maxNBack);
+
         Log.e(TAG, "trialsPerc: " + trialsPerc);
-        Log.e(TAG, "trialsNBack: " + trialsNBack);
         Log.e(TAG, "sessionsPercAverage: " + sessionsPercAverage);
-        Log.e(TAG, "sessionsNBackMax: " + sessionsNBackMax);
         Log.e(TAG, "daysPercAverage: " + daysPercAverage);
+
+        Log.e(TAG, "trialsNBack: " + trialsNBack);
+        Log.e(TAG, "sessionsNBackMax: " + sessionsNBackMax);
         Log.e(TAG, "daysNBackMax: " + daysNBackMax);
 
     }
@@ -385,17 +408,17 @@ public class ResultsFiles {
         double max = 0;
         double maxNBack = 0;
 
-        for (int i = 0; i < values.size(); i++) {
-            for (int n = 0; n < values.size(); n++) {
-                value = values.get(n);
-                if (value > max) {
-                    max = value;
-                    if (maxNBack < max) {
-                        maxNBack = max;
-                    }
+//        for (int i = 0; i < values.size(); i++) {
+        for (int n = 0; n < values.size(); n++) {
+            value = values.get(n);
+            if (value > max) {
+                max = value;
+                if (maxNBack < max) {
+                    maxNBack = max;
                 }
             }
         }
+//        }
         return maxNBack;
     }
 
@@ -413,11 +436,12 @@ public class ResultsFiles {
                     max = value;
                     if (maxNBack < max) {
                         maxNBack = max;
-                        maxArray.add(maxNBack);
                     }
                 }
             }
+            maxArray.add(maxNBack);
         }
+
         return maxArray;
     }
 
@@ -426,7 +450,7 @@ public class ResultsFiles {
         double value = 0;
         for (int i = 0; i < list.size(); i++) {
             value = 0;
-            for (int n = 0; n < list.get(n).size(); n++) {
+            for (int n = 0; n < list.get(i).size(); n++) {
                 try {
                     value = value + list.get(i).get(n);
                 } catch (Exception e) {

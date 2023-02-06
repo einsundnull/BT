@@ -121,10 +121,10 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         }
 
         initialiseStoringFilePaths();
-        ResultsFiles.readResults(ActivityMenu.this);
+//        ResultsFiles.readResults(ActivityMenu.this);
         daySession = RepeatStorage.getDay();
 //        ResultsFiles.checkForLastDayOfUse();
-        new ResultsFiles().calculateResultsForDisplay();
+//        new ResultsFiles().calculateResultsForDisplay();
     }
 
 
