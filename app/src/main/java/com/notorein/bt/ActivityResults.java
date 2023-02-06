@@ -3,6 +3,8 @@ package com.notorein.bt;
 import static android.content.ContentValues.TAG;
 import static com.notorein.bt.SessionParameters.resultLineColorIndex;
 import static com.notorein.bt.SessionParameters.showDayInResults;
+import static com.notorein.bt.SessionParameters.showSessionInResults;
+import static com.notorein.bt.SessionParameters.showTrialInResults;
 import static com.notorein.bt.SessionParameters.stringToStore;
 import static com.notorein.bt.SessionParameters.stringToStoreInitial;
 
@@ -166,7 +168,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
             TextView temp = new TextView(this);
             temp.setBackground(drawable);
             datapointTrialPerc[i] = temp;
-            datapointTrialPerc[i].setY((float) (((displayHeight - (distanceY * y.get(i))) - (strokeWidth+dotSize + dividerHeight) / 2) - 1 * distanceY));
+            datapointTrialPerc[i].setY((float) (((displayHeight - (distanceY * y.get(i))) - (strokeWidth + dotSize + dividerHeight) / 2) - 1 * distanceY));
             if (i > 0) {
                 datapointTrialPerc[i].setX((float) distanceX * (i + 1));
                 layoutX.add(distanceX * (i + 1));
@@ -255,35 +257,72 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
     }
 
+
+//    private void addResultLines() {
+//        setLineColors();
+////        if(resultLines != null){
+////            resultLines.clear();
+////        }
+//        resultLines = new ArrayList<ArrayList<Double[]>>();
+//
+////        if (SessionParameters.showPercentageInResults) {
+////            if (showTrialInResults) {
+////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listTrialsPercentage, lineColorTrial), ResultsFiles.listTrialsPercentage, lineColorTrial));
+////            }
+////            if (showSessionInResults) {
+////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listSessionsNBackMax, lineColorSession), ResultsFiles.listSessionsNBackMax, lineColorSession));
+////            }
+////            if (showDayInResults) {
+////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listDayAveragePercentage, lineColorDay), ResultsFiles.listDayAveragePercentage, lineColorDay));
+////            }
+////        }
+////        if (SessionParameters.showNBackInResults) {
+////            if (showTrialInResults) {
+////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listTrialsNBack, lineColorTrial), ResultsFiles.listTrialsNBack, lineColorTrial));
+////            }
+////            if (showSessionInResults) {
+////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listSessionsNBackMax, lineColorSession), ResultsFiles.listSessionsNBackMax, lineColorSession));
+////            }
+////            if (showDayInResults) {
+////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listDaysNBackMax, lineColorDay), ResultsFiles.listDaysNBackMax, lineColorDay));
+////            }
+////        }
+//        drawResultLines(resultLines);
+//        activity_results_layout.removeView(setting_button_result_screen);
+//        activity_results_layout.addView(setting_button_result_screen);
+//        activity_results_layout.setBackground(new BitmapDrawable(bg));
+//    }
+
+
     private void addResultLines() {
         setLineColors();
-//        if(resultLines != null){
-//            resultLines.clear();
-//        }
+        if (resultLines != null) {
+            resultLines.clear();
+        }
         resultLines = new ArrayList<ArrayList<Double[]>>();
 
-//        if (SessionParameters.showPercentageInResults) {
-//            if (showTrialInResults) {
-//                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listTrialsPercentage, lineColorTrial), ResultsFiles.listTrialsPercentage, lineColorTrial));
-//            }
-//            if (showSessionInResults) {
-//                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listSessionsNBackMax, lineColorSession), ResultsFiles.listSessionsNBackMax, lineColorSession));
-//            }
-//            if (showDayInResults) {
-//                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listDayAveragePercentage, lineColorDay), ResultsFiles.listDayAveragePercentage, lineColorDay));
-//            }
-//        }
-//        if (SessionParameters.showNBackInResults) {
-//            if (showTrialInResults) {
-//                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listTrialsNBack, lineColorTrial), ResultsFiles.listTrialsNBack, lineColorTrial));
-//            }
-//            if (showSessionInResults) {
-//                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listSessionsNBackMax, lineColorSession), ResultsFiles.listSessionsNBackMax, lineColorSession));
-//            }
-//            if (showDayInResults) {
-//                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listDaysNBackMax, lineColorDay), ResultsFiles.listDaysNBackMax, lineColorDay));
-//            }
-//        }
+        if (SessionParameters.showPercentageInResults) {
+            if (showTrialInResults) {
+                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.trialsPerc, lineColorTrial), ResultsFiles.trialsPerc, lineColorTrial));
+            }
+            if (showSessionInResults) {
+                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.sessionsPercAverage, lineColorSession), ResultsFiles.sessionsPercAverage, lineColorSession));
+            }
+            if (showDayInResults) {
+                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.daysPercAverage, lineColorDay), ResultsFiles.daysPercAverage, lineColorDay));
+            }
+        }
+        if (SessionParameters.showNBackInResults) {
+            if (showTrialInResults) {
+                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.trialsNBack, lineColorTrial), ResultsFiles.trialsNBack, lineColorTrial));
+            }
+            if (showSessionInResults) {
+                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.sessionsNBackMax, lineColorSession), ResultsFiles.sessionsNBackMax, lineColorSession));
+            }
+            if (showDayInResults) {
+                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.daysNBackMax, lineColorDay), ResultsFiles.daysNBackMax, lineColorDay));
+            }
+        }
         drawResultLines(resultLines);
         activity_results_layout.removeView(setting_button_result_screen);
         activity_results_layout.addView(setting_button_result_screen);
@@ -312,7 +351,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
         bg = Bitmap.createBitmap((int) displayWidth, (int) displayHeight, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(bg);
-        lineColorDay = Color.rgb(44,135,32);
+        lineColorDay = Color.rgb(44, 135, 32);
         lineColorSession = Color.BLUE;
         lineColorTrial = Color.RED;
         backgroundColor = Color.rgb(232, 236, 235);
@@ -352,7 +391,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
         wmlp.gravity = Gravity.TOP | Gravity.LEFT;
         wmlp.x = 000;   //x position
-        wmlp.y = (int)dpFromPx(this,100);   //y position
+        wmlp.y = (int) dpFromPx(this, 100);   //y position
         wmlp.alpha = 0.78f;
         ConstraintLayout layout = dialog.findViewById(R.id.view_results);
         dialog.setContentView(R.layout.view_results_settings_layout);
@@ -402,13 +441,13 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
             addResultLines();
         });
         four.setOnClickListener(c -> {
-            SessionParameters.showSessionInResults = four.isChecked();
+            showSessionInResults = four.isChecked();
             activity_results_layout.removeAllViews();
             setDivider();
             addResultLines();
         });
         five.setOnClickListener(c -> {
-            SessionParameters.showTrialInResults = five.isChecked();
+            showTrialInResults = five.isChecked();
             activity_results_layout.removeAllViews();
             setDivider();
             addResultLines();
@@ -417,8 +456,8 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         one.setChecked(SessionParameters.showPercentageInResults);
         two.setChecked(SessionParameters.showNBackInResults);
         three.setChecked(SessionParameters.showDayInResults);
-        four.setChecked(SessionParameters.showSessionInResults);
-        five.setChecked(SessionParameters.showTrialInResults);
+        four.setChecked(showSessionInResults);
+        five.setChecked(showTrialInResults);
         dialog.show();
     }
 
