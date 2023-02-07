@@ -49,6 +49,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
 
 public class ActivityMenu extends AppCompatActivity implements View.OnClickListener {
 
@@ -93,6 +99,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private int buttonSound;
     private int dingSound;
     private View decorView;
+    private AdView mAdView;
 
 
     @Override
@@ -105,6 +112,15 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_menu_layout);
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         FileLogicSettings.readSettings(ActivityMenu.this);
         getViews();
         setImageNou();
@@ -247,7 +263,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 case 3:
                     ResultsFiles.testStringIndex = 0;
                     ResultsFiles.test = false;
-                    btnSave.setEnabled( ResultsFiles.test);
+                    btnSave.setEnabled(ResultsFiles.test);
                     break;
             }
 
