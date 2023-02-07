@@ -9,7 +9,7 @@ import static com.notorein.bt.SessionParameters.col;
 import static com.notorein.bt.SessionParameters.counterMatchesAud;
 import static com.notorein.bt.SessionParameters.counterMatchesCol;
 import static com.notorein.bt.SessionParameters.counterMatchesPos;
-import static com.notorein.bt.SessionParameters.developerInfosAreVisible;
+import static com.notorein.bt.SessionParameters.developerInfoAreVisible;
 import static com.notorein.bt.SessionParameters.endOfSession;
 import static com.notorein.bt.SessionParameters.endOfTrial;
 import static com.notorein.bt.SessionParameters.includedModes;
@@ -43,8 +43,8 @@ public class Strings {
     public static String pause = "Pause";
     public static String finish = "End";
     public static String nBackLevel = "-back";
-    public static String trialActualIndecator = " █ ";
-    public static String trialDefaultIndecator = " ▄ ";
+    public static String trialActualIndicator = " █ ";
+    public static String trialDefaultIndicator = " ▄ ";
     public static String textViewTimeAdd_II = " min";
     public static String textViewTimeAdd_I = "~ ";
     public static String pleaseSaveResultsText = "Please save your results first!\nIf no the last results will be overwritten!";
@@ -143,7 +143,7 @@ public class Strings {
 
     @SuppressLint("SetTextI18n")
     public static void setDeveloperInfoText(TextView v) {
-        if (developerInfosAreVisible) {
+        if (developerInfoAreVisible) {
             StringBuilder textPos = new StringBuilder();
             StringBuilder textAud = new StringBuilder();
             StringBuilder textCol = new StringBuilder();

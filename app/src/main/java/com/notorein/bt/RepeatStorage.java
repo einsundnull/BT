@@ -22,6 +22,7 @@ import static com.notorein.bt.SessionParameters.timeSessionMarker;
 import static com.notorein.bt.SessionParameters.trialCounter;
 import static com.notorein.bt.SessionParameters.trialsMax;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.util.Log;
 import android.widget.Button;
@@ -80,7 +81,7 @@ public class RepeatStorage {
 
     public static ArrayList<Boolean> storeShownIndexes(ArrayList<Boolean> matches, ArrayList<Boolean> clickedRight, Button btnClick, int presentations, int nBack, boolean clicked, boolean allowCountingMatches) {
         if (allowCountingMatches) {
-            boolean match = false;
+            boolean match;
             try {
                 match = matches.get(presentations - 1);
                 if (match) {
@@ -223,13 +224,13 @@ public class RepeatStorage {
 //    }
 
     public static String getDay() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd");
         String timeAndDate = sdf.format(new Date());
         return sdf.format(new Date());
     }
 
     public static String getStartTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String timeAndDate = sdf.format(new Date());
         return sdf.format(new Date());
     }

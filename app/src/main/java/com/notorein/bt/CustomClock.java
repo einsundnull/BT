@@ -4,29 +4,29 @@ package com.notorein.bt;
 /**
  *
  */
-public class CustomClock{
+public class CustomClock {
 
 
-    public  int sceondCounterSecondDigit = 0;
-    public  int secondCounterFirstDigit = 0;
-    public  int minuteCounterFirstDigit = 0;
-    public  int minuteCounterSecondDigit = 0;
-    public  int hourCounterFirstDigit = 0;
-    public  int hourCounterSecondDigit = 0;
-    public  String completeTime = "";
-    public  boolean paused = false;
+    public int secondCounterSecondDigit = 0;
+    public int secondCounterFirstDigit = 0;
+    public int minuteCounterFirstDigit = 0;
+    public int minuteCounterSecondDigit = 0;
+    public int hourCounterFirstDigit = 0;
+    public int hourCounterSecondDigit = 0;
+    public String completeTime = "";
+    public boolean paused = false;
 
     public CustomClock() {
 
     }
 
-    public  String getClockTime(boolean countTime) {
+    public String getClockTime(boolean countTime) {
         if (!paused) {
-            if(countTime) {
-                sceondCounterSecondDigit++;
+            if (countTime) {
+                secondCounterSecondDigit++;
             }
-            if (sceondCounterSecondDigit > 9) {
-                sceondCounterSecondDigit = 0;
+            if (secondCounterSecondDigit > 9) {
+                secondCounterSecondDigit = 0;
                 secondCounterFirstDigit++;
                 if (secondCounterFirstDigit > 5) {
                     secondCounterFirstDigit = 0;
@@ -46,98 +46,90 @@ public class CustomClock{
                 }
             }
             completeTime = hourCounterFirstDigit + "" + hourCounterSecondDigit + ":" + minuteCounterFirstDigit + "" + minuteCounterSecondDigit + ":" + secondCounterFirstDigit + ""
-                    + sceondCounterSecondDigit;
+                    + secondCounterSecondDigit;
         }
         return completeTime;
     }
 
 
-
-    public  void pauseTimer(boolean paused) {
-        paused = paused;
+    public void pauseTimer(boolean paused) {
+        this.paused = paused;
     }
 
 
-
-
-
-    public  void setTime(int time) {
-        sceondCounterSecondDigit = time;
+    public void setTime(int time) {
+        secondCounterSecondDigit = time;
     }
 
-    public  String resetTime() {
+    public String resetTime() {
         hourCounterFirstDigit = 0;
         hourCounterSecondDigit = 0;
         minuteCounterFirstDigit = 0;
         minuteCounterSecondDigit = 0;
         secondCounterFirstDigit = 0;
-        sceondCounterSecondDigit = 0;
+        secondCounterSecondDigit = 0;
         completeTime = hourCounterFirstDigit + "" + hourCounterSecondDigit + ":" + minuteCounterFirstDigit + "" + minuteCounterSecondDigit + ":" + secondCounterFirstDigit + ""
-                + sceondCounterSecondDigit;
+                + secondCounterSecondDigit;
         return completeTime;
     }
 
 
-
-
-
-    public  int getSecondCounterFirstDigit() {
+    public int getSecondCounterFirstDigit() {
         return secondCounterFirstDigit;
     }
 
-    public  void setSecondCounterFirstDigit(int secondCounterFirstDigit) {
-        secondCounterFirstDigit = secondCounterFirstDigit;
+    public void setSecondCounterFirstDigit(int secondCounterFirstDigit) {
+        this.secondCounterFirstDigit = secondCounterFirstDigit;
     }
 
-    public  int getMinuteCounterFirstDigit() {
+    public int getMinuteCounterFirstDigit() {
         return minuteCounterFirstDigit;
     }
 
-    public  void setMinuteCounterFirstDigit(int minuteCounterFirstDigit) {
-        minuteCounterFirstDigit = minuteCounterFirstDigit;
+    public void setMinuteCounterFirstDigit(int minuteCounterFirstDigit) {
+        this.minuteCounterFirstDigit = minuteCounterFirstDigit;
     }
 
-    public  int getMinuteCounterSecondDigit() {
+    public int getMinuteCounterSecondDigit() {
         return minuteCounterSecondDigit;
     }
 
-    public  void setMinuteCounterSecondDigit(int minuteCounterSecondDigit) {
-        minuteCounterSecondDigit = minuteCounterSecondDigit;
+    public void setMinuteCounterSecondDigit(int minuteCounterSecondDigit) {
+        this.minuteCounterSecondDigit = minuteCounterSecondDigit;
     }
 
-    public  int getHourCounterFirstDigit() {
+    public int getHourCounterFirstDigit() {
         return hourCounterFirstDigit;
     }
 
-    public  void setHourCounterFirstDigit(int hourCounterFirstDigit) {
-        hourCounterFirstDigit = hourCounterFirstDigit;
+    public void setHourCounterFirstDigit(int hourCounterFirstDigit) {
+        this.hourCounterFirstDigit = hourCounterFirstDigit;
     }
 
-    public  int getHourCounterSecondDigit() {
+    public int getHourCounterSecondDigit() {
         return hourCounterSecondDigit;
     }
 
-    public  void setHourCounterSecondDigit(int hourCounterSecondDigit) {
-        hourCounterSecondDigit = hourCounterSecondDigit;
+    public void setHourCounterSecondDigit(int hourCounterSecondDigit) {
+        this.hourCounterSecondDigit = hourCounterSecondDigit;
     }
 
-    public  String getCompleteTime() {
+    public String getCompleteTime() {
         return completeTime;
     }
 
-    public  void setCompleteTime(String completeTime) {
+    public void setCompleteTime(String completeTime) {
         completeTime = completeTime;
     }
 
-    public  boolean isPaused() {
+    public boolean isPaused() {
         boolean temp = paused;
         return temp;
     }
 
-    public  void setPaused(boolean paused) {
+    public void setPaused(boolean paused) {
         paused = paused;
     }
-
 
 
 }

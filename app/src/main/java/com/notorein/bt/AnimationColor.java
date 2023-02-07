@@ -39,18 +39,7 @@ public class AnimationColor {
 
             }
         });
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener(){
-
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                layout.setBackgroundColor((int) colorAnimation.getAnimatedValue());
-            }
-
-        });
-
-
-
+        colorAnimation.addUpdateListener(animation -> layout.setBackgroundColor((int) colorAnimation.getAnimatedValue()));
         colorAnimation.start();
     }
 }

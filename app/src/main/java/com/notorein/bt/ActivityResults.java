@@ -42,11 +42,9 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
     // These two parameters can probably be replaced by SessionParameters.displayHeight and SessionParameters.displayWidth
     double displayHeight;
     double displayWidth;
-    private double maxNBack;
 
     private double distanceX;
     private double distanceY;
-    private double distanceYDevider;
 
     private final int dotSize = 9;
     private float strokeWidth = 7;
@@ -114,16 +112,16 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
     }
 
     void setDivider() {
-        double tempWidht = 0;
+        double tempWidth;
         double tempHeight = 0;
-        maxNBack = ResultsFiles.nBackMaxAbsolute + linesMoreThanNBack;
+        double maxNBack = ResultsFiles.nBackMaxAbsolute + linesMoreThanNBack;
         if (portraitMode) {
-            tempWidht = displayHeight;
+            tempWidth = displayHeight;
             displayHeight = displayWidth;
-            displayWidth = tempWidht;
+            displayWidth = tempWidth;
         }
         distanceY = displayHeight / maxNBack;
-        distanceYDevider = displayHeight / maxNBack;
+        double distanceYDivider = displayHeight / maxNBack;
         divider = new TextView[(int) maxNBack];
         Log.i(TAG, "divider.length " + divider.length);
 
@@ -150,12 +148,12 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
     ArrayList<Double> setPoints(ArrayList<Double> y, int color) {
         int size = y.size();
-        double tempWidht = 0;
+        double tempWidth;
         double tempHeight = 0;
         if (portraitMode) {
-            tempWidht = displayHeight;
+            tempWidth = displayHeight;
             displayHeight = displayWidth;
-            displayWidth = tempWidht;
+            displayWidth = tempWidth;
         }
         ArrayList<Double> layoutX = new ArrayList<>();
         double distanceX = displayWidth / (size + 2);
@@ -188,15 +186,15 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
     ArrayList<Double[]> setLinesCoordinates(ArrayList<Double> y, ArrayList<Double> x, int color) {
         int size = y.size();
-        double startX = 0;
-        double startY = 0;
-        double endX = 0;
-        double endY = 0;
+        double startX;
+        double startY;
+        double endX;
+        double endY;
 //        Paint paint = new Paint();
 //        paint.setColor(color);
 //        Bitmap bg = Bitmap.createBitmap((int) displayWidth, (int) displayHeight, Bitmap.Config.ARGB_8888);
 //        Canvas canvas = new Canvas(bg);
-        ArrayList<Double[]> lineCoordinates = new ArrayList<Double[]>();
+        ArrayList<Double[]> lineCoordinates = new ArrayList<>();
         for (int i = 0; i < size - 1; i++) {
             lineCoordinates.add(new Double[]{0d, 10d, 0d, 10d, 0d});
 
@@ -224,10 +222,10 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
 //            canvas.drawLine((float) startX, (float) startY, (float) endX, (float) endY, paint);
         }
-        Log.i(TAG, "setLinesCoordinates:  Coordiantes Set");
+        Log.i(TAG, "setLinesCoordinates:  Coordinates Set");
 //        Bitmap bg = Bitmap.createBitmap((int) displayWidth, (int) displayHeight, Bitmap.Config.ARGB_8888);
 //        Canvas canvas = new Canvas(bg);
-//        activitiy_results_layout.setBackground(new BitmapDrawable(bg));
+//        activity_results_layout.setBackground(new BitmapDrawable(bg));
         return lineCoordinates;
     }
 
@@ -299,7 +297,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         if (resultLines != null) {
             resultLines.clear();
         }
-        resultLines = new ArrayList<ArrayList<Double[]>>();
+        resultLines = new ArrayList<>();
 
         if (SessionParameters.showPercentageInResults) {
             if (showTrialInResults) {
@@ -389,11 +387,11 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         Dialog dialog = new Dialog(this);
         WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
 
-        wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+        wmlp.gravity = Gravity.TOP | Gravity.START;
         wmlp.x = 000;   //x position
         wmlp.y = (int) dpFromPx(this, 100);   //y position
         wmlp.alpha = 0.78f;
-        ConstraintLayout layout = dialog.findViewById(R.id.view_results);
+//        ConstraintLayout layout = dialog.findViewById(R.id.view_results);
         dialog.setContentView(R.layout.view_results_settings_layout);
 
 //        layout.setAlpha(0.3f);

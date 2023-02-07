@@ -53,7 +53,7 @@ import static com.notorein.bt.SessionParameters.counterMatchesPos;
 import static com.notorein.bt.SessionParameters.darkModeTraining;
 import static com.notorein.bt.SessionParameters.daySession;
 import static com.notorein.bt.SessionParameters.dayTrial;
-import static com.notorein.bt.SessionParameters.developerInfosAreVisible;
+import static com.notorein.bt.SessionParameters.developerInfoAreVisible;
 import static com.notorein.bt.SessionParameters.durationSessionTimer;
 import static com.notorein.bt.SessionParameters.endOfSession;
 import static com.notorein.bt.SessionParameters.endOfTrial;
@@ -142,12 +142,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewbinding.BuildConfig;
 
-import com.notorein.bt.trash.RandomArrays;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.zip.Deflater;
 
 public class ActivityTraining extends AppCompatActivity implements View.OnClickListener {
 
@@ -1247,9 +1244,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         String indicator = "";
         trialIndicator = new String[trialsMax + 1];
         for (int i = 0; i <= trialsMax; i++) {
-            trialIndicator[i] = Strings.trialDefaultIndecator;
+            trialIndicator[i] = Strings.trialDefaultIndicator;
         }
-        trialIndicator[trialCounter] = Strings.trialActualIndecator;
+        trialIndicator[trialCounter] = Strings.trialActualIndicator;
         for (int i = 0; i < trialsMax; i++) {
             indicator = indicator + trialIndicator[i];
         }
@@ -1486,13 +1483,13 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //                }
 
                 if (developerCountdownClick >= developerCountMax) {
-                    if (developerInfosAreVisible) {
+                    if (developerInfoAreVisible) {
                         infoTxt.setVisibility(View.INVISIBLE);
-                        developerInfosAreVisible = false;
+                        developerInfoAreVisible = false;
                         btnPosition.setAlpha(1.0f);
                     } else {
                         infoTxt.setVisibility(VISIBLE);
-                        developerInfosAreVisible = true;
+                        developerInfoAreVisible = true;
                         btnPosition.setAlpha(0.5f);
                     }
                 }

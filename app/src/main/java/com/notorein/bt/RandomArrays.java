@@ -1,4 +1,4 @@
-package com.notorein.bt.trash;
+package com.notorein.bt;
 
 import static com.notorein.bt.RepeatStorage.matchesAudio;
 import static com.notorein.bt.RepeatStorage.matchesColor;
@@ -17,8 +17,6 @@ import static com.notorein.bt.SessionParameters.increasedCounterPosition;
 import static com.notorein.bt.SessionParameters.maxPresentations;
 import static com.notorein.bt.SessionParameters.nBack;
 import static com.notorein.bt.SessionParameters.randomIndexIncreaseFactor;
-
-import com.notorein.bt.SessionParameters;
 
 import java.util.ArrayList;
 import java.util.Random;

@@ -23,8 +23,8 @@ public class TransitionActivityAToB {
             textView.setHeight(layout.getHeight());
             try {
                 layout.removeView(textView);
-            } catch (Exception e){
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             layout.addView(textView);
             if(reverse){
@@ -32,7 +32,6 @@ public class TransitionActivityAToB {
             } else {
                 textView.setBackgroundColor(colorTo);
             }
-
             setFadeInAnimationTextView(c, layout, textView);
         }
     }

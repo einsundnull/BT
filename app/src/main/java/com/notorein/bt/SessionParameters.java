@@ -42,7 +42,7 @@ public class SessionParameters {
     public static boolean sessionWasCanceledEarly = true;
 
     public static boolean paused = false;
-    public static boolean developerInfosAreVisible;
+    public static boolean developerInfoAreVisible;
     public static boolean endOfTrialDialogIsVisible;
 
     public static String[] trialIndicator;

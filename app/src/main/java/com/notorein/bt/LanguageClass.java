@@ -395,7 +395,7 @@ public class LanguageClass {
 			"N-BACK útgáfa", "Hæsta stigi náð á dag", "Hæsta stigi náði þingi",
 			"Sveimdu yfir hvert stig til að sjá dagsetninguna" };
 
-	public static ArrayList<String[]> lngLst = new ArrayList<String[]>();
+	public static ArrayList<String[]> lngLst = new ArrayList<>();
 
 	static String[] nl = { "Maak gebruiker aan", // 0
 			"Selecteer gebruiker", "Begin met trainen", "Resultaten", "Resultaten opslaan", "Gebruiker:", // 5

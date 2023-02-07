@@ -14,7 +14,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class ViewMenu extends Dialog implements View.OnClickListener {
 
 
-    private final int layoutWidth;
     private final Context c;
     public ConstraintLayout layout;
     public CheckBox one;
@@ -27,7 +26,7 @@ public class ViewMenu extends Dialog implements View.OnClickListener {
     public ViewMenu(Activity activity) {
         super(activity);
         c = activity.getApplicationContext();
-        layoutWidth = (int) (SessionParameters.displayWidth * 0.85);
+        int layoutWidth = (int) (SessionParameters.displayWidth * 0.85);
 
     }
 
@@ -44,14 +43,14 @@ public class ViewMenu extends Dialog implements View.OnClickListener {
         three = layout.findViewById(R.id.showDay);
         four = layout.findViewById(R.id.showSession);
         five = layout.findViewById(R.id.showTrial);
-        setCeckBoxesSelected();
+        setCheckBoxesSelected();
         setOnClickListenersToSettingsView();
-        setCeckBoxesText();
+        setCheckBoxesText();
 
 
     }
 
-    public void setCeckBoxesText() {
+    public void setCheckBoxesText() {
         one.setText(Strings.showPercentageInResults);
         two.setText(Strings.showNBackInResults);
         three.setText(Strings.showDayInResults);
@@ -59,7 +58,7 @@ public class ViewMenu extends Dialog implements View.OnClickListener {
         five.setText(Strings.showTrialInResults);
     }
 
-    public void setCeckBoxesSelected() {
+    public void setCheckBoxesSelected() {
         one.setChecked(SessionParameters.showPercentageInResults);
         two.setChecked(SessionParameters.showNBackInResults);
         three.setChecked(SessionParameters.showDayInResults);

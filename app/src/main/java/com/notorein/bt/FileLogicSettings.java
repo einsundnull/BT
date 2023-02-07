@@ -3,8 +3,6 @@ package com.notorein.bt;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,60 +10,55 @@ import java.util.Scanner;
 
 
 public class FileLogicSettings {
-    private static File pathRaw;
-    private static String fileRAW;
-    private static String fileName;
     public static String fileNameLessonSettings = "settings";
-
 
     public static void readSettings(Context c) {
         try {
             InputStream ips = c.getApplicationContext().openFileInput(fileNameLessonSettings);
-            Scanner scn = null;
+            Scanner scn;
             scn = new Scanner(ips, "UTF-8");
-            if (scn != null) {
-                while (scn.hasNext()) {
-                    try {
-                        scn.next();
-                        SessionParameters.squareSize = Integer.parseInt(scn.next());
-                        scn.next();
-                        SessionParameters.decreaseThreshold = Double.parseDouble(scn.next());
-                        scn.next();
-                        SessionParameters.increaseThreshold = Double.parseDouble(scn.next());
-                        scn.next();
-                        SessionParameters.duration = Integer.parseInt(scn.next());
-                        scn.next();
-                        SessionParameters.maxPresentations = Integer.parseInt(scn.next());
-                        scn.next();
-                        SessionParameters.nBackBegin = Integer.parseInt(scn.next());
-                        scn.next();
-                        SessionParameters.speedPercentage = Double.parseDouble(scn.next());
-                        scn.next();
-                        SessionParameters.countDownIntervalDefault = Integer.parseInt(scn.next());
-                        scn.next();
-                        SessionParameters.durationSessionTimer = Integer.parseInt(scn.next());
-                        scn.next();
-                        SessionParameters.randomIndexIncreaseFactor = Integer.parseInt(scn.next());
-                        scn.next();
-                        SessionParameters.includePosition = Boolean.parseBoolean(scn.next());
-                        scn.next();
-                        SessionParameters.includeAudio = Boolean.parseBoolean(scn.next());
-                        scn.next();
-                        SessionParameters.includeColor = Boolean.parseBoolean(scn.next());
-                        scn.next();
-                        SessionParameters.orientation = Integer.parseInt(scn.next());
-                        scn.next();
-                        SessionParameters.playButtonSoundDuringTraining = Boolean.parseBoolean(scn.next());
-                        scn.next();
-                        SessionParameters.dateOflastUse = scn.next();
-                        scn.next();
-                        SessionParameters.squareDefaultColorIndex = Integer.parseInt(scn.next());
-                        scn.next();
-                        SessionParameters.darkModeTraining = Boolean.parseBoolean(scn.next());
-                        scn.next();
-                        SessionParameters.customSquareSize = Float.parseFloat(scn.next());
-                        scn.next();
-                        SessionParameters.showGrid = Boolean.parseBoolean(scn.next());
+            while (scn.hasNext()) {
+                try {
+                    scn.next();
+                    SessionParameters.squareSize = Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.decreaseThreshold = Double.parseDouble(scn.next());
+                    scn.next();
+                    SessionParameters.increaseThreshold = Double.parseDouble(scn.next());
+                    scn.next();
+                    SessionParameters.duration = Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.maxPresentations = Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.nBackBegin = Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.speedPercentage = Double.parseDouble(scn.next());
+                    scn.next();
+                    SessionParameters.countDownIntervalDefault = Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.durationSessionTimer = Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.randomIndexIncreaseFactor = Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.includePosition = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.includeAudio = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.includeColor = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.orientation = Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.playButtonSoundDuringTraining = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.dateOflastUse = scn.next();
+                    scn.next();
+                    SessionParameters.squareDefaultColorIndex = Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.darkModeTraining = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.customSquareSize = Float.parseFloat(scn.next());
+                    scn.next();
+                    SessionParameters.showGrid = Boolean.parseBoolean(scn.next());
 
 
 //                        SessionParameters.showPercentageInResults = Boolean.parseBoolean(scn.next());
@@ -78,15 +71,14 @@ public class FileLogicSettings {
 //                        scn.next();
 //                        SessionParameters.showTrialInResults = Boolean.parseBoolean(scn.next());
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        break;
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    break;
                 }
-                Log.e("", "readSettings: " + SessionParameters.includePosition + SessionParameters.includeAudio + SessionParameters.includeColor);
-                ips.close();
-                scn.close();
             }
+            Log.e("", "readSettings: " + SessionParameters.includePosition + SessionParameters.includeAudio + SessionParameters.includeColor);
+            ips.close();
+            scn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,8 +92,6 @@ public class FileLogicSettings {
             out.write(text.getBytes());
             out.flush();
             out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,7 +116,7 @@ public class FileLogicSettings {
                         "includeColor\t" + SessionParameters.includeColor + "\n" +
                         "orientation\t" + SessionParameters.orientation + "\n" +
                         "playButtonSoundDuringTraining\t" + SessionParameters.playButtonSoundDuringTraining + "\n" +
-                        "dateOflastUse\t" + SessionParameters.dateOfCurrentUse + "\n" +
+                        "dateOfLastUse\t" + SessionParameters.dateOfCurrentUse + "\n" +
                         "squareDefaultColorIndex\t" + SessionParameters.squareDefaultColorIndex + "\n" +
                         "darkModeTraining\t" + SessionParameters.darkModeTraining + "\n" +
                         "customSquareSize\t" + SessionParameters.customSquareSize + "\n"+
