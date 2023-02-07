@@ -303,8 +303,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         trainingSound[7] = appSounds.load(this, R.raw.en_7, 1);
         trainingSound[8] = appSounds.load(this, R.raw.en_8, 1);
         trainingSound[9] = appSounds.load(this, R.raw.en_9, 1);
-
-
     }
 
     private void setTransitionToBlack() {
@@ -1144,9 +1142,12 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         if (endOfSession) {
             resetTrialCounters();
-            finish();
-            Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
-            startActivity(intent);
+//            finish();
+//            txtVwMiddle.setTextSize(32f);
+//            txtVwMiddle.setText(Strings.goodJob);
+            setFadeOutAnimation(views);
+//            Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
+//            startActivity(intent);
         } else if (!trialIsRunning) {
             if (resultScreenIndex == 0) {
                 startTrial();

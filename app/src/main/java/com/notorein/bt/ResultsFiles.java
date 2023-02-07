@@ -146,6 +146,7 @@ public class ResultsFiles {
                         try {
                             daysNBack.get(daysNBack.size() - 1).add(trialsNBackTemp.get(m));
                         } catch (Exception e) {
+
                             e.printStackTrace();
                         }
                     }
@@ -209,6 +210,14 @@ public class ResultsFiles {
             daysNBack.remove(daysNBack.size() - 1);
         }
 
+        // Otherwhise the app will crash when there are no result
+        try {
+            if(daysNBack.get(0).isEmpty() ){
+                daysNBack.get(0).add((double)nBackMaxAbsolute);
+            }
+        } catch (Exception e){
+
+        }
 
         // In these steps I reduce the arrays to the display values
         double maxNBack = getMaxValue(trialsNBack);
@@ -218,7 +227,7 @@ public class ResultsFiles {
         sessionsPercAverage = getAverage(sessionsNBack);
         daysPercAverage = getAverage(daysNBack);
 
-        nBackMaxAbsolute = nBackMaxAbsolute + 2;
+//        nBackMaxAbsolute = nBackMaxAbsolute + 2;
 
         Log.e(TAG, "trialsNBack " + trialsNBack);
         Log.e(TAG, "sessionsNBack: " + sessionsNBack);

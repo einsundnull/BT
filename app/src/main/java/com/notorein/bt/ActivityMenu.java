@@ -198,6 +198,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         nouImage = (ImageView) findViewById(R.id.nouImage);
 
         test = (Button) findViewById(R.id.test);
+        test.setVisibility(View.INVISIBLE);
         btnStart = (Button) findViewById(R.id.btnStart);
         btnResults = (Button) findViewById(R.id.btnResults);
         btnSave = (Button) findViewById(R.id.btnSave);

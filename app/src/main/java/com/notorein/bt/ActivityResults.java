@@ -68,6 +68,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
     int lineColorTrial, lineColorSession, lineColorDay, backgroundColor;
     private ImageView setting_button_result_screen;
     private AdView mAdView;
+    private TextView goodJob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,8 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         activity_results_layout = findViewById(R.id.activity_results_layout);
         setting_button_result_screen = findViewById(R.id.setting_button_result_screen);
         setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image);
+        goodJob = activity_results_layout.findViewById(R.id.goodJob);
+        goodJob.setText(Strings.goodJob);
         // This part was in onClick ResultsBtn in ActivityMain
         stringToStoreInitial = ResultsFiles.readResults(ActivityResults.this);
         ResultsFiles.calculateResultsForDisplay();

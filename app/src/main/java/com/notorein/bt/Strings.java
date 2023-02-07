@@ -74,6 +74,7 @@ public class Strings {
     private static String nextLevel = nBackLevel;
     private static String endLevel = nBackLevel;
     public static String nBackMax = "Your Highest Level: ";
+    public static String goodJob = "Good Job!";
 
     public static String btnPosText = "Position";
     public static String btnAudText = "Audio";
