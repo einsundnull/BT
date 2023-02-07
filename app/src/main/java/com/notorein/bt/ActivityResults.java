@@ -33,6 +33,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
 import java.util.ArrayList;
 
 public class ActivityResults extends AppCompatActivity implements View.OnClickListener {
@@ -61,12 +67,21 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
     Canvas canvas;
     int lineColorTrial, lineColorSession, lineColorDay, backgroundColor;
     private ImageView setting_button_result_screen;
-
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results_layout);
+        ConstraintLayout layout = this.findViewById(R.id.activity_results_layout);
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        mAdView = layout.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         activity_results_layout = findViewById(R.id.activity_results_layout);
         setting_button_result_screen = findViewById(R.id.setting_button_result_screen);
         setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image);

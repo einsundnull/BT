@@ -227,7 +227,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 editTextNBackLevel, editTextDuration,
                 textViewTime, textViewInfo,
                 switchPosition, switchAudio, switchColor,
-                btnPort, btnLand
+                btnPort, btnLand,mAdView
         };
     }
 
