@@ -62,6 +62,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
     private Button test;
 
+
     private EditText editTextNBackLevel;
     private EditText editTextDuration;
 
@@ -239,8 +240,17 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
         }
         if (v.getId() == R.id.test) {
+            ResultsFiles.test = true;
             btnSave.setEnabled(true);
-            ResultsFiles.test = !ResultsFiles.test;
+            ResultsFiles.testStringIndex++;
+            switch (ResultsFiles.testStringIndex) {
+                case 3:
+                    ResultsFiles.testStringIndex = 0;
+                    ResultsFiles.test = false;
+                    btnSave.setEnabled( ResultsFiles.test);
+                    break;
+            }
+
         }
         if (v.getId() == R.id.btnResults) {
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);

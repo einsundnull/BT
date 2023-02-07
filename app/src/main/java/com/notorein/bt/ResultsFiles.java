@@ -26,6 +26,7 @@ import java.util.Scanner;
 
 public class ResultsFiles {
 
+
     private static ArrayList<String> results;
 
     static ArrayList<Double> trialsNBack;
@@ -59,7 +60,8 @@ public class ResultsFiles {
     static int trialCounter = 0;
 
     public static boolean test;
-    private static double maxNBack = 0;
+    public static int testStringIndex = 0;
+    private static double maxNBack = -1;
 
 
     public static void initialiseStoringFilePaths() {
@@ -332,7 +334,7 @@ public class ResultsFiles {
                             for (int m = 0; m < trialsNBackTempII.size(); m++) {
                                 daysNBack.get(daysNBack.size() - 1).add(trialsNBackTempII.get(m));
                             }
-                        } catch (Exception ze){
+                        } catch (Exception ze) {
                             daysNBack.add(new ArrayList<Double>());
                             for (int m = 0; m < trialsNBackTempII.size(); m++) {
                                 daysNBack.get(daysNBack.size() - 1).add(trialsNBackTempII.get(m));
@@ -362,14 +364,16 @@ public class ResultsFiles {
                 Log.e(TAG, "trialsNBackTemp " + trialsNBackTemp);
                 value = results.get(i + 2);
                 valueII = valueII + Double.parseDouble(value);
-                trialsPerc.add(valueII);
+                if (valueII > 0) {
+                    trialsPerc.add(valueII);
+                }
             }
             Log.i(TAG, "calculateResultsForDisplay: " + i);
         }
         // If i don't add these lines the calculated arrays contain an empty array in the end
-//        if (daysNBack.size() > 1) {
-//            daysNBack.remove(daysNBack.size() - 1);
-//        }
+        if (daysNBack.size() > 1) {
+            daysNBack.remove(daysNBack.size() - 1);
+        }
 
 
         // In these steps I reduce the arrays to the display values
@@ -856,7 +860,18 @@ public class ResultsFiles {
         try (FileOutputStream out = c.getApplicationContext().openFileOutput(resultsFilePath, Context.MODE_APPEND)) {
             // Write the text to the file and flush the output stream
             if (test) {
-                stringToStore = Test.test;
+                switch (testStringIndex) {
+                    case 0:
+                        stringToStore = Test.testI;
+                        break;
+                    case 1:
+                        stringToStore = Test.testII;
+                        break;
+                    case 2:
+                        stringToStore = Test.testIII;
+                        break;
+                }
+
             }
             out.write(stringToStore.getBytes());
             out.flush();
