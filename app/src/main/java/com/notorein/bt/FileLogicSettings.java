@@ -60,6 +60,8 @@ public class FileLogicSettings {
                     scn.next();
                     SessionParameters.showGrid = Boolean.parseBoolean(scn.next());
                     scn.next();
+                    SessionParameters.zenMode = Boolean.parseBoolean(scn.next());
+                    scn.next();
                     SessionParameters.showPercentageInResults = Boolean.parseBoolean(scn.next());
                     scn.next();
                     SessionParameters.showNBackInResults = Boolean.parseBoolean(scn.next());
@@ -118,13 +120,14 @@ public class FileLogicSettings {
                         "dateOfLastUse\t" + SessionParameters.dateOfCurrentUse + "\n" +
                         "squareDefaultColorIndex\t" + SessionParameters.squareDefaultColorIndex + "\n" +
                         "darkModeTraining\t" + SessionParameters.darkModeTraining + "\n" +
-                        "customSquareSize\t" + SessionParameters.customSquareSize + "\n"+
-                        "showDividers\t" +  SessionParameters.showGrid + "\n"+
+                        "customSquareSize\t" + SessionParameters.customSquareSize + "\n" +
+                        "showDividers\t" + SessionParameters.showGrid + "\n" +
+                        "zenMode\t" + SessionParameters.zenMode+ "\n" +
                         "showPercentageInResults\t" + SessionParameters.showPercentageInResults + "\n" +
                         "showNBackInResults\t" + SessionParameters.showNBackInResults + "\n" +
                         "showDayInResults\t" + SessionParameters.showDayInResults + "\n" +
                         "showSessionInResults\t" + SessionParameters.showSessionInResults + "\n" +
-                        "showTrialInResults\t" + SessionParameters.showTrialInResults;
+                        "showTrialInResults\t" + SessionParameters.showTrialInResults ;
 
         return temp;
     }

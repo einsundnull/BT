@@ -11,6 +11,15 @@
     <!--    android:textColor="@color/buttonTextColor"-->
     <!--        app:layout_constraintHorizontal_bias="0.0"-->
     <ImageView
+        android:id="@+id/button_click_training_fade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/button_training_settings_fade_false"
+        app:layout_constraintStart_toEndOf="@+id/button_click_training_grid"
+        app:layout_constraintTop_toTopOf="@+id/button_click_training_grid" />
+
+    <ImageView
         android:id="@+id/button_click_training_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -246,7 +255,7 @@
         android:id="@+id/button_click_training_sound_off"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="56dp"
         android:layout_marginTop="732dp"
         android:background="@drawable/custom_button_training_settings_sound_dark"
         app:layout_constraintStart_toStartOf="parent"

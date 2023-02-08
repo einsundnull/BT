@@ -107,6 +107,7 @@ import static com.notorein.bt.Strings.btnAudText;
 import static com.notorein.bt.Strings.btnColText;
 import static com.notorein.bt.Strings.btnPosText;
 import static com.notorein.bt.Strings.cross;
+import static com.notorein.bt.Strings.finish;
 import static com.notorein.bt.Strings.nBackLevel;
 import static com.notorein.bt.Strings.pressButtonToC;
 import static com.notorein.bt.Strings.pressButtonToS;
@@ -198,7 +199,11 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private SoundPool appSounds;
     private int buttonSound;
     private int[] trainingSound;
-    private final long fadeInterval_DEFAULT = (long) (countDownIntervalDefault / 1.7);
+    //    public static double squareFadeDuration = 0.9;
+    public static double squareFadeDuration = 1.1;
+    //    public static double squareFadeDuration = 1.2;
+//    public static double squareFadeDuration = 1.7;
+    private final long fadeInterval_DEFAULT = (long) (countDownIntervalDefault / squareFadeDuration);
     private long fadeInterval = fadeInterval_DEFAULT;
     private ImageView btnSoundOff;
     private ImageView btnOrientation;
@@ -206,6 +211,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private ImageView btnStyle;
     private ImageView btnSize;
     private ImageView btnGrid;
+    private ImageView btnFade;
     private Button positive;
     private Button negative;
     private TextView txtVwnBackLevelInfo;
@@ -547,6 +553,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         btnStyle = (ImageView) findViewById(R.id.button_click_training_style);
         btnSize = (ImageView) findViewById(R.id.button_click_training_size);
         btnGrid = (ImageView) findViewById(R.id.button_click_training_grid);
+        btnFade = (ImageView) findViewById(R.id.button_click_training_fade);
         txtVwMiddle = (TextView) findViewById(R.id.textViewMiddle);
         infoTxt = (TextView) findViewById(R.id.infoTxt);
 
@@ -584,7 +591,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                     squares.get(4), txtVwnBackLevelInfo};
         }
     }
-
 
 
 //    private void includeViewsToFadeInTransition() {
@@ -636,7 +642,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         btnStyle.setOnClickListener(this);
         btnSize.setOnClickListener(this);
         btnGrid.setOnClickListener(this);
+        btnFade.setOnClickListener(this);
     }
+
     private void setTrialIndexes() {
         trialIsRunning = true;
         paused = false;
@@ -1318,6 +1326,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         btnStyle.setVisibility(visibility);
         btnSize.setVisibility(visibility);
         btnGrid.setVisibility(visibility);
+        btnFade.setVisibility(visibility);
     }
 
 
@@ -1345,11 +1354,13 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 timerTrial.onFinish();
                 timerClock.onFinish();
             }
+            dialog.cancel();
 
             setFadeOutAnimation(views);
         });
         positive.setOnClickListener(c -> {
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
+            dialog.cancel();
             paused = true;
         });
         dialog.show();
@@ -1838,6 +1849,28 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             setDividersVisible(true);
             FileLogicSettings.saveSettings(this);
         }
+        if (v.getId() == R.id.button_click_training_fade) {
+            zenMode = !zenMode;
+            if (!darkModeTraining) {
+                if (zenMode) {
+                    btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_true));
+                } else {
+                    btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_false));
+                }
+            } else {
+                if (zenMode) {
+                    btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_true_dark));
+                } else {
+                    btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_false_dark));
+                }
+            }
+            if (zenMode) {
+                Toast.makeText(this, Strings.fadeTextYes, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, Strings.fadeTextNo, Toast.LENGTH_SHORT).show();
+            }
+            FileLogicSettings.saveSettings(this);
+        }
         if (v.getId() == R.id.textViewMiddle) {
             setPausedFromMiddle();
 
@@ -1951,7 +1984,11 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             btnStyle.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_style));
             btnSize.setBackground(getResources().getDrawable(R.drawable.button_training_settings_size));
             btnGrid.setBackground(getResources().getDrawable(R.drawable.button_training_settings_grid));
-
+            if (zenMode) {
+                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_true));
+            } else {
+                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_false));
+            }
             btnPosition.setAlpha(0.8f);
             btnAudio.setAlpha(0.8f);
             btnColor.setAlpha(0.8f);
@@ -1963,6 +2000,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             btnStyle.setAlpha(0.6f);
             btnSize.setAlpha(0.6f);
             btnGrid.setAlpha(0.6f);
+            btnFade.setAlpha(0.6f);
+
             txtVwnBackLevelInfo.setAlpha(0.6f);
             txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color));
 
@@ -1990,6 +2029,11 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             btnStyle.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_style_dark));
             btnSize.setBackground(getResources().getDrawable(R.drawable.button_training_settings_size_dark));
             btnGrid.setBackground(getResources().getDrawable(R.drawable.button_training_settings_grid_dark));
+            if (zenMode) {
+                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_true_dark));
+            } else {
+                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_false_dark));
+            }
             btnExit.setAlpha(0.6f);
             btnMode.setAlpha(0.45f);
             btnOrientation.setAlpha(0.45f);
@@ -1997,6 +2041,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             btnStyle.setAlpha(0.45f);
             btnSize.setAlpha(0.45f);
             btnGrid.setAlpha(0.45f);
+            btnFade.setAlpha(0.45f);
             txtVwnBackLevelInfo.setAlpha(0.45f);
 
             dividerHorizontal1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));

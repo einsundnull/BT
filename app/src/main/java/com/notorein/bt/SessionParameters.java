@@ -10,7 +10,7 @@ public class SessionParameters {
     public static String user;
 
     public static boolean playButtonSoundDuringTraining = true;
-    public static boolean zenMode = false;
+    public static boolean zenMode = true;
 
     public static boolean positionIsClicked;
     public static boolean audioIsClicked;
@@ -179,7 +179,7 @@ public class SessionParameters {
     public static int fadeoutAnimationDuration = 1220;
     public static boolean allowToChangeColorStyle;
     public static boolean allowToChangeSquareSize;
-    public static boolean showGrid = false;
+    public static boolean showGrid = true;
     public static boolean loadInterstitialAd = true;
 
 

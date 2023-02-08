@@ -289,4 +289,13 @@
         app:layout_constraintStart_toStartOf="@+id/button_click_training_size"
         app:layout_constraintTop_toBottomOf="@+id/button_click_training_size" />
 
+    <ImageView
+        android:id="@+id/button_click_training_fade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_training_settings_fade_false"
+        app:layout_constraintStart_toStartOf="@+id/button_click_training_grid"
+        app:layout_constraintTop_toBottomOf="@+id/button_click_training_grid" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,6 +56,8 @@ public class Strings {
     public static String changeSquareColorText = "Tap square to accept new color";
     public static String showGridTextYes = "Show Grid";
     public static String showGridTextNo = "Hide Grid";
+    public static String fadeTextYes = "Squares will be appear slowly";
+    public static String fadeTextNo= "Squares will be appear immediately";
     public static String zemModeToastText = "Zen Mode Is Active: " ;
     public static String zenModeSlow = " and calm";
 
@@ -93,7 +95,7 @@ public class Strings {
     public static String pressButtonToC = "Press button to continue";
     public static String firstStartTextOnlyPos = "Press button to start";
     public static String pressButtonToFinish = "Press button to finish";
-    public static String firstStartTextPressButtonToS = "Press button to start\n\nTap training screen to interrupt";
+    public static String firstStartTextPressButtonToS = "Press button to start\n\nTap the center to interrupt training";
 
 
     public static String firstStartTextOnlyAud;
