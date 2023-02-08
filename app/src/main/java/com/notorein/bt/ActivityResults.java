@@ -1,6 +1,7 @@
 package com.notorein.bt;
 
 import static android.content.ContentValues.TAG;
+import static com.notorein.bt.SessionParameters.loadInterstitialAd;
 import static com.notorein.bt.SessionParameters.resultLineColorIndex;
 import static com.notorein.bt.SessionParameters.showDayInResults;
 import static com.notorein.bt.SessionParameters.showSessionInResults;
@@ -29,15 +30,21 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import java.util.ArrayList;
 
@@ -68,7 +75,11 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
     int lineColorTrial, lineColorSession, lineColorDay, backgroundColor;
     private ImageView setting_button_result_screen;
     private AdView mAdView;
+    private InterstitialAd mInterstitialAd;
+
+
     private TextView goodJob;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +94,8 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         mAdView = layout.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+        loadInterstitialAd(adRequest);
+
         activity_results_layout = findViewById(R.id.activity_results_layout);
         setting_button_result_screen = findViewById(R.id.setting_button_result_screen);
         setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image);
@@ -99,6 +112,84 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         setOnClickListener();
         setDivider();
         addResultLines();
+
+    }
+
+
+    private void loadInterstitialAd(AdRequest adRequest) {
+        if (SessionParameters.loadInterstitialAd) {
+            mInterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
+                    new InterstitialAdLoadCallback() {
+                        @Override
+                        public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                            // The mInterstitialAd reference will be null until
+                            // an ad is loaded.
+                            mInterstitialAd = interstitialAd;
+                            if (mInterstitialAd != null) {
+                                for (int i = 0; i < 200; i++) {
+                                    Log.i(TAG, "null");
+                                }
+                            }
+
+                            Log.i(TAG, "onAdLoaded");
+                            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                @Override
+                                public void onAdClicked() {
+                                    // Called when a click is recorded for an ad.
+                                    Log.d(TAG, "Ad was clicked.");
+                                }
+
+                                @Override
+                                public void onAdDismissedFullScreenContent() {
+                                    // Called when ad is dismissed.
+                                    // Set the ad reference to null so you don't show the ad a second time.
+                                    Log.d(TAG, "Ad dismissed fullscreen content.");
+                                    mInterstitialAd = null;
+                                }
+
+                                @Override
+                                public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                    // Called when ad fails to show.
+                                    Log.e(TAG, "Ad failed to show fullscreen content.");
+                                    mInterstitialAd = null;
+                                }
+
+                                @Override
+                                public void onAdImpression() {
+                                    // Called when an impression is recorded for an ad.
+                                    Log.d(TAG, "Ad recorded an impression.");
+                                }
+
+                                @Override
+                                public void onAdShowedFullScreenContent() {
+                                    // Called when ad is shown.
+                                    Log.d(TAG, "Ad showed fullscreen content.");
+                                }
+                            });
+                            if (mInterstitialAd != null) {
+                                mInterstitialAd.show(ActivityResults.this);
+                            } else {
+                                Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                                for (int i = 0; i < 100; i++) {
+                                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                                }
+                            }
+                        }
+
+
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            // Handle the error
+                            Log.d(TAG, loadAdError.toString());
+                            mInterstitialAd = null;
+                        }
+
+
+                    });
+
+
+        }
+        loadInterstitialAd = false;
     }
 
 

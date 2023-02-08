@@ -93,7 +93,7 @@ public class Strings {
     public static String pressButtonToC = "Press button to continue";
     public static String firstStartTextOnlyPos = "Press button to start";
     public static String pressButtonToFinish = "Press button to finish";
-    public static String firstStartTextPressButtonToS = "Press button to start\n\nPress center to pause";
+    public static String firstStartTextPressButtonToS = "Press button to start\n\nTap training screen to interrupt";
 
 
     public static String firstStartTextOnlyAud;

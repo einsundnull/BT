@@ -1,5 +1,6 @@
 package com.notorein.bt;
 
+import static android.content.ContentValues.TAG;
 import static com.notorein.bt.ResultsFiles.initialiseStoringFilePaths;
 import static com.notorein.bt.SessionParameters.convertedTrialToTime;
 import static com.notorein.bt.SessionParameters.countDownInterval;
@@ -13,6 +14,7 @@ import static com.notorein.bt.SessionParameters.includeAudio;
 import static com.notorein.bt.SessionParameters.includeColor;
 import static com.notorein.bt.SessionParameters.includePosition;
 import static com.notorein.bt.SessionParameters.includedModes;
+import static com.notorein.bt.SessionParameters.loadInterstitialAd;
 import static com.notorein.bt.SessionParameters.nBack;
 import static com.notorein.bt.SessionParameters.nBackBegin;
 import static com.notorein.bt.SessionParameters.orientation;
@@ -33,6 +35,7 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -46,14 +49,20 @@ import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 
 public class ActivityMenu extends AppCompatActivity implements View.OnClickListener {
@@ -100,7 +109,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private int dingSound;
     private View decorView;
     private AdView mAdView;
-
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +126,11 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
+
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-
+//        loadInterstitialAd(adRequest);
         FileLogicSettings.readSettings(ActivityMenu.this);
         getViews();
         setImageNou();
@@ -142,6 +152,88 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         daySession = RepeatStorage.getDay();
 //        ResultsFiles.checkForLastDayOfUse();
 //        new ResultsFiles().calculateResultsForDisplay();
+    }
+
+    private void loadInterstitialAd(AdRequest adRequestInter) {
+        Log.i(TAG, "loadInterstitialAd: " + loadInterstitialAd);
+        Log.i(TAG, "loadInterstitialAd: " + loadInterstitialAd);
+        Log.i(TAG, "loadInterstitialAd: " + loadInterstitialAd);
+        Log.i(TAG, "loadInterstitialAd: " + loadInterstitialAd);
+        Log.i(TAG, "loadInterstitialAd: " + loadInterstitialAd);
+        if (SessionParameters.loadInterstitialAd) {
+            Log.i(TAG, "loadInterstitialAd: " + loadInterstitialAd);
+            Log.i(TAG, "loadInterstitialAd: " + loadInterstitialAd);
+            Log.i(TAG, "loadInterstitialAd: " + loadInterstitialAd);
+            Log.i(TAG, "loadInterstitialAd: " + loadInterstitialAd);
+            Log.i(TAG, "loadInterstitialAd: " + loadInterstitialAd);
+
+            MobileAds.initialize(this, new OnInitializationCompleteListener() {
+                @Override
+                public void onInitializationComplete(InitializationStatus initializationStatus) {
+                }
+            });
+
+            AdRequest adRequest = new AdRequest.Builder().build();
+            InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
+                    new InterstitialAdLoadCallback() {
+                        @Override
+                        public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                            // The mInterstitialAd reference will be null until
+                            // an ad is loaded.
+                            mInterstitialAd = interstitialAd;
+                            Log.i(TAG, "onAdLoaded");
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            // Handle the error
+//                            Log.d(TAG, loadAdError.toString());
+                            mInterstitialAd = null;
+                        }
+                    });
+
+            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                @Override
+                public void onAdClicked() {
+                    // Called when a click is recorded for an ad.
+                    Log.d(TAG, "Ad was clicked.");
+                }
+
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    // Called when ad is dismissed.
+                    // Set the ad reference to null so you don't show the ad a second time.
+                    Log.d(TAG, "Ad dismissed fullscreen content.");
+                    mInterstitialAd = null;
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(AdError adError) {
+                    // Called when ad fails to show.
+                    Log.e(TAG, "Ad failed to show fullscreen content.");
+                    mInterstitialAd = null;
+                }
+
+                @Override
+                public void onAdImpression() {
+                    // Called when an impression is recorded for an ad.
+                    Log.d(TAG, "Ad recorded an impression.");
+                }
+
+                @Override
+                public void onAdShowedFullScreenContent() {
+                    // Called when ad is shown.
+                    Log.d(TAG, "Ad showed fullscreen content.");
+                }
+            });
+
+            if (mInterstitialAd != null) {
+                mInterstitialAd.show(ActivityMenu.this);
+            } else {
+                Log.d("TAG", "The interstitial ad wasn't ready yet.");
+            }
+        }
+        loadInterstitialAd = false;
     }
 
 
@@ -272,8 +364,10 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.btnResults) {
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
             stringToStore = stringToStoreInitial + stringToStore;
+            SessionParameters.loadInterstitialAd = true;
             Intent intent = new Intent(this, ActivityResults.class);
             startActivity(intent);
+
         }
 
         if (v.getId() == R.id.btnSave) {

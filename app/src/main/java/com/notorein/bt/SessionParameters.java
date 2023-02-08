@@ -180,6 +180,7 @@ public class SessionParameters {
     public static boolean allowToChangeColorStyle;
     public static boolean allowToChangeSquareSize;
     public static boolean showGrid = false;
+    public static boolean loadInterstitialAd = true;
 
 
 //    String[]  colors = new String[] { "white", "yellow", "chocolate", "green", "rgb(136,163,19)", "rgb(3,211,252)", "blue", "red", "purple","grey","darkgrey" };

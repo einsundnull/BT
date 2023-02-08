@@ -311,10 +311,10 @@ public class ResultsFiles {
 
     public static boolean compareIfDataAreTheSame(String msg, String dayOne, String dayTwo) {
         if (!dayOne.equals(dayTwo) && !dayOne.isEmpty()) {
-            Log.i(TAG, "calculateResultsForDisplay: " + msg + " Dates not equal: " + dayOne + " # " + dayTwo + " #\n");
+//            Log.i(TAG, "calculateResultsForDisplay: " + msg + " Dates not equal: " + dayOne + " # " + dayTwo + " #\n");
             return false;
         } else {
-            Log.i(TAG, "calculateResultsForDisplay: " + msg + " Dates are equal: " + dayOne + " # " + dayTwo + " #\n");
+//            Log.i(TAG, "calculateResultsForDisplay: " + msg + " Dates are equal: " + dayOne + " # " + dayTwo + " #\n");
             return true;
         }
     }
@@ -368,11 +368,11 @@ public class ResultsFiles {
                 if (readDayOfUse) {
                     lastDayOfUse = read;
                     readDayOfUse = false;
-                    Log.i(TAG, "\nlastDayOfUse: " + lastDayOfUse + "\n");
+//                    Log.i(TAG, "\nlastDayOfUse: " + lastDayOfUse + "\n");
                 }
                 if (read.equals(SessionParameters.daySessionMarker)) {
                     readDayOfUse = true;
-                    Log.i(TAG, "\nread.equals(SessionParameters.daySessionMarker): " + lastDayOfUse + "\n");
+//                    Log.i(TAG, "\nread.equals(SessionParameters.daySessionMarker): " + lastDayOfUse + "\n");
                 }
 
                 // Add the line to the results list and the string to store
@@ -381,13 +381,13 @@ public class ResultsFiles {
             }
 
             // Check if the last day of use is different from the current day
-            Log.i(TAG, "readResults before: " + results);
+//            Log.i(TAG, "readResults before: " + results);
             if (!compareIfDataAreTheSame("Compared Days", lastDayOfUse, RepeatStorage.getDay())) {
                 if (!read.equals(SessionParameters.newDayMarker)) {
                     results.add(SessionParameters.newDayMarker);
                 }
             }
-            Log.i(TAG, "readResults after: " + results);
+//            Log.i(TAG, "readResults after: " + results);
         } catch (Exception e) {
             e.printStackTrace();
         }
