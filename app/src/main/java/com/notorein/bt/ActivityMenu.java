@@ -228,7 +228,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 editTextNBackLevel, editTextDuration,
                 textViewTime, textViewInfo,
                 switchPosition, switchAudio, switchColor,
-                btnPort, btnLand,mAdView
+                btnPort, btnLand, mAdView
         };
     }
 
@@ -284,10 +284,12 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         }
 
         if (v.getId() == R.id.infoTextView) {
-            showAboutDialog();
-//            final MediaPlayer player = MediaPlayer.create(this, R.raw.click);
-//            player.start();
-            appSounds.play(buttonSound, 1, 1, 1, 0, 1);
+            try {
+                showAboutDialog();
+                appSounds.play(buttonSound, 1, 1, 1, 0, 1);
+            } catch (Exception e) {
+                finish();
+            }
         }
 
         if (v.getId() == R.id.editTextDuration) {
@@ -540,11 +542,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 }
                 FileLogicSettings.saveSettings(ActivityMenu.this);
                 Intent intent = new Intent(ActivityMenu.this, ActivityTraining.class);
-//                try {
-//                    Thread.sleep(300);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
                 startActivity(intent);
                 finish();
             }
@@ -672,7 +669,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 e.printStackTrace();
             }
             startActivity(intent);
-
         });
         btn_manual.setOnClickListener(c -> {
 //            initialiseStoringFilePaths();
@@ -680,11 +676,11 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         });
         btn_exit.setOnClickListener(c -> {
             if (!btnSave.isEnabled()) {
-                this.finish();
+                dialog.cancel();
                 finish();
             } else {
                 showAlertPleaseSaveResults(() -> {
-                    this.finish();
+                    dialog.cancel();
                     finish();
                 }, null);
             }

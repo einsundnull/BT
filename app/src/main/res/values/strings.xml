@@ -120,61 +120,19 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">Program Sequence\n\n
-A run takes a minimum of 120 seconds. A square is seen every two seconds and one of eight
-letters can be heard. A minimum of 22 squares and 22 letters is presented. If there was a match
-without the user pressing the corresponding key, this is considered incorrect. In case that one of
-the buttons is pressed without 2 match, this is also considered incorrect. If the corresponding
-key is pressed in the event of a match, this is considered correct, Also considered correct is if
-there was no match and no key was pressed, Multiple keystrokes are not counted twice, When
-at least 85% in the visual and auditory part is rated as correct, the program increases the level
-of difficulty, If less than 70% in the auditory or visual part is rated as correct, the program
-lowers the level of difficult. When the rate of correct answers is between 70% and 85%, the
-level of difficulty does not change. To guarantee a constant probability of possible matches, the
-training time changes with each level by 3 x n-back seconds, Eg,\n\n
+    <string name="dummy_content">Program Sequence\n\nA run takes a minimum of 120 seconds.\nA square is seen every two seconds, and one of eight
+letters can be heard.\nA minimum of 33 squares and 33 letters is presented.\nEach run contains a randomly set number of matches.\nIf there was a match
+without the user pressing the corresponding key, this is considered incorrect.\nIn case that one of
+the buttons is pressed without 2 match, this is also considered incorrect.\nIf the corresponding
+key is pressed in the event of a match, this is considered correct.\nAlso considered correct is if
+there was no match and no key was pressed.\nWhen at least 85% in the visual and auditory part is rated as correct, the program increases the level.\nIf less than 70% in the auditory or visual part is rated as correct, the program
+lowers the level.\nWhen the rate of correct answers is between 70% and 85%, the
+level of difficulty does not change.\nTo guarantee a constant probability of possible matches, the
+training time changes with each level by 3 x n-back seconds.\n\n
+n = 3: n+3*3 = 120 + 9 seconds.\nTotal time = 129 seconds.\n\n
+n = 4: n+4*3 = 120 + 12 seconds.\nTotal 132 seconds.\n\nTraining recommendation\n\nMake sure that the environment is calm and that there is no distraction during the task.
 
-3-back +3 x3=120+ 9seconds. Total time = 129 seconds.\n\n
-
-4+ back — 4 x 3 = 120 + 12 seconds. Total 132 seconds.\n\n
-
-\n\nTraining recommendation\n\n
-Make sure that the environment is calm and that there is no distraction during the task. For
-therapeutic purposes, itis recommended to exercise no less than twice and na more than three
-times a week for 20-30 minutes. Training that is too rare leads to a lack of training success and
-consequently to a loss of motivation. Too long training leads to excessive demands with loss of
-motivation. Exercising too often can lead to habituation and consequently boredom and also to
-a loss of motivation. Nevertheless, decide on a case-by-case basis which workload you trust
-your clients to do, The training time of a unit, once selected, should only be changed in
-exceptional cases to ensure the comparability of the training results, The effective training time,
-ie, how many units are trained, can adapt to the respective performance. An effective training
-time over half an hour can eg. to be staggered\n\n
-
-
-10min + 10min + 10min or 15min + 15min\n\n
-
-In both cases, effective training time is half an hour. The break between the units allows the test
-subjects to regenerate. Decide on a case-by-case basis how long this break is. For individual
-and private training purposes, you can train as often and as long as your stamina and
-motivation allow. Please also note the time you have chosen ance, over the length of the units,
-if possible, only change in exceptional cases\n\n
-
-        About the program\n\n
-
-The n-back program was first introduced in 1958. In 2008, a study was carried out at the
-University of Cognitive Sciences in Bern (Switzerland) using this program. In this study, it was
-shown for the first time that the so-called fluid intelligence can be trained. Later stucies
-partially confirm this resull, Programming offers a variety of design options, So it is eg, possible
-to write a pragram in which you have to remember the position of the squares and the letters,
-colour, and shape. The dual n-back training is sufficient in its simple form. It is extremely
-demanding and clients often has to overcome to start training, Observations in training show
-that a multitude of options also offers a multitude of possibilities for distraction. With
-humerous options, this means that the clients often try out new options instead of working
-consistently with the settings that they have been started with, To exclude this from the outset,
-this program is reduced to the minimum of setting options\n\n
-
-Please donate.\n\n
-
-notorein@gmail.de</string>
+</string>
 
 
 </resources>

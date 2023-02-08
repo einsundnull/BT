@@ -324,8 +324,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         mLoadAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation arg0) {
-//                activity_main_layout.setAlpha(0);
-
                 Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
                 try {
                     Thread.sleep(50);
@@ -335,9 +333,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 for (int i = 0; i < v.length; i++) {
                     v[i].setAlpha(0);
                 }
-
                 startActivity(intent);
-
+                finish();
             }
 
             @Override
@@ -1145,6 +1142,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //            finish();
 //            txtVwMiddle.setTextSize(32f);
 //            txtVwMiddle.setText(Strings.goodJob);
+
             setFadeOutAnimation(views);
 //            Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
 //            startActivity(intent);
@@ -1336,7 +1334,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         negative = (Button) dialog.findViewById(R.id.btn_negative);
         negative.setOnClickListener(c -> {
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
-            setFadeOutAnimation(views);
             dialog.hide();
             btnPosition.setEnabled(false);
             btnAudio.setEnabled(false);
@@ -1348,12 +1345,12 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 timerTrial.onFinish();
                 timerClock.onFinish();
             }
-            dialog.cancel();
+
+            setFadeOutAnimation(views);
         });
         positive.setOnClickListener(c -> {
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
             paused = true;
-            dialog.cancel();
         });
         dialog.show();
     }
