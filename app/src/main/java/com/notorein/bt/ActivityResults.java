@@ -94,7 +94,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         mAdView = layout.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        loadInterstitialAd(adRequest);
+//        loadInterstitialAd(adRequest);
 
         activity_results_layout = findViewById(R.id.activity_results_layout);
         setting_button_result_screen = findViewById(R.id.setting_button_result_screen);
@@ -534,30 +534,35 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
             activity_results_layout.removeAllViews();
             setDivider();
             addResultLines();
+            FileLogicSettings.saveSettings(ActivityResults.this);
         });
         two.setOnClickListener(c -> {
             SessionParameters.showNBackInResults = two.isChecked();
             activity_results_layout.removeAllViews();
             setDivider();
             addResultLines();
+            FileLogicSettings.saveSettings(ActivityResults.this);
         });
         three.setOnClickListener(c -> {
             showDayInResults = three.isChecked();
             activity_results_layout.removeAllViews();
             setDivider();
             addResultLines();
+            FileLogicSettings.saveSettings(ActivityResults.this);
         });
         four.setOnClickListener(c -> {
             showSessionInResults = four.isChecked();
             activity_results_layout.removeAllViews();
             setDivider();
             addResultLines();
+            FileLogicSettings.saveSettings(ActivityResults.this);
         });
         five.setOnClickListener(c -> {
             showTrialInResults = five.isChecked();
             activity_results_layout.removeAllViews();
             setDivider();
             addResultLines();
+            FileLogicSettings.saveSettings(ActivityResults.this);
         });
 
         one.setChecked(SessionParameters.showPercentageInResults);

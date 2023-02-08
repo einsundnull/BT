@@ -59,17 +59,16 @@ public class FileLogicSettings {
                     SessionParameters.customSquareSize = Float.parseFloat(scn.next());
                     scn.next();
                     SessionParameters.showGrid = Boolean.parseBoolean(scn.next());
-
-
-//                        SessionParameters.showPercentageInResults = Boolean.parseBoolean(scn.next());
-//                        scn.next();
-//                        SessionParameters.showNBackInResults = Boolean.parseBoolean(scn.next());
-//                        scn.next();
-//                        SessionParameters.showDayInResults = Boolean.parseBoolean(scn.next());
-//                        scn.next();
-//                        SessionParameters.showSessionInResults = Boolean.parseBoolean(scn.next());
-//                        scn.next();
-//                        SessionParameters.showTrialInResults = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.showPercentageInResults = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.showNBackInResults = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.showDayInResults = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.showSessionInResults = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.showTrialInResults = Boolean.parseBoolean(scn.next());
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -120,14 +119,12 @@ public class FileLogicSettings {
                         "squareDefaultColorIndex\t" + SessionParameters.squareDefaultColorIndex + "\n" +
                         "darkModeTraining\t" + SessionParameters.darkModeTraining + "\n" +
                         "customSquareSize\t" + SessionParameters.customSquareSize + "\n"+
-                        "showDividers\t" +  SessionParameters.showGrid;
-
-
-//                        "showPercentageInResults\t" + SessionParameters.showPercentageInResults + "\n" +
-//                        "showNBackInResults\t" + SessionParameters.showNBackInResults + "\n" +
-//                        "showDayInResults\t" + SessionParameters.showDayInResults + "\n" +
-//                        "showSessionInResults\t" + SessionParameters.showSessionInResults + "\n" +
-//                        "showTrialInResults\t" + SessionParameters.showTrialInResults;
+                        "showDividers\t" +  SessionParameters.showGrid + "\n"+
+                        "showPercentageInResults\t" + SessionParameters.showPercentageInResults + "\n" +
+                        "showNBackInResults\t" + SessionParameters.showNBackInResults + "\n" +
+                        "showDayInResults\t" + SessionParameters.showDayInResults + "\n" +
+                        "showSessionInResults\t" + SessionParameters.showSessionInResults + "\n" +
+                        "showTrialInResults\t" + SessionParameters.showTrialInResults;
 
         return temp;
     }

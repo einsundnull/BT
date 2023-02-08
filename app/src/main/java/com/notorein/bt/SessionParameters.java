@@ -51,7 +51,7 @@ public class SessionParameters {
     public static double increaseThreshold = 0.85;
 
     // Duration
-    public static int duration = 2;
+    public static int duration = 7;
     public static int MAX_PRESENT_DEFAULT = 33;
     public static int maxPresentations = 22;
     public static int nBackBegin = 1;
@@ -171,8 +171,8 @@ public class SessionParameters {
     public static int resultLineColorIndex = 0;
     public static boolean showPercentageInResults = true;
     public static boolean showNBackInResults = false;
-    public static boolean showTrialInResults = true;
-    public static boolean showDayInResults = true;
+    public static boolean showTrialInResults = false;
+    public static boolean showDayInResults = false;
     public static boolean showSessionInResults = true;
     public static boolean orientationWasChangedDuringTraining;
     public static boolean darkModeTraining;
