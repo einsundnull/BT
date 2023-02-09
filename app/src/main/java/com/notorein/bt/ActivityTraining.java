@@ -283,7 +283,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 ////            btnColor.setAlpha(0.1f);
 //        }
         txtVwnBackLevelInfo.setText(String.valueOf(nBack));
-
+        setIntervalText();
     }
 
     private void setSquareSize() {
@@ -539,7 +539,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         btnFade = (ImageView) findViewById(R.id.button_click_training_fade);
         txtVwMiddle = (TextView) findViewById(R.id.txtVwMiddle);
         txtVwInterval = (TextView) findViewById(R.id.txtVwInterval);
-        txtVwInterval.setVisibility(INVISIBLE);
+//        txtVwInterval.setVisibility(INVISIBLE);
         infoTxt = (TextView) findViewById(R.id.infoTxt);
 
         dividerVertical1 = findViewById(R.id.dividerVertical1);
@@ -565,14 +565,14 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         // Here it is decided which elements are included in the fade in transition at the beginning of the Session.
         if (includePosition) {
             List<View> viewsList = Arrays.asList(btnPosition, btnPositionII, btnAudio, btnAudioII, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid, btnFade,
-                    txtVwMiddle, infoTxt, txtVwnBackLevelInfo);
+                    txtVwMiddle, infoTxt, txtVwInterval, txtVwnBackLevelInfo);
             if (showGrid) {
 //                viewsList.addAll(Arrays.asList(dividerVertical1, dividerVertical2, dividerHorizontal1, dividerHorizontal2));
             }
             views = viewsList.toArray(new View[0]);
         } else {
             views = new View[]{btnPosition, btnPositionII, btnAudio, btnAudioII, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid, btnFade,
-                    txtVwMiddle, infoTxt,
+                    txtVwMiddle, infoTxt,txtVwInterval,
                     squares.get(4), txtVwnBackLevelInfo};
         }
     }
@@ -1151,6 +1151,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         btnSize.setVisibility(visibility);
         btnGrid.setVisibility(visibility);
         btnFade.setVisibility(visibility);
+        txtVwInterval.setVisibility(visibility);
     }
 
 
@@ -1420,10 +1421,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         if (v.getId() == R.id.buttonPosition2) {
             //-
             speedPercentage = speedPercentage + 0.05;
-            if (speedPercentage >= 2) {
-                speedPercentage = 2;
-            }
-            countDownInterval = countDownIntervalDefault * speedPercentage;
+            setIntervalText();
             fadeInterval = (long) (countDownInterval / squareFadeDuration);
             if (timerTrial != null) {
                 timerTrial.cancel();
@@ -1434,7 +1432,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //                FileLogicSettings.saveSettings(this);
             }
             txtVwInterval.setVisibility(VISIBLE);
-            txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval +Strings.changeIntervalInfoTextII);
+
         }
         if (v.getId() == R.id.buttonAudio2) {
             //+
@@ -1444,17 +1442,14 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //                FileLogicSettings.saveSettings(this);
             }
             speedPercentage = speedPercentage - 0.05;
-            if (speedPercentage <= 0.5) {
-                speedPercentage = 0.5;
-            }
-            countDownInterval = countDownIntervalDefault * speedPercentage;
+            setIntervalText();
             fadeInterval = (long) (countDownInterval / squareFadeDuration);
             if (timerTrial != null) {
                 timerTrial.cancel();
                 startTrialTimer();
             }
             txtVwInterval.setVisibility(VISIBLE);
-            txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval +Strings.changeIntervalInfoTextII);
+
         }
         if (v.getId() == R.id.buttonColor) {
             colorIsClicked = modeButtonClicked();
@@ -1609,6 +1604,24 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private void setIntervalText() {
+        if (speedPercentage <= 0.25) {
+            speedPercentage = 0.25;
+        }
+        if (speedPercentage >= 2.75) {
+            speedPercentage = 2.75;
+        }
+        countDownInterval = countDownIntervalDefault * speedPercentage;
+        double percentage = countDownIntervalDefault / countDownInterval * 100;
+        int tempPercentage = (int) percentage;
+        percentage = tempPercentage;
+        if(percentage == 99){
+            percentage = 100;
+        }
+        txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII + " (" + (percentage) + "%)");
+//            txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII);
+    }
+
     private void setDividersVisible(boolean changeVisibility) {
         if (changeVisibility) {
             SessionParameters.showGrid = !SessionParameters.showGrid;
@@ -1679,7 +1692,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             btnSize.setAlpha(0.6f);
             btnGrid.setAlpha(0.6f);
             btnFade.setAlpha(0.6f);
-
+            txtVwInterval.setAlpha(0.6f);
             txtVwnBackLevelInfo.setAlpha(0.6f);
             txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color));
 
@@ -1699,7 +1712,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             btnColor.setAlpha(0.3f);
             btnPositionII.setAlpha(0.3f);
             btnAudioII.setAlpha(0.3f);
-
+            txtVwInterval.setAlpha(0.3f);
 //            txtVwMiddle.setAlpha(0.45f);
             txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color_dark));
             txtVwMiddle.setTextColor(getResources().getColor(R.color.training_text_color_dark));
@@ -1721,6 +1734,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             btnSize.setAlpha(0.45f);
             btnGrid.setAlpha(0.45f);
             btnFade.setAlpha(0.45f);
+            txtVwInterval.setAlpha(0.45f);
             txtVwnBackLevelInfo.setAlpha(0.45f);
 
             dividerHorizontal1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
