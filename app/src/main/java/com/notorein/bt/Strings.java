@@ -50,32 +50,93 @@ public class Strings {
     public static String pleaseSaveResultsText = "Please save your results first!\nIf no the last results will be overwritten!";
     public static String dismissResults = "Dismiss Results";
     public static String goBackAndStore = "Go Back And Store";
-    public static String sound_click_training_off= "Button Click Sound Is Off";
+    public static String sound_click_training_off = "Button Click Sound Is Off";
     public static String sound_click_training_on = "Button Click Sound Is On";
-    public static String changeSquareSizeText = "Tap square to accept new size";
-    public static String changeSquareColorText = "Tap square to accept new color";
+    public static String changeIntervalText = "Tap the + or - button to change interval";
+    public static String changeIntervalInfoText = "Interval: ";
+    public static String changeIntervalInfoTextII = "ms";
+    public static String changeFadeIntervalText = "Tap the + or - button to change fade interval";
+
+    public static String changedFadeIntervalText = "Fade interval: ";
+    public static String changeSquareSizeText = "Tap the + or - button to change size";
+    public static String changeSquareColorText = "Tap a square to chose a new color";
     public static String showGridTextYes = "Show Grid";
     public static String showGridTextNo = "Hide Grid";
-    public static String fadeTextYes = "Squares will be appear slowly";
-    public static String fadeTextNo= "Squares will be appear immediately";
-    public static String zemModeToastText = "Zen Mode Is Active: " ;
+    public static String fadeTextYes = "Squares will be fade in";
+    public static String fadeTextNo = "Squares will be appear immediately";
+    public static String zemModeToastText = "Zen Mode Is Active: ";
     public static String zenModeSlow = " and calm";
 
 
     public static String showPercentageInResults = "Show Percentage";
-    public static String showNBackInResults= "Show n-Back Level";
-    public static String showDayInResults= "Show Summary Day";
-    public static String showSessionInResults= "Show Summary Session";
-    public static String showTrialInResults= "Show Summary All Trials";
+    public static String showNBackInResults = "Show n-Back Level";
+    public static String showDayInResults = "Show Summary Day";
+    public static String showSessionInResults = "Show Summary Session";
+    public static String showTrialInResults = "Show Summary All Trials";
     public static String settingsText = "Settings";
-    public static String adReminderTextI = "You have used the app ";
-    public static String adReminderTextII = " times without ads. Please consider to turn on" +
-            " your internet connection when using the app." +
-            " Advertisement is often the only way for developers to get" +
-            " any reward for their work." +
-            " By turning on the internet you can support us.\n\n" +
-            "Thank you very much! ";
+    public static String adReminderTextI = "Dear valued user, we hope you have enjoyed using our app on ";
+    public static String adReminderTextII = " ad-free occasions. " +
+            "You can continue to use this app for free. This is just a reminder." +
+            " To continue supporting our development efforts, " +
+            "we kindly request that you turn on your internet " +
+            "connection when using the app. This is because advertisements " +
+            "are a crucial source of income for us developers and enable us to keep " +
+            "improving and providing the best possible experience for you. " +
+            "Your support means a lot to us, and we thank you in advance.\n\nSincerely, The Developers.";
     public static String adReminderTextIII = "Okay! I got that!";
+    public static String recommendationsTextHeader = "Training Recommendations";
+    public static String recommendationsText = "\n" +
+            "\n" +
+            "For optimal results, we recommend the following settings:\n\n" +
+            "-------------------------------------------------------------------------\n" +
+            "1. N-Back Level: Adjust according to your progress. Begin at level 1. As you becomming increasingly better" +
+            " start at level 2 and so on. Start at a level that feels convenient for you to start with.\n" +
+            "\n" +
+            "2. Duration: High efficiency has been observed with sessions lasting 15 to 20 minutes (7 " +
+            "to 10 trials). If you have not developed the stamina to focus for longer split you training." +
+            " One twenty minutes session can be split into two ten minute sessions." +
+            "\n\n" +
+            "3. Mode: The Position + Sound task without fading squares is highly recommended.\n" +
+            "\n" +
+            "4. Consistency: Once you decided for one training mode for your personal training, stick to the same settings.\n" +
+            "\n" +
+            "5. Frequency: Train for a minimum of 15 to 20 minutes each day, three to four times a week, for at least three months.\n" +
+            "-------------------------------------------------------------------------" +
+            "\n" +
+            "\n" +
+            "It is important to approach this training in a calm and relaxed environment with a serious mindset, rather than treating it as a game. " +
+            "The training can be challenging and may require a lot of focus and patience, but the results will be worth it. " +
+            "If you lose focus during a session, don't give up and hit the \"Exit\" button. " +
+            "Instead, try to keep memorizing, even if you make mistakes and drop to a lower level. " +
+            "This will help to train your stamina. Don't be discouraged if your performance decreases at first. " +
+            "The goal is to do the training consistently, rather than focusing solely on the statistics. " +
+            "Over time, you will see improvements in your everyday life as a result of your efforts.";
+    public static String aboutTextHeader = "Revised Program Sequence";
+    public static String aboutText = "\n" +
+            "\n" +
+            "The program sequence requires a minimum duration of 120 seconds. Every two seconds, a square appears and one of eight letters can be heard. A minimum of 33 squares and 33 letters will be presented during each run. The program contains a randomly set number of matches.\n" +
+            "\n" +
+            "To ensure accuracy, it's important to remember the following:\n" +
+            "\n" +
+            "If a match occurs and the corresponding key is not pressed, it will be considered incorrect.\n\n" +
+            "If a key is pressed without a match, it will also be considered incorrect.\n\n" +
+            "If a match occurs and the corresponding key is pressed, it will be considered correct.\n\n" +
+            "If there is no match and no key is pressed, it will also be considered correct.\n\n" +
+            "\n" +
+            "The program will increase the level if at least 85% of the visual and auditory components are rated as correct. If less than 70% of either the auditory or visual components are rated as correct, the program will lower the level. If the correct answer rate falls between 70% and 85%, the level of difficulty will remain unchanged.\n" +
+            "\n" +
+            "To maintain a constant probability of possible matches, the training time will be adjusted by\n" +
+            "3 * n-back seconds with each level increase.\n" +
+            "\n" +
+            "For example:\n" +
+            "\n" +
+            "When n = 3, the total training time will be 129 seconds (120 + 3*3 seconds).\n\n" +
+            "When n = 4, the total training time will be 132 seconds (120 + 3*4 seconds).\n" +
+            "\n" +
+            "Training Recommendation:\n\n" +
+            "For optimal results, it's recommended to create a calm and distraction-free environment during the task.";
+    public static String btnManualText = "ABOUT";
+    public static String btnRecommendationsText = "RECOMMENDATIONS";
     //    private static String nextLevel = "Next: ";
 //    private static String endLevel = "Last: ";
     private static String nextLevel = nBackLevel;
@@ -85,6 +146,8 @@ public class Strings {
 
     public static String btnPosText = "Position";
     public static String btnAudText = "Audio";
+    public static String btnPosIIText = "-";
+    public static String btnAudIIText = "+";
     public static String btnColText = "Color";
 
     public static String cross = "+";
@@ -189,7 +252,7 @@ public class Strings {
                         + "\nTimeSession: " + timeSession
                         + "\n\nTrCou: " + trialCounter + "/" + trialsMax
                         + "\nPresScr: " + presentedScreens
-                        + "\nMaxPres: "  + maxPresentations
+                        + "\nMaxPres: " + maxPresentations
                         + "\nShwCnt: " + shownAndCounted
 
                         + "\n\nMtchPos: " + counterMatchesPos

@@ -57,7 +57,7 @@ public class SessionParameters {
     public static int nBackBegin = 1;
     public static int nBack = 1;
     public static int nBackMax = nBackBegin;
-    public static double counterMatchTesholdMin = 0.23;
+    public static double counterMatchTresholdMin = 0.23;
     public static double counterMatchTesholdMax = 0.40;
 
 
@@ -183,6 +183,8 @@ public class SessionParameters {
     public static boolean loadInterstitialAd = true;
     public static int adMissedCounter = 0;
     public static boolean missedAdDialogHasBeenShown;
+    public static boolean returnFromTraining = false;
+    public static boolean openManual;
 
 
 //    String[]  colors = new String[] { "white", "yellow", "chocolate", "green", "rgb(136,163,19)", "rgb(3,211,252)", "blue", "red", "purple","grey","darkgrey" };

@@ -55,13 +55,13 @@
         android:layout_marginTop="36dp"
         android:background="@drawable/custom_button_training"
         android:textColor="@color/buttonTextColor"
-        app:layout_constraintEnd_toEndOf="@+id/buttonSound"
+        app:layout_constraintEnd_toEndOf="@+id/buttonAudio"
 
         app:layout_constraintStart_toStartOf="@+id/buttonPosition"
         app:layout_constraintTop_toBottomOf="@+id/rectContainer" />
 
     <Button
-        android:id="@+id/buttonSound"
+        android:id="@+id/buttonAudio"
         android:layout_width="182dp"
         android:layout_height="140dp"
         android:layout_marginTop="12dp"
@@ -82,6 +82,30 @@
         android:textColor="@color/buttonTextColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonColor" />
+
+    <Button
+        android:id="@+id/buttonPosition2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:alpha="1"
+        android:background="@drawable/custom_button_training"
+        android:textColor="@color/buttonTextColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPosition" />
+
+    <Button
+        android:id="@+id/buttonAudio2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:alpha="1"
+        android:background="@drawable/custom_button_training"
+        android:textColor="@color/buttonTextColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAudio" />
 
     <TextView
         android:id="@+id/infoTxt"
@@ -222,7 +246,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/textViewMiddle"
+            android:id="@+id/txtVwMiddle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center_horizontal|center_vertical"
@@ -287,6 +311,20 @@
         android:background="@drawable/button_training_settings_color"
         app:layout_constraintStart_toEndOf="@+id/button_click_training_mode"
         app:layout_constraintTop_toTopOf="@+id/button_click_training_mode" />
+
+    <TextView
+        android:id="@+id/txtVwInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="176dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="178dp"
+        android:layout_marginBottom="10dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/buttonColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rectContainer" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

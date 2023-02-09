@@ -46,7 +46,7 @@ import static com.notorein.bt.SessionParameters.counterClickedRightAudio;
 import static com.notorein.bt.SessionParameters.counterClickedRightColor;
 import static com.notorein.bt.SessionParameters.counterClickedRightPosition;
 import static com.notorein.bt.SessionParameters.counterMatchTesholdMax;
-import static com.notorein.bt.SessionParameters.counterMatchTesholdMin;
+import static com.notorein.bt.SessionParameters.counterMatchTresholdMin;
 import static com.notorein.bt.SessionParameters.counterMatchesAud;
 import static com.notorein.bt.SessionParameters.counterMatchesCol;
 import static com.notorein.bt.SessionParameters.counterMatchesPos;
@@ -84,7 +84,6 @@ import static com.notorein.bt.SessionParameters.resultScreenIndex;
 import static com.notorein.bt.SessionParameters.scaleDefault;
 import static com.notorein.bt.SessionParameters.scaleNoPos;
 import static com.notorein.bt.SessionParameters.screenShowOrder;
-import static com.notorein.bt.SessionParameters.screenShowOrderTrial;
 import static com.notorein.bt.SessionParameters.sessionWasCanceledEarly;
 import static com.notorein.bt.SessionParameters.setTestValues;
 import static com.notorein.bt.SessionParameters.showGrid;
@@ -103,8 +102,10 @@ import static com.notorein.bt.SessionParameters.trialIndicator;
 import static com.notorein.bt.SessionParameters.trialIsRunning;
 import static com.notorein.bt.SessionParameters.trialsMax;
 import static com.notorein.bt.SessionParameters.zenMode;
+import static com.notorein.bt.Strings.btnAudIIText;
 import static com.notorein.bt.Strings.btnAudText;
 import static com.notorein.bt.Strings.btnColText;
+import static com.notorein.bt.Strings.btnPosIIText;
 import static com.notorein.bt.Strings.btnPosText;
 import static com.notorein.bt.Strings.cross;
 import static com.notorein.bt.Strings.nBackLevel;
@@ -158,12 +159,15 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private CountDownTimer timerClockDeveloper;
     private int screenOrientation;
 
+    private Button btnAudioII;
+    private Button btnPositionII;
     private Button btnPosition;
     private Button btnAudio;
     private Button btnColor;
     private Button btnExit;
 
     private TextView txtVwMiddle;
+    private TextView txtVwInterval;
     public TextView lbl_n_back_Info_Pause;
     public TextView lbl_n_Back;
     public TextView infoTxt;
@@ -218,6 +222,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private Dialog dialog;
     private Activity activity;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -234,7 +239,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         setFullScreen();
         setOrientationListener();
         getViews();
-        setCustomSize(false);
+        setCustomSize(false, 1);
         setModeColors();
         setSquareSize();
         setSounds();
@@ -329,6 +334,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         mLoadAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation arg0) {
+                SessionParameters.returnFromTraining = true;
                 Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
                 try {
                     Thread.sleep(50);
@@ -438,7 +444,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
         if (includePosition) {
             if (zenMode) {
-                setFadeInAnimationSquares(squares.get(shownIndexesPosition.get(presentedScreens)));
+                setFadeInAnimationSquaresForZenMode(squares.get(shownIndexesPosition.get(presentedScreens)));
             } else {
                 try {
                     squares.get(shownIndexesPosition.get(presentedScreens)).setVisibility(VISIBLE);
@@ -519,7 +525,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
 
         btnPosition = (Button) findViewById(R.id.buttonPosition);
-        btnAudio = (Button) findViewById(R.id.buttonSound);
+        btnAudio = (Button) findViewById(R.id.buttonAudio);
+        btnPositionII = (Button) findViewById(R.id.buttonPosition2);
+        btnAudioII = (Button) findViewById(R.id.buttonAudio2);
         btnColor = (Button) findViewById(R.id.buttonColor);
         btnExit = (Button) findViewById(R.id.buttonExit);
         btnSoundOff = (ImageView) findViewById(R.id.button_click_training_sound_off);
@@ -529,7 +537,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         btnSize = (ImageView) findViewById(R.id.button_click_training_size);
         btnGrid = (ImageView) findViewById(R.id.button_click_training_grid);
         btnFade = (ImageView) findViewById(R.id.button_click_training_fade);
-        txtVwMiddle = (TextView) findViewById(R.id.textViewMiddle);
+        txtVwMiddle = (TextView) findViewById(R.id.txtVwMiddle);
+        txtVwInterval = (TextView) findViewById(R.id.txtVwInterval);
+        txtVwInterval.setVisibility(INVISIBLE);
         infoTxt = (TextView) findViewById(R.id.infoTxt);
 
         dividerVertical1 = findViewById(R.id.dividerVertical1);
@@ -554,14 +564,14 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private void includeViewsToFadeInTransition() {
         // Here it is decided which elements are included in the fade in transition at the beginning of the Session.
         if (includePosition) {
-            List<View> viewsList = Arrays.asList(btnPosition, btnAudio, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid, btnFade,
+            List<View> viewsList = Arrays.asList(btnPosition, btnPositionII, btnAudio, btnAudioII, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid, btnFade,
                     txtVwMiddle, infoTxt, txtVwnBackLevelInfo);
             if (showGrid) {
 //                viewsList.addAll(Arrays.asList(dividerVertical1, dividerVertical2, dividerHorizontal1, dividerHorizontal2));
             }
             views = viewsList.toArray(new View[0]);
         } else {
-            views = new View[]{btnPosition, btnAudio, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid, btnFade,
+            views = new View[]{btnPosition, btnPositionII, btnAudio, btnAudioII, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid, btnFade,
                     txtVwMiddle, infoTxt,
                     squares.get(4), txtVwnBackLevelInfo};
         }
@@ -571,6 +581,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private void setTextsToView() {
         btnPosition.setText(btnPosText);
         btnAudio.setText(btnAudText);
+        btnPositionII.setText(btnPosIIText);
+        btnAudioII.setText(btnAudIIText);
         btnColor.setText(btnColText);
         txtVwMiddle.setText(cross);
     }
@@ -589,6 +601,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private void setOnClickListenersToUiElements() {
         btnPosition.setOnClickListener(this);
         btnAudio.setOnClickListener(this);
+        btnPositionII.setOnClickListener(this);
+        btnAudioII.setOnClickListener(this);
         btnColor.setOnClickListener(this);
         btnExit.setOnClickListener(this);
         squares.get(4).setOnClickListener(this);
@@ -611,7 +625,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         getTrialIndicator();
         // The nBack >= 3 statement adapts the number of possible matches in order to give a better training experience
         double add = nBack >= 3 ? (nBack * 0.008) : 0;
-        counterMatchTesholdMin = nBack >= 3 ? 0.27 + add : 0.23;
+        counterMatchTresholdMin = nBack >= 3 ? 0.27 + add : 0.23;
         counterMatchTesholdMax = nBack >= 3 ? 0.40 + add : 0.40;
 //    SessionParameters.counterMatchTesholdMin = 0.26;
 //    SessionParameters.counterMatchTesholdMax = 0.48;
@@ -1063,7 +1077,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             String indicator = getTrialIndicator();
             setDividersVisibleAddaptToMode(INVISIBLE);
             btnExit.setVisibility(VISIBLE);
-
             txtVwMiddle.setText(Strings.pause + "\n\n" + nBack + nBackLevel + "\n\n" + pressButtonToC + "\n\n" + indicator);
             txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
             for (int i = 0; i < squares.size(); i++) {
@@ -1128,6 +1141,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
 
     private void setSettingsButtonVisibility(int visibility) {
+        btnPositionII.setVisibility(visibility);
+        btnAudioII.setVisibility(visibility);
         btnExit.setVisibility(visibility);
         btnSoundOff.setVisibility(visibility);
         btnOrientation.setVisibility(visibility);
@@ -1155,6 +1170,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             dialog.hide();
             btnPosition.setEnabled(false);
             btnAudio.setEnabled(false);
+            btnPositionII.setEnabled(false);
+            btnAudioII.setEnabled(false);
             btnColor.setEnabled(false);
             btnExit.setEnabled(false);
             sessionWasCanceledEarly = true;
@@ -1290,7 +1307,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void setFadeInAnimationSquares(View v) {
+    private void setFadeInAnimationSquaresForZenMode(View v) {
 
 
         Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
@@ -1387,9 +1404,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private void squaresOnClickLogic(int i) {
         if (allowToChangeColorStyle) {
             squareDefaultColorIndex = i;
+            changeSquaresStandardColor(true);
         }
-        setColorAndInvisible();
-        changeSquaresStandardColor(true);
     }
 
 
@@ -1398,8 +1414,47 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         if (v.getId() == R.id.buttonPosition) {
             positionIsClicked = modeButtonClicked();
         }
-        if (v.getId() == R.id.buttonSound) {
+        if (v.getId() == R.id.buttonAudio) {
             audioIsClicked = modeButtonClicked();
+        }
+        if (v.getId() == R.id.buttonPosition2) {
+            //-
+            speedPercentage = speedPercentage + 0.05;
+            if (speedPercentage >= 2) {
+                speedPercentage = 2;
+            }
+            countDownInterval = countDownIntervalDefault * speedPercentage;
+            fadeInterval = (long) (countDownInterval / squareFadeDuration);
+            if (timerTrial != null) {
+                timerTrial.cancel();
+                startTrialTimer();
+            }
+            if (SessionParameters.allowToChangeSquareSize) {
+//                setCustomSize(true, 1);
+//                FileLogicSettings.saveSettings(this);
+            }
+            txtVwInterval.setVisibility(VISIBLE);
+            txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval +Strings.changeIntervalInfoTextII);
+        }
+        if (v.getId() == R.id.buttonAudio2) {
+            //+
+            if (SessionParameters.allowToChangeSquareSize) {
+
+//                setCustomSize(true, -1);
+//                FileLogicSettings.saveSettings(this);
+            }
+            speedPercentage = speedPercentage - 0.05;
+            if (speedPercentage <= 0.5) {
+                speedPercentage = 0.5;
+            }
+            countDownInterval = countDownIntervalDefault * speedPercentage;
+            fadeInterval = (long) (countDownInterval / squareFadeDuration);
+            if (timerTrial != null) {
+                timerTrial.cancel();
+                startTrialTimer();
+            }
+            txtVwInterval.setVisibility(VISIBLE);
+            txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval +Strings.changeIntervalInfoTextII);
         }
         if (v.getId() == R.id.buttonColor) {
             colorIsClicked = modeButtonClicked();
@@ -1457,7 +1512,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                     } catch (Exception e) {
                         // Handle error
                     }
-                    Toast.makeText(this, Strings.changeSquareColorText, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, Strings.changeSquareColorText, Toast.LENGTH_LONG).show();
                 } else {
                     try {
                         SessionParameters.allowToChangeColorStyle = false;
@@ -1487,7 +1542,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 SessionParameters.allowToChangeSquareSize = true;
                 Toast.makeText(this, Strings.changeSquareSizeText, Toast.LENGTH_SHORT).show();
             } else {
-                setCustomSize(true);
+                setColorAndInvisible();
+                setCustomSize(true, 1);
                 FileLogicSettings.saveSettings(this);
             }
         }
@@ -1519,7 +1575,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             }
             FileLogicSettings.saveSettings(this);
         }
-        if (v.getId() == R.id.textViewMiddle) {
+        if (v.getId() == R.id.txtVwMiddle) {
             setPausedFromMiddle();
 
         }
@@ -1596,34 +1652,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
-//    private void styleButtonLogic() {
-//        if (SessionParameters.allowToChangeColorStyle == true) {
-//            SessionParameters.allowToChangeColorStyle = false;
-//            changeSquaresStandardColor(true);
-//            FileLogicSettings.saveSettings(this);
-//            for (int i = 0; i < squares.size(); i++) {
-//                if (i != 4) {
-////                    squares.get(i).setBackgroundColor(getResources().getColor(colors[i]));
-//                    squares.get(i).setVisibility(INVISIBLE);
-//                }
-//            }
-//        } else {
-//            try {
-//                for (int i = 0; i < squares.size(); i++) {
-//                    if (i != 4) {
-////                        squares.get(i).setBackgroundColor(getResources().getColor(colors[i]));
-//                        squares.get(i).setVisibility(VISIBLE);
-//                    }
-//                }
-//
-//            } catch (Exception e) {
-//
-//            }
-//            SessionParameters.allowToChangeColorStyle = true;
-//
-//        }
-//    }
-
     private void setModeColors() {
         if (!darkModeTraining) {
             layout_training.setBackground(getResources().getDrawable(R.drawable.training_background));
@@ -1640,6 +1668,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             btnPosition.setAlpha(0.8f);
             btnAudio.setAlpha(0.8f);
             btnColor.setAlpha(0.8f);
+            btnPositionII.setAlpha(0.8f);
+            btnAudioII.setAlpha(0.8f);
 
             btnExit.setAlpha(0.6f);
             btnMode.setAlpha(0.6f);
@@ -1667,7 +1697,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             btnPosition.setAlpha(0.3f);
             btnAudio.setAlpha(0.3f);
             btnColor.setAlpha(0.3f);
-
+            btnPositionII.setAlpha(0.3f);
+            btnAudioII.setAlpha(0.3f);
 
 //            txtVwMiddle.setAlpha(0.45f);
             txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color_dark));
@@ -1734,11 +1765,14 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //        }
 //    }
 
-    private void setCustomSize(boolean changeSize) {
+    private void setCustomSize(boolean changeSize, int pos) {
         if (changeSize) {
-            SessionParameters.customSquareSize = SessionParameters.customSquareSize - 0.1f;
-            if (SessionParameters.customSquareSize <= 0.1) {
-                SessionParameters.customSquareSize = 1;
+            SessionParameters.customSquareSize = SessionParameters.customSquareSize - 0.05f * pos;
+            if (SessionParameters.customSquareSize <= 0.1f) {
+                SessionParameters.customSquareSize = 0.1f;
+            }
+            if (SessionParameters.customSquareSize > 0.99f) {
+                SessionParameters.customSquareSize = 1f;
             }
         }
         setSquareSize();

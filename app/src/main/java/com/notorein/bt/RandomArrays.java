@@ -7,7 +7,7 @@ import static com.notorein.bt.RepeatStorage.shownIndexesAudio;
 import static com.notorein.bt.RepeatStorage.shownIndexesColor;
 import static com.notorein.bt.RepeatStorage.shownIndexesPosition;
 import static com.notorein.bt.SessionParameters.counterMatchTesholdMax;
-import static com.notorein.bt.SessionParameters.counterMatchTesholdMin;
+import static com.notorein.bt.SessionParameters.counterMatchTresholdMin;
 import static com.notorein.bt.SessionParameters.counterMatchesAud;
 import static com.notorein.bt.SessionParameters.counterMatchesCol;
 import static com.notorein.bt.SessionParameters.counterMatchesPos;
@@ -132,11 +132,11 @@ public class RandomArrays {
         shownIndexesPosition = precalculateRandom();
         matchesPosition = precalculateMatches(shownIndexesPosition, nBack, 0);
         if (SessionParameters.increaseNumberOfMatches) {
-            while (counterMatchesPos < (maxPresentations * counterMatchTesholdMin)) {
+            while (counterMatchesPos < (maxPresentations * counterMatchTresholdMin)) {
                 shownIndexesPosition = increaseNumberOfMatches(shownIndexesPosition, 0);
                 matchesPosition = precalculateMatches(shownIndexesPosition, nBack, 0);
             }
-            while (counterMatchesPos < (maxPresentations * counterMatchTesholdMin) || counterMatchesPos > (maxPresentations * counterMatchTesholdMax)) {
+            while (counterMatchesPos < (maxPresentations * counterMatchTresholdMin) || counterMatchesPos > (maxPresentations * counterMatchTesholdMax)) {
                 precalculateRandomPosition();
             }
         }
@@ -148,11 +148,11 @@ public class RandomArrays {
         shownIndexesAudio = precalculateRandom();
         matchesAudio = precalculateMatches(shownIndexesAudio, nBack, 1);
         if (SessionParameters.increaseNumberOfMatches) {
-            while (counterMatchesAud < (maxPresentations * counterMatchTesholdMin)) {
+            while (counterMatchesAud < (maxPresentations * counterMatchTresholdMin)) {
                 shownIndexesAudio = increaseNumberOfMatches(shownIndexesAudio, 1);
                 matchesAudio = precalculateMatches(shownIndexesAudio, nBack, 1);
             }
-            while (counterMatchesAud < (maxPresentations * counterMatchTesholdMin) || counterMatchesAud > (maxPresentations * counterMatchTesholdMax)) {
+            while (counterMatchesAud < (maxPresentations * counterMatchTresholdMin) || counterMatchesAud > (maxPresentations * counterMatchTesholdMax)) {
                 precalculateRandomAudio();
             }
         }
@@ -164,11 +164,11 @@ public class RandomArrays {
         shownIndexesColor = precalculateRandom();
         matchesColor = precalculateMatches(shownIndexesColor, nBack, 2);
         if (SessionParameters.increaseNumberOfMatches) {
-            while (counterMatchesCol < (maxPresentations * counterMatchTesholdMin)) {
+            while (counterMatchesCol < (maxPresentations * counterMatchTresholdMin)) {
                 shownIndexesColor = increaseNumberOfMatches(shownIndexesColor, 2);
                 matchesColor = precalculateMatches(shownIndexesColor, nBack, 2);
             }
-            while (counterMatchesCol < (maxPresentations * counterMatchTesholdMin) || counterMatchesCol > (maxPresentations * counterMatchTesholdMax)) {
+            while (counterMatchesCol < (maxPresentations * counterMatchTresholdMin) || counterMatchesCol > (maxPresentations * counterMatchTesholdMax)) {
                 precalculateRandomColor();
             }
         }

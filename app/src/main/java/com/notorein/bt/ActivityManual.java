@@ -12,13 +12,13 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
-public class ActivityAbout extends AppCompatActivity {
+public class ActivityManual extends AppCompatActivity {
     private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about_layout);
+        setContentView(R.layout.activity_manual_layout);
         TextView textView = findViewById(R.id.textView);
         TextView textView2 = findViewById(R.id.textView2);
         textView.setBackground(getResources().getDrawable(R.drawable.alert_background));

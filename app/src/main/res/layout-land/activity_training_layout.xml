@@ -10,6 +10,19 @@
     tools:context=".ActivityTraining">
 
 
+    <TextView
+        android:id="@+id/txtVwInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="176dp"
+        android:layout_marginTop="-7dp"
+        android:layout_marginEnd="178dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rectContainer" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rectContainer"
         android:layout_width="wrap_content"
@@ -137,7 +150,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/textViewMiddle"
+            android:id="@+id/txtVwMiddle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center_horizontal|center_vertical"
@@ -155,7 +168,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/buttonSound"
+        android:id="@+id/buttonAudio"
         android:layout_width="154dp"
         android:layout_height="0dp"
 
@@ -178,9 +191,9 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/custom_button_training"
         android:textColor="@color/buttonTextColor"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSound"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAudio"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/buttonSound"
+        app:layout_constraintStart_toStartOf="@+id/buttonAudio"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -297,5 +310,28 @@
         android:background="@drawable/button_training_settings_fade_false"
         app:layout_constraintStart_toStartOf="@+id/button_click_training_grid"
         app:layout_constraintTop_toBottomOf="@+id/button_click_training_grid" />
+
+    <Button
+        android:id="@+id/buttonPosition2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="32dp"
+        android:alpha="1"
+        android:background="@drawable/custom_button_training"
+        android:textColor="@color/buttonTextColor"
+        app:layout_constraintEnd_toEndOf="@+id/buttonAudio2"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAudio2" />
+
+    <Button
+        android:id="@+id/buttonAudio2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:alpha="1"
+        android:background="@drawable/custom_button_training"
+        android:textColor="@color/buttonTextColor"
+        app:layout_constraintEnd_toStartOf="@+id/buttonColor"
+        app:layout_constraintTop_toBottomOf="@+id/buttonExit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
