@@ -107,7 +107,6 @@ import static com.notorein.bt.Strings.btnAudText;
 import static com.notorein.bt.Strings.btnColText;
 import static com.notorein.bt.Strings.btnPosText;
 import static com.notorein.bt.Strings.cross;
-import static com.notorein.bt.Strings.finish;
 import static com.notorein.bt.Strings.nBackLevel;
 import static com.notorein.bt.Strings.pressButtonToC;
 import static com.notorein.bt.Strings.pressButtonToS;
@@ -503,30 +502,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
 
-//    private void prepareOtherStuff() {
-////        activity_main_layout.setBackgroundColor(Color.BLACK);
-//        for (int i = 0; i < squares.size(); i++) {
-//            squares.get(i).setVisibility(View.INVISIBLE);
-//        }
-//
-//        squares.get(4).setVisibility(View.INVISIBLE);/**/
-//        if (!playButtonSoundDuringTraining) {
-//            if (darkModeTraining) {
-//                btnSoundOff.setImageDrawable(getResources().getDrawable(R.drawable.button_training_settings_sound_off_dark));
-//            } else {
-//                btnSoundOff.setImageDrawable(getResources().getDrawable(R.drawable.button_training_settings_sound_off));
-//            }
-//        } else {
-//            if (darkModeTraining) {
-//                btnSoundOff.setImageDrawable(getResources().getDrawable(R.drawable.button_training_settings_sound_on_dark));
-//            } else {
-//                btnSoundOff.setImageDrawable(getResources().getDrawable(R.drawable.button_training_settings_sound_on));
-//            }
-//        }
-//
-//    }
-
-
     private void getViews() {
         layout_training = (ConstraintLayout) findViewById(R.id.activity_main_layout);
         rectContainer = (ConstraintLayout) findViewById(R.id.rectContainer);
@@ -579,36 +554,19 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private void includeViewsToFadeInTransition() {
         // Here it is decided which elements are included in the fade in transition at the beginning of the Session.
         if (includePosition) {
-            List<View> viewsList = Arrays.asList(btnPosition, btnAudio, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid,
+            List<View> viewsList = Arrays.asList(btnPosition, btnAudio, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid, btnFade,
                     txtVwMiddle, infoTxt, txtVwnBackLevelInfo);
             if (showGrid) {
 //                viewsList.addAll(Arrays.asList(dividerVertical1, dividerVertical2, dividerHorizontal1, dividerHorizontal2));
             }
             views = viewsList.toArray(new View[0]);
         } else {
-            views = new View[]{btnPosition, btnAudio, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid,
+            views = new View[]{btnPosition, btnAudio, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid, btnFade,
                     txtVwMiddle, infoTxt,
                     squares.get(4), txtVwnBackLevelInfo};
         }
     }
 
-
-//    private void includeViewsToFadeInTransition() {
-//        // Here it is decided which elements are included in the fade in transition at the beginning of the Session.
-//        if (includePosition) {
-//            if (showGrid) {
-//                views = new View[]{btnPosition, btnAudio, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid,
-//                        txtVwMiddle, infoTxt, dividerVertical1, dividerVertical2, dividerHorizontal1, dividerHorizontal2, txtVwnBackLevelInfo};
-//            } else {
-//                views = new View[]{btnPosition, btnAudio, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid,
-//                        txtVwMiddle, infoTxt, txtVwnBackLevelInfo};
-//            }
-//        } else {
-//            views = new View[]{btnPosition, btnAudio, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid,
-//                    txtVwMiddle, infoTxt,
-//                    squares.get(4), txtVwnBackLevelInfo};
-//        }
-//    }
 
     private void setTextsToView() {
         btnPosition.setText(btnPosText);
@@ -678,45 +636,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
 
-//    private void setTrialIndexes() {
-//        trialIsRunning = true;
-//        paused = false;
-//        maxPresentations = MAX_PRESENT_DEFAULT + nBack;
-//        // This is only the █  ▄  ▄  ▄  field on the training screen
-//        getTrialIndicator();
-//        // The nBack >= 3 statement adapts the number of possible matches in order to give a better training experience
-//        if (nBack >= 3) {
-//            double add = (nBack * 0.008);
-//            counterMatchTesholdMin = 0.27 + add;
-//            counterMatchTesholdMax = 0.40 + add;
-////            SessionParameters.counterMatchTesholdMin = 0.26;
-////            SessionParameters.counterMatchTesholdMax = 0.48;
-//        } else {
-//            counterMatchTesholdMin = 0.23;
-//            counterMatchTesholdMax = 0.40;
-//        }
-//        if (includePosition) {
-//            RandomArrays.precalculateRandomPosition();
-//        }
-//        if (includeAudio) {
-//            RandomArrays.precalculateRandomAudio();
-//        }
-//        if (includeColor) {
-//            RandomArrays.precalculateRandomColor();
-//        }
-//
-//
-//        if (includePosition && !includeColor) {
-//            setDividersVisibleAddaptToMode(VISIBLE);
-//            setDividersVisibleAddaptToMode();
-//        }
-//        if (!includePosition && includeColor) {
-//            setDividersVisibleAddaptToMode(INVISIBLE);
-//            setDividersVisibleAddaptToMode();
-//        }
-//
-//    }
-
     private void playAudio(int index) {
         appSounds.play(trainingSound[index], 1, 0, 0, 0, 1);
     }
@@ -766,34 +685,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
 
-//    private void startTrial() {
-//        txtVwnBackLevelInfo.setText("" + nBack);
-//        txtVwMiddle.setText(cross);
-//        txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
-//        endOfTrial = false;
-//        setSettingsButtonVisibility(INVISIBLE);
-//
-//        if (includePosition) {
-//            for (int n = 0; n < squares.size(); n++) {
-//                squares.get(n).setVisibility(View.INVISIBLE);
-//            }
-//        }
-//
-//        resetTrialCounters();
-//        setTrialIndexes();
-//
-//
-//        if ((includePosition && !includeColor) || (includePosition && includeColor)) {
-//            setDividersVisibleAddaptToMode(VISIBLE);
-//        }
-//        if (trialCounter > 0) {
-//            timeTrial = RepeatStorage.getStartTime();
-////            SessionParameters.dayStartTrial = RepeatStorage.getDay();
-//        }
-//        startClockTimer();
-//        startTrialTimer();
-//    }
-
     private void startTrialTimer() {
 
         timerTrial = new CountDownTimer(durationSessionTimer, (long) countDownInterval) {
@@ -839,7 +730,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onFinish() {
-//                processInputClicksDuringTrial();
                 storeTrialResults();
                 trialIsRunning = false;
                 endOfTrial = false;
@@ -899,12 +789,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
 
     private void setDividersVisibleAddaptToMode(int visible) {
-
         dividerVertical1.setVisibility(visible);
         dividerVertical2.setVisibility(visible);
         dividerHorizontal1.setVisibility(visible);
         dividerHorizontal2.setVisibility(visible);
-
     }
 
     private void setDividersVisibleAddaptToMode() {
@@ -981,7 +869,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         percentageTrialColor = 0;
         //These lines make sure that the percentage will be displayed correctly when the culmulatedString is
         //set the first time.
-
 
         if (pos && aud && col) {
             countPosAtEndOfTrial();
@@ -1167,49 +1054,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         return clicked;
     }
 
-//    private boolean modeButtonClicked() {
-//        boolean clicked = false;
-//        if (playButtonSoundDuringTraining) {
-//            appSounds.play(buttonSound, 1, 1, 1, 0, 1);
-//        }
-//        if (!paused && trialIsRunning) {
-////            btnPosition.setText("click allowed");
-//            clicked = true;
-//        } else {
-////            btnPosition.setText("click not allowed");
-//        }
-//        if (endOfSession) {
-//
-//            resetTrialCounters();
-////            resetSession();
-//            finish();
-//            Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
-//            startActivity(intent);
-//        } else if (!trialIsRunning) {
-//
-//            if (resultScreenIndex == 0) {
-//                // This is between two trials.
-//                startTrial();
-//            } else {
-//                // This is the end of a session.
-//                showScreenEndTrialResults();
-//            }
-//        }
-//        if (paused && trialIsRunning) {
-//            showScreenPause();
-//        }
-//        setDeveloperInfoText(infoTxt);
-//        return clicked;
-//    }
-
-    void dummy() {
-        if (screenShowOrder == 0) {
-            screenShowOrderTrial++;
-        } else {
-            screenShowOrderTrial = 0;
-        }
-    }
-
     private void setPausedFromMiddleSplittedClick() {
 
         developerTimerCounting();
@@ -1228,11 +1072,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
-
     private void setPausedFromMiddle() {
 
         developerTimerCounting();
-
         if (trialIsRunning) {
             paused = true;
             showHideScreen = false;
@@ -1284,39 +1126,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
-
-//    private void showScreenPause() {
-//        paused = false;
-//        if (developerTimer == null) {
-//            startDeveloperTimer();
-//        }
-//
-//        // INCLUDES POSITION
-//        if (includePosition) {
-//            if (!paused) {
-//                paused = false;
-//                setDividersVisibleAddaptToMode(VISIBLE);
-//                setSettingsButtonVisibility(INVISIBLE);
-//                txtVwMiddle.setText(cross);
-//                txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
-//                for (int i = 0; i < squares.size(); i++) {
-//                    squares.get(i).setVisibility(View.INVISIBLE);
-//                }
-//            }
-//        } else {
-//            if (!paused) {
-//                paused = false;
-//                setDividersVisibleAddaptToMode(INVISIBLE);
-//                setSettingsButtonVisibility(INVISIBLE);
-//                txtVwMiddle.setText(cross);
-//                txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
-//                for (int i = 0; i < squares.size(); i++) {
-//                    squares.get(i).setVisibility(View.INVISIBLE);
-//                }
-//                squares.get(4).setVisibility(View.VISIBLE);
-//            }
-//        }
-//    }
 
     private void setSettingsButtonVisibility(int visibility) {
         btnExit.setVisibility(visibility);
@@ -1397,44 +1206,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
 
-//    private void showScreenEndTrialResults() {
-//        btnExit.setVisibility(VISIBLE);
-//
-//
-//        if (!sessionWasCanceledEarly) {
-//            if (resultScreenIndex == 0) {
-//                Strings.createTrialEndTextPercentage();
-//                endOfTrialDialogIsVisible = true;
-//                setMiddleSquareToRightSizeUI(scaleDefault, R.color.border_color_no_position, trialEndTextPercentage, textUnit, textSizeMiddleResults, INVISIBLE, VISIBLE);
-//                setDividersVisibleAddaptToMode();
-//                txtVwMiddle.setTextSize(textUnit, textSizeMiddleResults);
-//
-//            } else {
-//                txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
-//            }
-//            String indicator = getTrialIndicator();
-//            if (endOfSession) {
-//
-//                txtVwMiddle.setText(trialEndTextPercentage + "\n\n" + Strings.nBackMax + nBackMax + nBackLevel + "\n\n" + Strings.pressButtonToFinish + "\n\n" + indicator);
-//            } else {
-//                if (resultScreenIndex == 0) {
-//                    txtVwMiddle.setText(trialEndTextPercentage + "\n\n" + pressButtonToC);
-//                } else {
-//                    txtVwMiddle.setText(nBack + nBackLevel + "\n\n" + pressButtonToS + "\n\n" + indicator);
-//                }
-//
-//            }
-//            setDividersVisibleAddaptToMode(INVISIBLE);
-//            txtVwMiddle.setVisibility(VISIBLE);
-//            squares.get(4).setVisibility(INVISIBLE);
-//            resultScreenIndex++;
-//            if (resultScreenIndex == 2) {
-//                resultScreenIndex = 0;
-//            }
-//        }
-//    }
-
-
     private void resetTrialCounters() {
 
         if (!orientationWasChangedDuringTraining) {
@@ -1487,10 +1258,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onFinish() {
-//                if (developerCountdownClick == 3) {
-//                    changeSquaresStandardColor();
-//                }
-
                 if (developerCountdownClick >= developerCountMax) {
                     if (developerInfoAreVisible) {
                         infoTxt.setVisibility(View.INVISIBLE);
@@ -1506,74 +1273,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 developerTimer.cancel();
                 developerCountdown = 0;
                 developerCountdownClick = 0;
-//                if (developerCountdownClick == 3) {
-//                    zenMode = !zenMode;
-//                    Toast toast = Toast.makeText(getApplicationContext(), Strings.zemModeToastText + zenMode, Toast.LENGTH_SHORT);
-//                    toast.setMargin(50, 50);
-//                    toast.show();
-//                }
-//                if (developerCountdownClick == 4) {
-//
-//                    zenMode = !zenMode;
-//                    if (zenMode) {
-//                        countDownInterval = 1850;
-//                        if (timerTrial != null) {
-//                            timerTrial.cancel();
-//                            timerTrial.start();
-//                        }
-//
-//                    } else {
-//                        countDownInterval = 1750;
-//                        if (timerTrial != null) {
-//                            timerTrial.cancel();
-//                            timerTrial.start();
-//                        }
-//
-//                    }
-//                    Toast toast = Toast.makeText(getApplicationContext(), Strings.zemModeToastText + zenMode + Strings.zenModeSlow, Toast.LENGTH_SHORT);
-//                    toast.setMargin(50, 50);
-//                    toast.show();
-//                }
-//                if (developerCountdownClick == 5) {
-//
-//                    zenMode = !zenMode;
-//
-//                    if (zenMode) {
-//                        countDownInterval = 1850;
-//                    } else {
-//                        countDownInterval = 1750;
-//                    }
-//                    fadeInterval = (long) countDownInterval;
-//                    if (timerTrial != null) {
-//                        timerTrial.cancel();
-//                        timerTrial.start();
-//                    }
-//
-//                    Toast toast = Toast.makeText(getApplicationContext(), Strings.zemModeToastText + zenMode + Strings.zenModeSlow, Toast.LENGTH_SHORT);
-//                    toast.setMargin(50, 50);
-//                    toast.show();
-//                }
-//                if (developerCountdownClick == 1) {
-//
-//                    zenMode = !zenMode;
-//
-//                    if (zenMode) {
-//                        countDownInterval = 1850;
-//
-//                    } else {
-//                        countDownInterval = 1750;
-//                    }
-//                    fadeInterval = (long) (countDownInterval * 1.25);
-//                    if (timerTrial != null) {
-//                        timerTrial.cancel();
-//                        timerTrial.start();
-//                    }
-//                    Toast toast = Toast.makeText(getApplicationContext(), Strings.zemModeToastText + zenMode + Strings.zenModeSlow, Toast.LENGTH_SHORT);
-//                    toast.setMargin(50, 50);
-//                    toast.show();
-//                }
-
-
             }
         };
     }
@@ -1653,42 +1352,42 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //        if (SessionParameters.allowToChangeColorStyle == true) {
 
         squares.get(0).setOnClickListener(c -> {
-            squresOnClickLogic(1);
+            squaresOnClickLogic(1);
         });
         squares.get(1).setOnClickListener(c -> {
-            squresOnClickLogic(2);
+            squaresOnClickLogic(2);
         });
         squares.get(2).setOnClickListener(c -> {
-            squresOnClickLogic(3);
+            squaresOnClickLogic(3);
         });
         squares.get(3).setOnClickListener(c -> {
-            squresOnClickLogic(4);
+            squaresOnClickLogic(4);
         });
         squares.get(4).setOnClickListener(c -> {
-            squresOnClickLogic(5);
+            setPausedFromMiddle();
+            squaresOnClickLogic(5);
         });
         squares.get(5).setOnClickListener(c -> {
-            squresOnClickLogic(6);
+            squaresOnClickLogic(6);
         });
         squares.get(6).setOnClickListener(c -> {
-            squresOnClickLogic(7);
+            squaresOnClickLogic(7);
         });
         squares.get(7).setOnClickListener(c -> {
-            squresOnClickLogic(8);
+            squaresOnClickLogic(8);
         });
         squares.get(8).setOnClickListener(c -> {
-            squresOnClickLogic(9);
+            squaresOnClickLogic(9);
         });
 
         SessionParameters.allowToChangeColorStyle = false;
         FileLogicSettings.saveSettings(this);
     }
 
-    private void squresOnClickLogic(int i) {
+    private void squaresOnClickLogic(int i) {
         if (allowToChangeColorStyle) {
             squareDefaultColorIndex = i;
         }
-
         setColorAndInvisible();
         changeSquaresStandardColor(true);
     }
@@ -1733,6 +1432,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             } else {
                 orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
             }
+
             setRequestedOrientation(orientation);
             FileLogicSettings.saveSettings(this);
         }
@@ -1792,59 +1492,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             }
         }
 
-//        if (v.getId() == R.id.button_click_training_style) {
-//            if (!SessionParameters.allowToChangeSquareSize) {
-//                if (!SessionParameters.allowToChangeColorStyle) {
-//                    try {
-//                        SessionParameters.allowToChangeColorStyle = true;
-//                        for (int i = 0; i < squares.size(); i++) {
-//                            squares.get(i).setBackgroundColor(getResources().getColor(colors[i + 1]));
-//                            squares.get(i).setVisibility(VISIBLE);
-//                            squares.get(i).setScaleX(0.9f);
-//                            squares.get(i).setScaleY(0.9f);
-//                        }
-//                    } catch (Exception e) {
-//
-//                    }
-//                    Toast.makeText(this, Strings.changeSquareColorText, Toast.LENGTH_SHORT).show();
-//                } else {
-//                    try {
-//                        SessionParameters.allowToChangeColorStyle = false;
-//                        for (int i = 0; i < squares.size(); i++) {
-//                            squares.get(i).setVisibility(INVISIBLE);
-//                        }
-//                        setSquareSize();
-//                    } catch (Exception e) {
-//
-//                    }
-//
-//                }
-//            } else {
-//                for (int i = 0; i < squares.size(); i++) {
-//                    squares.get(i).setVisibility(INVISIBLE);
-//                    setSquareSize();
-//                }
-//                allowToChangeSquareSize = false;
-//            }
-//
-//        }
-//        if (v.getId() == R.id.button_click_training_size) {
-//            allowToChangeColorStyle = false;
-//            if (!SessionParameters.allowToChangeSquareSize) {
-//                setSquareSize();
-//                for (int i = 0; i < squares.size(); i++) {
-//                    squares.get(i).setVisibility(VISIBLE);
-//                }
-//                SessionParameters.allowToChangeSquareSize = true;
-//                Toast.makeText(this, Strings.changeSquareSizeText, Toast.LENGTH_SHORT).show();
-//            } else {
-//                setCustomSize(true);
-////                SessionParameters.allowToChangeSquareSize = false;
-//                FileLogicSettings.saveSettings(this);
-//            }
-//
-//
-//        }
+
         if (v.getId() == R.id.button_click_training_grid) {
             setDividersVisible(true);
             FileLogicSettings.saveSettings(this);

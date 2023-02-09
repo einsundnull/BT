@@ -14,7 +14,6 @@ import static com.notorein.bt.SessionParameters.includeAudio;
 import static com.notorein.bt.SessionParameters.includeColor;
 import static com.notorein.bt.SessionParameters.includePosition;
 import static com.notorein.bt.SessionParameters.includedModes;
-import static com.notorein.bt.SessionParameters.loadInterstitialAd;
 import static com.notorein.bt.SessionParameters.nBack;
 import static com.notorein.bt.SessionParameters.nBackBegin;
 import static com.notorein.bt.SessionParameters.orientation;
@@ -26,12 +25,15 @@ import static com.notorein.bt.SessionParameters.trialsMax;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -63,6 +65,8 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+
+import java.net.InetAddress;
 
 
 public class ActivityMenu extends AppCompatActivity implements View.OnClickListener {
@@ -131,7 +135,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         mAdView = findViewById(R.id.adView);
         adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-//        loadInterstitialAd(adRequest);
+        loadInterstitialAd();
         FileLogicSettings.readSettings(ActivityMenu.this);
         getViews();
         setImageNou();
@@ -157,72 +161,91 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
     private void loadInterstitialAd() {
         Intent intent = new Intent(this, ActivityResults.class);
-        if (SessionParameters.loadInterstitialAd) {
-            mInterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", this.adRequest,
-                    new InterstitialAdLoadCallback() {
-                        @Override
-                        public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                            // The mInterstitialAd reference will be null until
-                            // an ad is loaded.
-                            mInterstitialAd = interstitialAd;
-                            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                                @Override
-                                public void onAdClicked() {
-                                    // Called when a click is recorded for an ad.
-                                    Log.d(TAG, "Ad was clicked.");
-                                }
+//        if (SessionParameters.loadInterstitialAd) {
 
-                                @Override
-                                public void onAdDismissedFullScreenContent() {
-                                    // Called when ad is dismissed.
-                                    // Set the ad reference to null so you don't show the ad a second time.
-                                    Log.d(TAG, "Ad dismissed fullscreen content.");
-                                    mInterstitialAd = null;
-                                    startActivity(intent);
-                                }
-
-                                @Override
-                                public void onAdFailedToShowFullScreenContent(AdError adError) {
-                                    // Called when ad fails to show.
-                                    Log.e(TAG, "Ad failed to show fullscreen content.");
-                                    mInterstitialAd = null;
-                                }
-
-                                @Override
-                                public void onAdImpression() {
-                                    // Called when an impression is recorded for an ad.
-                                    Log.d(TAG, "Ad recorded an impression.");
-                                }
-
-                                @Override
-                                public void onAdShowedFullScreenContent() {
-                                    // Called when ad is shown.
-                                    Log.d(TAG, "Ad showed fullscreen content.");
-                                }
-                            });
-
-                            if (mInterstitialAd != null) {
-                                mInterstitialAd.show(ActivityMenu.this);
-                            } else {
-                                Log.d("TAG", "The interstitial ad wasn't ready yet.");
+        mInterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", this.adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdClicked() {
+                                // Called when a click is recorded for an ad.
+                                Log.d(TAG, "Ad was clicked.");
                             }
-                            Log.i(TAG, "onAdLoaded");
-                        }
 
-                        @Override
-                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                            // Handle the error
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when ad is dismissed.
+                                // Set the ad reference to null so you don't show the ad a second time.
+                                Log.d(TAG, "Ad dismissed fullscreen content.");
+                                mInterstitialAd = null;
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when ad fails to show.
+                                Log.e(TAG, "Ad failed to show fullscreen content.");
+                                mInterstitialAd = null;
+                            }
+
+                            @Override
+                            public void onAdImpression() {
+                                // Called when an impression is recorded for an ad.
+                                Log.d(TAG, "Ad recorded an impression.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when ad is shown.
+                                Log.d(TAG, "Ad showed fullscreen content.");
+                            }
+                        });
+
+//                            if (mInterstitialAd != null) {
+//                                mInterstitialAd.show(ActivityMenu.this);
+//                            } else {
+//                                Log.d("TAG", "The interstitial ad wasn't ready yet.");
+//                            }
+                        Log.i(TAG, "onAdLoaded");
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
 //                            Log.d(TAG, loadAdError.toString());
-                            mInterstitialAd = null;
-                            startActivity(intent);
-                        }
-                    });
-
-
-        }
-        loadInterstitialAd = false;
+                        mInterstitialAd = null;
+//                            startActivity(intent);
+                    }
+                });
     }
 
+
+    public boolean isInternetAvailable() {
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
+            return connected;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
+//    public boolean isInternetAvailable() {
+//        try {
+//            InetAddress ipAddr = InetAddress.getByName("google.com");
+//            //You can replace it with your name
+//            return !ipAddr.equals("");
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
 
     private void getDisplaySize() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -351,10 +374,19 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
             stringToStore = stringToStoreInitial + stringToStore;
             SessionParameters.loadInterstitialAd = true;
-            loadInterstitialAd();
-//            Intent intent = new Intent(this, ActivityResults.class);
-//            startActivity(intent);
+            if (isInternetAvailable()) {
 
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(ActivityMenu.this);
+                } else {
+                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                    Intent intent = new Intent(this, ActivityResults.class);
+                    startActivity(intent);
+                }
+            } else {
+                Intent intent = new Intent(this, ActivityResults.class);
+                startActivity(intent);
+            }
         }
 
         if (v.getId() == R.id.btnSave) {
