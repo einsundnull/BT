@@ -2,6 +2,7 @@ package com.notorein.bt;
 
 import static android.content.ContentValues.TAG;
 import static com.notorein.bt.ResultsFiles.initialiseStoringFilePaths;
+import static com.notorein.bt.SessionParameters.adMissedCounter;
 import static com.notorein.bt.SessionParameters.convertedTrialToTime;
 import static com.notorein.bt.SessionParameters.countDownInterval;
 import static com.notorein.bt.SessionParameters.darkModeTraining;
@@ -114,6 +115,9 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
     private AdRequest adRequest;
+    private Dialog dialogAdReminder;
+    private ConstraintLayout dialogAdReminderLayout;
+    private boolean showReminderDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +140,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         mAdView.loadAd(adRequest);
         loadInterstitialAd();
         FileLogicSettings.readSettings(ActivityMenu.this);
+        createDialogAdReminder();
         getViews();
         setImageNou();
         setSounds();
@@ -145,6 +150,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         convertedTrialToTimeMethod();
         setSwitchesInPosition();
         getDisplaySize();
+
         btnStart.setEnabled(true);
         btnSave.setEnabled(!sessionWasCanceledEarly);
         if (!sessionWasCanceledEarly) {
@@ -161,6 +167,21 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 //        } catch (Exception e) {
 ////                    preventEmptyEditTextOrZero();
 //        }
+        boolean internet = isInternetAvailable();
+        if (internet && SessionParameters.missedAdDialogHasBeenShown && adMissedCounter >= 5) {
+            adMissedCounter = 0;
+        }
+        if (!internet) {
+            SessionParameters.adMissedCounter++;
+            FileLogicSettings.saveSettings(this);
+            if (adMissedCounter >= 5) {
+                showReminderDialog = true;
+            }
+        }
+
+//        dialogAdReminder.show();
+        test.setText("" + SessionParameters.adMissedCounter);
+
     }
 
     private void loadInterstitialAd() {
@@ -303,7 +324,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         nouImage = (ImageView) findViewById(R.id.nouImage);
 
         test = (Button) findViewById(R.id.test);
-        test.setVisibility(View.INVISIBLE);
+//        test.setVisibility(View.INVISIBLE);
         btnStart = (Button) findViewById(R.id.btnStart);
         btnResults = (Button) findViewById(R.id.btnResults);
         btnSave = (Button) findViewById(R.id.btnSave);
@@ -411,7 +432,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
         if (v.getId() == R.id.infoTextView) {
             try {
-                showAboutDialog();
+                showDialogAbout();
                 appSounds.play(buttonSound, 1, 1, 1, 0, 1);
             } catch (Exception e) {
                 finish();
@@ -637,6 +658,10 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 for (View i : views) {
                     i.setAlpha(1f);
                 }
+                if(showReminderDialog){
+                    dialogAdReminder.show();
+                }
+
             }
 
             @Override
@@ -777,7 +802,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         includeColor = false;
     }
 
-    private void showAboutDialog() {
+    private void showDialogAbout() {
 
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.view_menu_about);
@@ -785,9 +810,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         btn_about = (Button) dialog.findViewById(R.id.btn_about);
         btn_exit = (Button) dialog.findViewById(R.id.btn_exit);
         btn_manual.setOnClickListener(c -> {
-
-        });
-        btn_about.setOnClickListener(c -> {
             Intent intent = new Intent(ActivityMenu.this, ActivityAbout.class);
             try {
                 Thread.sleep(300);
@@ -796,10 +818,13 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             }
             startActivity(intent);
         });
-        btn_manual.setOnClickListener(c -> {
-//            initialiseStoringFilePaths();
-//            ViewMenu.testFile(this);
+        btn_about.setOnClickListener(c -> {
+
         });
+//        btn_manual.setOnClickListener(c -> {
+////            initialiseStoringFilePaths();
+////            ViewMenu.testFile(this);
+//        });
         btn_exit.setOnClickListener(c -> {
             if (!btnSave.isEnabled()) {
                 dialog.cancel();
@@ -812,6 +837,23 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             }
         });
         dialog.show();
+    }
+
+    private void createDialogAdReminder() {
+
+        dialogAdReminder = new Dialog(this);
+        dialogAdReminder.setContentView(R.layout.view_menu_ad_reminder);
+        dialogAdReminderLayout = findViewById(R.id.dialogAdReminderLayout);
+        TextView btn_manual = dialogAdReminder.findViewById(R.id.btn_manual);
+        btn_manual.setText(Strings.adReminderTextI + adMissedCounter + Strings.adReminderTextII);
+
+        TextView btn_about = (TextView) dialogAdReminder.findViewById(R.id.btn_about);
+        btn_about.setText(Strings.adReminderTextIII);
+        btn_about.setOnClickListener(c -> {
+            dialogAdReminder.cancel();
+            SessionParameters.missedAdDialogHasBeenShown = true;
+            FileLogicSettings.saveSettings(this);
+        });
     }
 
     private void showAlertPleaseSaveResults(Runnable runContinue, Runnable runBack) {

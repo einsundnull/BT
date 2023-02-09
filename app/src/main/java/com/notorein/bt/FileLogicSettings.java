@@ -71,6 +71,11 @@ public class FileLogicSettings {
                     SessionParameters.showSessionInResults = Boolean.parseBoolean(scn.next());
                     scn.next();
                     SessionParameters.showTrialInResults = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.adMissedCounter = Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.missedAdDialogHasBeenShown = Boolean.parseBoolean(scn.next());
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -122,12 +127,14 @@ public class FileLogicSettings {
                         "darkModeTraining\t" + SessionParameters.darkModeTraining + "\n" +
                         "customSquareSize\t" + SessionParameters.customSquareSize + "\n" +
                         "showDividers\t" + SessionParameters.showGrid + "\n" +
-                        "zenMode\t" + SessionParameters.zenMode+ "\n" +
+                        "zenMode\t" + SessionParameters.zenMode + "\n" +
                         "showPercentageInResults\t" + SessionParameters.showPercentageInResults + "\n" +
                         "showNBackInResults\t" + SessionParameters.showNBackInResults + "\n" +
                         "showDayInResults\t" + SessionParameters.showDayInResults + "\n" +
                         "showSessionInResults\t" + SessionParameters.showSessionInResults + "\n" +
-                        "showTrialInResults\t" + SessionParameters.showTrialInResults ;
+                        "showTrialInResults\t" + SessionParameters.showTrialInResults + "\n" +
+                        "adMissedCounter\t" + SessionParameters.adMissedCounter + "\n" +
+                        "missedAdDialogHasBeenShown\t" + SessionParameters.missedAdDialogHasBeenShown;
 
         return temp;
     }

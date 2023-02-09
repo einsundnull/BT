@@ -68,9 +68,14 @@ public class Strings {
     public static String showSessionInResults= "Show Summary Session";
     public static String showTrialInResults= "Show Summary All Trials";
     public static String settingsText = "Settings";
-
-
-
+    public static String adReminderTextI = "You have used the app ";
+    public static String adReminderTextII = " times without ads. Please consider to turn on" +
+            " your internet connection when using the app." +
+            " Advertisement is often the only way for developers to get" +
+            " any reward for their work." +
+            " By turning on the internet you can support us.\n\n" +
+            "Thank you very much! ";
+    public static String adReminderTextIII = "Okay! I got that!";
     //    private static String nextLevel = "Next: ";
 //    private static String endLevel = "Last: ";
     private static String nextLevel = nBackLevel;
