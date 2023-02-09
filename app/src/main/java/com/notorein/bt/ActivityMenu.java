@@ -39,6 +39,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -65,8 +66,6 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-
-import java.net.InetAddress;
 
 
 public class ActivityMenu extends AppCompatActivity implements View.OnClickListener {
@@ -157,6 +156,11 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         daySession = RepeatStorage.getDay();
 //        ResultsFiles.checkForLastDayOfUse();
 //        new ResultsFiles().calculateResultsForDisplay();
+//        try {
+//            convertedTrialToTimeMethod();
+//        } catch (Exception e) {
+////                    preventEmptyEditTextOrZero();
+//        }
     }
 
     private void loadInterstitialAd() {
@@ -346,6 +350,15 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         btnPort.setOnClickListener(this);
         editTextDuration.setOnClickListener(this);
         editTextNBackLevel.setOnClickListener(this);
+        editTextDuration.setOnKeyListener(new EditText.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                try {
+                    convertedTrialToTimeMethod();
+                } catch (Exception e) {
+                }
+                return false;
+            }
+        });
 
     }
 

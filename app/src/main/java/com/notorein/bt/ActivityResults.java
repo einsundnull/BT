@@ -362,43 +362,6 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
     }
 
-
-//    private void addResultLines() {
-//        setLineColors();
-////        if(resultLines != null){
-////            resultLines.clear();
-////        }
-//        resultLines = new ArrayList<ArrayList<Double[]>>();
-//
-////        if (SessionParameters.showPercentageInResults) {
-////            if (showTrialInResults) {
-////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listTrialsPercentage, lineColorTrial), ResultsFiles.listTrialsPercentage, lineColorTrial));
-////            }
-////            if (showSessionInResults) {
-////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listSessionsNBackMax, lineColorSession), ResultsFiles.listSessionsNBackMax, lineColorSession));
-////            }
-////            if (showDayInResults) {
-////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listDayAveragePercentage, lineColorDay), ResultsFiles.listDayAveragePercentage, lineColorDay));
-////            }
-////        }
-////        if (SessionParameters.showNBackInResults) {
-////            if (showTrialInResults) {
-////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listTrialsNBack, lineColorTrial), ResultsFiles.listTrialsNBack, lineColorTrial));
-////            }
-////            if (showSessionInResults) {
-////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listSessionsNBackMax, lineColorSession), ResultsFiles.listSessionsNBackMax, lineColorSession));
-////            }
-////            if (showDayInResults) {
-////                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.listDaysNBackMax, lineColorDay), ResultsFiles.listDaysNBackMax, lineColorDay));
-////            }
-////        }
-//        drawResultLines(resultLines);
-//        activity_results_layout.removeView(setting_button_result_screen);
-//        activity_results_layout.addView(setting_button_result_screen);
-//        activity_results_layout.setBackground(new BitmapDrawable(bg));
-//    }
-
-
     private void addResultLines() {
         setLineColors();
         if (resultLines != null) {

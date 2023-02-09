@@ -205,12 +205,19 @@ public class ResultsFiles {
             }
             Log.i(TAG, "calculateResultsForDisplay: " + i);
         }
+        try {
+            // If i don't add these lines the calculated arrays misses one value in the end
+            sessionsNBack.get(sessionsNBack.size()-1).add(trialsNBackTemp.get(trialsNBackTemp.size()-1));
+        } catch ( Exception e){
+
+        }
+
         // If i don't add these lines the calculated arrays contain an empty array in the end
         if (daysNBack.size() > 1) {
             daysNBack.remove(daysNBack.size() - 1);
         }
 
-        // Otherwhise the app will crash when there are no result
+//        // Otherwhise the app will crash when there are no result
         try {
             if(daysNBack.get(0).isEmpty() ){
                 daysNBack.get(0).add((double)nBackMaxAbsolute);
@@ -226,8 +233,6 @@ public class ResultsFiles {
 
         sessionsPercAverage = getAverage(sessionsNBack);
         daysPercAverage = getAverage(daysNBack);
-
-//        nBackMaxAbsolute = nBackMaxAbsolute + 2;
 
         Log.e(TAG, "trialsNBack " + trialsNBack);
         Log.e(TAG, "sessionsNBack: " + sessionsNBack);
@@ -311,7 +316,7 @@ public class ResultsFiles {
 
     public static boolean compareIfDataAreTheSame(String msg, String dayOne, String dayTwo) {
         if (!dayOne.equals(dayTwo) && !dayOne.isEmpty()) {
-//            Log.i(TAG, "calculateResultsForDisplay: " + msg + " Dates not equal: " + dayOne + " # " + dayTwo + " #\n");
+            Log.i(TAG, "calculateResultsForDisplay: " + msg + " Dates not equal: " + dayOne + " # " + dayTwo + " #\n");
             return false;
         } else {
 //            Log.i(TAG, "calculateResultsForDisplay: " + msg + " Dates are equal: " + dayOne + " # " + dayTwo + " #\n");
