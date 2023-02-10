@@ -96,6 +96,22 @@
 <!--    <color name="ten">#065C2A</color>-->
     <color name="ten">#64DD17</color>
 
+    <color name="zeroII">#FFFFFF</color>
+    <color name="oneII">#FFD600</color>
+    <color name="twoII">#FB3F00</color>
+    <color name="threeII">#A0060A</color>
+    <!--    <color name="four">#64DD17</color>-->
+    <color name="fourII">#03470C</color>
+    <color name="fiveII">#6200EA</color>
+    <color name="sixII">#0F10DE</color>
+    <color name="sevenII">#533A15</color>
+    <color name="eightII">#FFFFFF</color>
+    <color name="nineII">#FF106F</color>
+    <!--    <color name="ten">#065C2A</color>-->
+    <color name="tenII">#64DD17</color>
+
+
+
 
     <color name="caparol_yellow">#fcfc40</color>
     <color name="square_color_three">#FFAB00</color>

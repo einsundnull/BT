@@ -132,7 +132,9 @@ public class SessionParameters {
     public static ArrayList<Double> inOrDecreaseSingle = new ArrayList<>();
 
     public static int[] colors = new int[]{R.color.zero, R.color.one, R.color.two, R.color.three, R.color.four, R.color.five, R.color.six, R.color.seven, R.color.eight, R.color.nine, R.color.ten};
-//    public static int[] colorsDefault = new int[]{R.color.square_color_one, R.color.caparol_yellow,
+    public static int[] colorsII = new int[]{R.color.zeroII, R.color.oneII, R.color.twoII, R.color.threeII, R.color.fourII, R.color.fiveII, R.color.sixII, R.color.sevenII, R.color.eightII, R.color.nineII, R.color.tenII};
+    public static int[] colorsIII = new int[]{R.color.zero, R.color.one, R.color.two, R.color.three, R.color.four, R.color.five, R.color.six, R.color.seven, R.color.eight, R.color.nine, R.color.ten};
+    //    public static int[] colorsDefault = new int[]{R.color.square_color_one, R.color.caparol_yellow,
 //            R.color.square_color_two, R.color.square_color_three,
 //            R.color.square_color_four, R.color.square_color_five,
 //            R.color.six, R.color.eleven, R.color.light_blue_900,R.color.zero, R.color.one, R.color.two, R.color.three, R.color.carmin,R.color.carmin2, R.color.four, R.color.five, R.color.six, R.color.seven, R.color.eight, R.color.nine, R.color.ten,R.color.menu_button_stroke_color_dark_2, R.color.menu_button_stroke_color_dark_4,R.color.menu_button_stroke_color_dark,R.color.menu_button_stroke_color_default};
@@ -191,6 +193,8 @@ public class SessionParameters {
     public static boolean openManual;
     public static int customColorSquare ;
     public static String hexColor;
+    // Has the purpose to chose between the soft and the hard color palette.
+    public static int colorArrayIndex = 0;
 
 
 //    String[]  colors = new String[] { "white", "yellow", "chocolate", "green", "rgb(136,163,19)", "rgb(3,211,252)", "blue", "red", "purple","grey","darkgrey" };

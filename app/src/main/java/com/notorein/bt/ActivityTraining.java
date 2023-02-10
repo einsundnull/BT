@@ -453,7 +453,11 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
         if (includePosition) {
             if (zenMode) {
+                if (includeColor) {
+                    squares.get(shownIndexesPosition.get(presentedScreens)).setBackgroundColor(getResources().getColor(colors[shownIndexesColor.get(presentedScreens)]));
+                }
                 setFadeInAnimationSquaresForZenMode(squares.get(shownIndexesPosition.get(presentedScreens)));
+
             } else {
                 try {
                     squares.get(shownIndexesPosition.get(presentedScreens)).setVisibility(VISIBLE);
@@ -1247,7 +1251,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                     }
                     customColorSquare = Color.rgb(r, g, b);
                     hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
-                    btn.setText(""+hexColor);
+                    btn.setText("" + hexColor);
                     sampleSquare.setBackgroundColor(customColorSquare);
                 } catch (Exception e) {
 
@@ -1273,7 +1277,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                     }
                     customColorSquare = Color.rgb(r, g, b);
                     hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
-                    btn.setText(""+hexColor);
+                    btn.setText("" + hexColor);
                     sampleSquare.setBackgroundColor(customColorSquare);
 
                 } catch (Exception e) {
@@ -1300,7 +1304,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                     }
                     customColorSquare = Color.rgb(r, g, b);
                     hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
-                    btn.setText(""+hexColor);
+                    btn.setText("" + hexColor);
                     sampleSquare.setBackgroundColor(customColorSquare);
                 } catch (Exception e) {
 
@@ -1324,7 +1328,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         dialog.show();
 
     }
-    private static void handleColorEdit(EditText editText,Button btn, int colorComponent) {
+
+    private static void handleColorEdit(EditText editText, Button btn, int colorComponent) {
         try {
             String temp = editText.getText().toString();
             if (!temp.isEmpty()) {
@@ -1697,6 +1702,33 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         if (v.getId() == R.id.button_click_training_style) {
             if (!SessionParameters.allowToChangeSquareSize) {
+
+//                if (SessionParameters.colorArrayIndex == 0) {
+//                    colors = SessionParameters.colorsII;
+//                    for (int i = 0; i < squares.size(); i++) {
+//                        squares.get(i).setBackgroundColor(getResources().getColor(colors[i + 1]));
+//                        squares.get(i).setVisibility(VISIBLE);
+//                        squares.get(i).setScaleX(0.9f);
+//                        squares.get(i).setScaleY(0.9f);
+//                    }
+//
+//                } else if (SessionParameters.colorArrayIndex == 1) {
+//                    colors = SessionParameters.colorsIII;
+//                    for (int i = 0; i < squares.size(); i++) {
+//                        squares.get(i).setBackgroundColor(getResources().getColor(colors[i + 1]));
+//                        squares.get(i).setVisibility(VISIBLE);
+//                        squares.get(i).setScaleX(0.9f);
+//                        squares.get(i).setScaleY(0.9f);
+//                    }
+//
+//                }
+//                SessionParameters.colorArrayIndex++;
+//                boolean allowToClose = false;
+//                if (SessionParameters.colorArrayIndex >= 2) {
+//                    SessionParameters.colorArrayIndex = 0;
+//                     allowToClose = true;
+//                }
+
                 if (!SessionParameters.allowToChangeColorStyle) {
                     try {
                         SessionParameters.allowToChangeColorStyle = true;
