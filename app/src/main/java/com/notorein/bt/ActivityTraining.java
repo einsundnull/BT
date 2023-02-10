@@ -61,6 +61,7 @@ import static com.notorein.bt.SessionParameters.endOfSession;
 import static com.notorein.bt.SessionParameters.endOfTrial;
 import static com.notorein.bt.SessionParameters.endOfTrialDialogIsVisible;
 import static com.notorein.bt.SessionParameters.g;
+import static com.notorein.bt.SessionParameters.hexColor;
 import static com.notorein.bt.SessionParameters.inOrDecreaseCulmulated;
 import static com.notorein.bt.SessionParameters.includeAudio;
 import static com.notorein.bt.SessionParameters.includeColor;
@@ -126,8 +127,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
@@ -293,7 +292,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //        }
         txtVwnBackLevelInfo.setText(String.valueOf(nBack));
         setIntervalText();
-        showCustomColorDialog();
+//        showCustomColorDialog();
     }
 
     private void setSquareSize() {
@@ -505,6 +504,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         // activity_main_layout.setBackgroundColor(Color.BLACK);
         for (int i = 0; i < squares.size(); i++) {
             squares.get(i).setVisibility(View.INVISIBLE);
+//            squares.get(i).setBackgroundColor(getResources().getColor(SessionParameters.colors[squareDefaultColorIndex]));
         }
 
         squares.get(4).setVisibility(View.INVISIBLE);/**/
@@ -1199,6 +1199,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         gradientDrawableLabel.setCornerRadius(5);
 
 //        dialog.setContentView(R.layout.view_menu_custom_color);
+
+
         EditText edR = dialog.findViewById(R.id.editTextColorR);
         EditText edG = dialog.findViewById(R.id.editTextColorG);
         EditText edB = dialog.findViewById(R.id.editTextColorB);
@@ -1214,16 +1216,19 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         edGH.setBackground(gradientDrawableLabel);
         edBH.setBackground(gradientDrawableLabel);
 
-        edR.setText(""+SessionParameters.r);
-        edG.setText(""+SessionParameters.g);
-        edB.setText(""+SessionParameters.b);
+        edR.setText("" + SessionParameters.r);
+        edG.setText("" + SessionParameters.g);
+        edB.setText("" + SessionParameters.b);
         customColorSquare = Color.rgb(r, g, b);
+        hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
 
         edRH.setText(Strings.labelEditTextCustomColorTextR);
         edGH.setText(Strings.labelEditTextCustomColorTextG);
         edBH.setText(Strings.labelEditTextCustomColorTextB);
-        Button btn = dialog.findViewById(R.id.btn_manual);
+        Button btn = dialog.findViewById(R.id.btnBottom);
         btn.setBackgroundColor(customColorSquare);
+        Button sampleSquare = dialog.findViewById(R.id.sampleSquare);
+        sampleSquare.setBackgroundColor(customColorSquare);
         edR.setOnKeyListener(new EditText.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 try {
@@ -1232,16 +1237,18 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                         r = Integer.parseInt(temp);
                         if (r < 0) {
                             r = 0;
-                            edR.setText(""+SessionParameters.r);
+                            edR.setText("" + SessionParameters.r);
                         }
                         if (r > 255) {
                             r = 255;
-                            edR.setText(""+SessionParameters.r);
+                            edR.setText("" + SessionParameters.r);
                         }
 //                        edR.setText(""+SessionParameters.r);
                     }
                     customColorSquare = Color.rgb(r, g, b);
-                    btn.setBackgroundColor(customColorSquare);
+                    hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
+                    btn.setText(""+hexColor);
+                    sampleSquare.setBackgroundColor(customColorSquare);
                 } catch (Exception e) {
 
                 }
@@ -1256,16 +1263,19 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                         g = Integer.parseInt(temp);
                         if (g < 0) {
                             g = 0;
-                            edG.setText(""+SessionParameters.g);
+                            edG.setText("" + SessionParameters.g);
                         }
                         if (g > 255) {
                             g = 255;
-                            edG.setText(""+SessionParameters.g);
+                            edG.setText("" + SessionParameters.g);
                         }
 //
                     }
                     customColorSquare = Color.rgb(r, g, b);
-                    btn.setBackgroundColor(customColorSquare);
+                    hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
+                    btn.setText(""+hexColor);
+                    sampleSquare.setBackgroundColor(customColorSquare);
+
                 } catch (Exception e) {
 
                 }
@@ -1280,27 +1290,24 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                         b = Integer.parseInt(temp);
                         if (b < 0) {
                             b = 0;
-                            edB.setText(""+SessionParameters.b);
+                            edB.setText("" + SessionParameters.b);
                         }
                         if (b > 255) {
                             b = 255;
-                            edB.setText(""+SessionParameters.b);
+                            edB.setText("" + SessionParameters.b);
                         }
 //
                     }
-                   customColorSquare = Color.rgb(r, g, b);
-                   btn.setBackgroundColor(customColorSquare);
+                    customColorSquare = Color.rgb(r, g, b);
+                    hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
+                    btn.setText(""+hexColor);
+                    sampleSquare.setBackgroundColor(customColorSquare);
                 } catch (Exception e) {
 
                 }
                 return false;
             }
         });
-
-
-
-        String temp = "";
-        btn.setText(temp);
 
 
 //        btn_manual.setOnClickListener(c -> {
@@ -1317,6 +1324,30 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         dialog.show();
 
     }
+    private static void handleColorEdit(EditText editText,Button btn, int colorComponent) {
+        try {
+            String temp = editText.getText().toString();
+            if (!temp.isEmpty()) {
+                colorComponent = Integer.parseInt(temp);
+                if (colorComponent < 0) {
+                    colorComponent = 0;
+                    editText.setText("" + colorComponent);
+                }
+                if (colorComponent > 255) {
+                    colorComponent = 255;
+                    editText.setText("" + colorComponent);
+                }
+            }
+            customColorSquare = Color.rgb(r, g, b);
+            hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
+//            Button btn = findViewById(R.id.btnBottom);
+//            btn.setText(""+hexColor);
+            btn.setBackgroundColor(customColorSquare);
+        } catch (Exception e) {
+
+        }
+    }
+
 
 //    public GradientDrawable createDrawable(Context context) {
 //        GradientDrawable gradientDrawable = new GradientDrawable();
@@ -1479,6 +1510,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             squares.get(i).setBackgroundColor(getResources().getColor(SessionParameters.colors[squareDefaultColorIndex]));
             squares.get(i).setVisibility(INVISIBLE);
         }
+        FileLogicSettings.saveSettings(this);
     }
 
     private void setFadeInAnimationSquaresForZenMode(View v) {
@@ -1594,8 +1626,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         if (v.getId() == R.id.buttonPosition2) {
             //-
             if (SessionParameters.allowToChangeSquareSize) {
-//                setCustomSize(true, 1);
-//                FileLogicSettings.saveSettings(this);
+                setCustomSize(true, 1);
+                FileLogicSettings.saveSettings(this);
             } else {
                 speedPercentage = speedPercentage + 0.05;
                 setIntervalText();

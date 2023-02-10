@@ -810,7 +810,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.view_menu_about);
-        btn_manual = (Button) dialog.findViewById(R.id.btn_manual);
+        btn_manual = (Button) dialog.findViewById(R.id.btnBottom);
         btn_manual.setText(Strings.btnManualText);
         btn_recommendations = (Button) dialog.findViewById(R.id.btn_about);
         btn_recommendations.setText(Strings.btnRecommendationsText);
@@ -858,7 +858,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         dialogAdReminder = new Dialog(this);
         dialogAdReminder.setContentView(R.layout.view_menu_ad_reminder);
         dialogAdReminderLayout = findViewById(R.id.dialogAdReminderLayout);
-        TextView btn_manual = dialogAdReminder.findViewById(R.id.btn_manual);
+        TextView btn_manual = dialogAdReminder.findViewById(R.id.btnBottom);
         btn_manual.setText(Strings.adReminderTextI + adMissedCounter + Strings.adReminderTextII);
 
         TextView btn_about = (TextView) dialogAdReminder.findViewById(R.id.btn_about);

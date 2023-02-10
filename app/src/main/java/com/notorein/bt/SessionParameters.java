@@ -190,6 +190,7 @@ public class SessionParameters {
     public static boolean returnFromTraining = false;
     public static boolean openManual;
     public static int customColorSquare ;
+    public static String hexColor;
 
 
 //    String[]  colors = new String[] { "white", "yellow", "chocolate", "green", "rgb(136,163,19)", "rgb(3,211,252)", "blue", "red", "purple","grey","darkgrey" };

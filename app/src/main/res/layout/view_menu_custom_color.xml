@@ -82,7 +82,7 @@
         app:layout_constraintTop_toTopOf="@+id/editTextColorB" />
 
     <Button
-        android:id="@+id/btn_manual"
+        android:id="@+id/btnBottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
