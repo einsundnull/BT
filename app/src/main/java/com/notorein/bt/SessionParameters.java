@@ -92,6 +92,10 @@ public class SessionParameters {
     public static int squareSize = 115;
     public static float customSquareSize = 0.8f;
 
+    public static int r = 5;
+    public static int g = 55;
+    public static int b = 155;
+
     //    #################################################
 
     // To setBeforeSession
@@ -185,6 +189,7 @@ public class SessionParameters {
     public static boolean missedAdDialogHasBeenShown;
     public static boolean returnFromTraining = false;
     public static boolean openManual;
+    public static int customColorSquare ;
 
 
 //    String[]  colors = new String[] { "white", "yellow", "chocolate", "green", "rgb(136,163,19)", "rgb(3,211,252)", "blue", "red", "purple","grey","darkgrey" };

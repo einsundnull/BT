@@ -137,6 +137,9 @@ public class Strings {
             "For optimal results, it's recommended to create a calm and distraction-free environment during the task.";
     public static String btnManualText = "ABOUT";
     public static String btnRecommendationsText = "RECOMMENDATIONS";
+    public static String labelEditTextCustomColorTextR = "RED";
+    public static String labelEditTextCustomColorTextG= "GREEN";
+    public static String labelEditTextCustomColorTextB= "BLUE";
     //    private static String nextLevel = "Next: ";
 //    private static String endLevel = "Last: ";
     private static String nextLevel = nBackLevel;

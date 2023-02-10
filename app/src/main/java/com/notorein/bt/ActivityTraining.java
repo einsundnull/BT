@@ -36,6 +36,7 @@ import static com.notorein.bt.SessionParameters.allowToChangeSquareSize;
 import static com.notorein.bt.SessionParameters.aud;
 import static com.notorein.bt.SessionParameters.audioIsClicked;
 import static com.notorein.bt.SessionParameters.audioIsRight;
+import static com.notorein.bt.SessionParameters.b;
 import static com.notorein.bt.SessionParameters.col;
 import static com.notorein.bt.SessionParameters.colorIsClicked;
 import static com.notorein.bt.SessionParameters.colorIsRight;
@@ -50,6 +51,7 @@ import static com.notorein.bt.SessionParameters.counterMatchTresholdMin;
 import static com.notorein.bt.SessionParameters.counterMatchesAud;
 import static com.notorein.bt.SessionParameters.counterMatchesCol;
 import static com.notorein.bt.SessionParameters.counterMatchesPos;
+import static com.notorein.bt.SessionParameters.customColorSquare;
 import static com.notorein.bt.SessionParameters.darkModeTraining;
 import static com.notorein.bt.SessionParameters.daySession;
 import static com.notorein.bt.SessionParameters.dayTrial;
@@ -58,6 +60,7 @@ import static com.notorein.bt.SessionParameters.durationSessionTimer;
 import static com.notorein.bt.SessionParameters.endOfSession;
 import static com.notorein.bt.SessionParameters.endOfTrial;
 import static com.notorein.bt.SessionParameters.endOfTrialDialogIsVisible;
+import static com.notorein.bt.SessionParameters.g;
 import static com.notorein.bt.SessionParameters.inOrDecreaseCulmulated;
 import static com.notorein.bt.SessionParameters.includeAudio;
 import static com.notorein.bt.SessionParameters.includeColor;
@@ -80,6 +83,7 @@ import static com.notorein.bt.SessionParameters.pos;
 import static com.notorein.bt.SessionParameters.positionIsClicked;
 import static com.notorein.bt.SessionParameters.positionIsRight;
 import static com.notorein.bt.SessionParameters.presentedScreens;
+import static com.notorein.bt.SessionParameters.r;
 import static com.notorein.bt.SessionParameters.resultScreenIndex;
 import static com.notorein.bt.SessionParameters.scaleDefault;
 import static com.notorein.bt.SessionParameters.scaleNoPos;
@@ -121,6 +125,9 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
@@ -130,11 +137,13 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -203,9 +212,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private int buttonSound;
     private int[] trainingSound;
     //    public static double squareFadeDuration = 0.9;
-    public static double squareFadeDuration = 1.1;
-    //    public static double squareFadeDuration = 1.2;
-//    public static double squareFadeDuration = 1.7;
+//    public static double squareFadeDuration = 1.1;
+    public static double squareFadeDuration = 1.2;
+    //    public static double squareFadeDuration = 1.7;
     private final long fadeInterval_DEFAULT = (long) (countDownIntervalDefault / squareFadeDuration);
     private long fadeInterval = fadeInterval_DEFAULT;
     private ImageView btnSoundOff;
@@ -284,6 +293,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //        }
         txtVwnBackLevelInfo.setText(String.valueOf(nBack));
         setIntervalText();
+        showCustomColorDialog();
     }
 
     private void setSquareSize() {
@@ -572,7 +582,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             views = viewsList.toArray(new View[0]);
         } else {
             views = new View[]{btnPosition, btnPositionII, btnAudio, btnAudioII, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid, btnFade,
-                    txtVwMiddle, infoTxt,txtVwInterval,
+                    txtVwMiddle, infoTxt, txtVwInterval,
                     squares.get(4), txtVwnBackLevelInfo};
         }
     }
@@ -1155,7 +1165,169 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private void showAlertExit() {
+    private void showCustomColorDialog() {
+        ConstraintLayout constraintLayout;
+        Dialog dialog = new Dialog(this);
+        int color = Color.rgb(r, g, b);
+        int backgroundColor, backgroundColorLabel, strokeColor, strokeColorLabel;
+        if (!darkModeTraining) {
+            dialog.setContentView(R.layout.view_custom_color_box);
+            constraintLayout = (ConstraintLayout) dialog.findViewById(R.id.alert_background);
+            backgroundColor = getResources().getColor(R.color.menu_background_color);
+            backgroundColorLabel = getResources().getColor(R.color.menu_background_color);
+            strokeColor = getResources().getColor(R.color.menu_background_stroke_color);
+            strokeColorLabel = getResources().getColor(R.color.transparent);
+        } else {
+            dialog.setContentView(R.layout.view_custom_color_box_dark);
+            constraintLayout = (ConstraintLayout) dialog.findViewById(R.id.alert_background);
+            backgroundColor = getResources().getColor(R.color.menu_background_color_dark);
+            backgroundColorLabel = getResources().getColor(R.color.menu_background_color);
+            strokeColor = getResources().getColor(R.color.menu_background_stroke_color);
+            strokeColorLabel = getResources().getColor(R.color.transparent);
+        }
+
+        GradientDrawable gradientDrawableBackground = new GradientDrawable();
+        gradientDrawableBackground.setShape(GradientDrawable.RECTANGLE);
+        gradientDrawableBackground.setColor(backgroundColor);
+        gradientDrawableBackground.setStroke(2, strokeColor);
+        gradientDrawableBackground.setCornerRadius(5);
+
+        GradientDrawable gradientDrawableLabel = new GradientDrawable();
+        gradientDrawableLabel.setShape(GradientDrawable.RECTANGLE);
+        gradientDrawableLabel.setColor(backgroundColor);
+        gradientDrawableLabel.setStroke(2, strokeColorLabel);
+        gradientDrawableLabel.setCornerRadius(5);
+
+//        dialog.setContentView(R.layout.view_menu_custom_color);
+        EditText edR = dialog.findViewById(R.id.editTextColorR);
+        EditText edG = dialog.findViewById(R.id.editTextColorG);
+        EditText edB = dialog.findViewById(R.id.editTextColorB);
+        TextView edRH = dialog.findViewById(R.id.hintTextViewColorR);
+        TextView edGH = dialog.findViewById(R.id.hintTextViewColorG);
+        TextView edBH = dialog.findViewById(R.id.hintTextViewColorB);
+
+        edR.setBackground(gradientDrawableBackground);
+        edG.setBackground(gradientDrawableBackground);
+        edB.setBackground(gradientDrawableBackground);
+
+        edRH.setBackground(gradientDrawableLabel);
+        edGH.setBackground(gradientDrawableLabel);
+        edBH.setBackground(gradientDrawableLabel);
+
+        edR.setText(""+SessionParameters.r);
+        edG.setText(""+SessionParameters.g);
+        edB.setText(""+SessionParameters.b);
+        customColorSquare = Color.rgb(r, g, b);
+
+        edRH.setText(Strings.labelEditTextCustomColorTextR);
+        edGH.setText(Strings.labelEditTextCustomColorTextG);
+        edBH.setText(Strings.labelEditTextCustomColorTextB);
+        Button btn = dialog.findViewById(R.id.btn_manual);
+        btn.setBackgroundColor(customColorSquare);
+        edR.setOnKeyListener(new EditText.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                try {
+                    String temp = edR.getText().toString();
+                    if (!temp.isEmpty()) {
+                        r = Integer.parseInt(temp);
+                        if (r < 0) {
+                            r = 0;
+                            edR.setText(""+SessionParameters.r);
+                        }
+                        if (r > 255) {
+                            r = 255;
+                            edR.setText(""+SessionParameters.r);
+                        }
+//                        edR.setText(""+SessionParameters.r);
+                    }
+                    customColorSquare = Color.rgb(r, g, b);
+                    btn.setBackgroundColor(customColorSquare);
+                } catch (Exception e) {
+
+                }
+                return false;
+            }
+        });
+        edG.setOnKeyListener(new EditText.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                try {
+                    String temp = edG.getText().toString();
+                    if (!temp.isEmpty()) {
+                        g = Integer.parseInt(temp);
+                        if (g < 0) {
+                            g = 0;
+                            edG.setText(""+SessionParameters.g);
+                        }
+                        if (g > 255) {
+                            g = 255;
+                            edG.setText(""+SessionParameters.g);
+                        }
+//
+                    }
+                    customColorSquare = Color.rgb(r, g, b);
+                    btn.setBackgroundColor(customColorSquare);
+                } catch (Exception e) {
+
+                }
+                return false;
+            }
+        });
+        edB.setOnKeyListener(new EditText.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                try {
+                    String temp = edB.getText().toString();
+                    if (!temp.isEmpty()) {
+                        b = Integer.parseInt(temp);
+                        if (b < 0) {
+                            b = 0;
+                            edB.setText(""+SessionParameters.b);
+                        }
+                        if (b > 255) {
+                            b = 255;
+                            edB.setText(""+SessionParameters.b);
+                        }
+//
+                    }
+                   customColorSquare = Color.rgb(r, g, b);
+                   btn.setBackgroundColor(customColorSquare);
+                } catch (Exception e) {
+
+                }
+                return false;
+            }
+        });
+
+
+
+        String temp = "";
+        btn.setText(temp);
+
+
+//        btn_manual.setOnClickListener(c -> {
+//            SessionParameters.openManual = true;
+//            Intent intent = new Intent(ActivityMenu.this, ActivityAbout.class);
+//            try {
+//                Thread.sleep(300);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            startActivity(intent);
+//        });
+
+        dialog.show();
+
+    }
+
+//    public GradientDrawable createDrawable(Context context) {
+//        GradientDrawable gradientDrawable = new GradientDrawable();
+//        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
+//        gradientDrawable.setColor(ContextCompat.getColor(context, R.color.menu_item_background_color));
+//        gradientDrawable.setStroke(2, ContextCompat.getColor(context, R.color.menu_item_stroke_color));
+//        gradientDrawable.setCornerRadius(5);
+//        return gradientDrawable;
+//    }
+
+    private void showDialogAlertExit() {
 
         dialog = new Dialog(this);
         if (!darkModeTraining) {
@@ -1305,6 +1477,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         for (int i = 0; i < squares.size(); i++) {
             squares.get(i).setBackgroundColor(getResources().getColor(SessionParameters.colors[squareDefaultColorIndex]));
+            squares.get(i).setVisibility(INVISIBLE);
         }
     }
 
@@ -1420,35 +1593,32 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         if (v.getId() == R.id.buttonPosition2) {
             //-
-            speedPercentage = speedPercentage + 0.05;
-            setIntervalText();
-            fadeInterval = (long) (countDownInterval / squareFadeDuration);
-            if (timerTrial != null) {
-                timerTrial.cancel();
-                startTrialTimer();
-            }
             if (SessionParameters.allowToChangeSquareSize) {
 //                setCustomSize(true, 1);
 //                FileLogicSettings.saveSettings(this);
-            }
-            txtVwInterval.setVisibility(VISIBLE);
+            } else {
+                speedPercentage = speedPercentage + 0.05;
+                setIntervalText();
 
+                if (timerTrial != null) {
+                    timerTrial.cancel();
+                    startTrialTimer();
+                }
+            }
         }
         if (v.getId() == R.id.buttonAudio2) {
             //+
             if (SessionParameters.allowToChangeSquareSize) {
-
-//                setCustomSize(true, -1);
-//                FileLogicSettings.saveSettings(this);
+                setCustomSize(true, -1);
+                FileLogicSettings.saveSettings(this);
+            } else {
+                speedPercentage = speedPercentage - 0.05;
+                setIntervalText();
+                if (timerTrial != null) {
+                    timerTrial.cancel();
+                    startTrialTimer();
+                }
             }
-            speedPercentage = speedPercentage - 0.05;
-            setIntervalText();
-            fadeInterval = (long) (countDownInterval / squareFadeDuration);
-            if (timerTrial != null) {
-                timerTrial.cancel();
-                startTrialTimer();
-            }
-            txtVwInterval.setVisibility(VISIBLE);
 
         }
         if (v.getId() == R.id.buttonColor) {
@@ -1460,7 +1630,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         if (v.getId() == R.id.buttonExit) {
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
-            showAlertExit();
+            showDialogAlertExit();
         }
         if (v.getId() == R.id.button_click_training_sound_off) {
             playButtonSoundDuringTraining = !playButtonSoundDuringTraining;
@@ -1530,7 +1700,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         if (v.getId() == R.id.button_click_training_size) {
             allowToChangeColorStyle = false;
             if (!SessionParameters.allowToChangeSquareSize) {
-                setSquareSize();
+//                setSquareSize();
                 for (int i = 0; i < squares.size(); i++) {
                     squares.get(i).setVisibility(VISIBLE);
                 }
@@ -1540,6 +1710,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 setColorAndInvisible();
                 setCustomSize(true, 1);
                 FileLogicSettings.saveSettings(this);
+                SessionParameters.allowToChangeSquareSize = false;
             }
         }
 
@@ -1615,9 +1786,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         double percentage = countDownIntervalDefault / countDownInterval * 100;
         int tempPercentage = (int) percentage;
         percentage = tempPercentage;
-        if(percentage == 99){
+        if (percentage == 99) {
             percentage = 100;
         }
+        fadeInterval = (long) (countDownInterval / squareFadeDuration);
         txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII + " (" + (percentage) + "%)");
 //            txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII);
     }
@@ -1697,7 +1869,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color));
 
             txtVwMiddle.setTextColor(getResources().getColor(R.color.training_text_color));
-
+            txtVwInterval.setTextColor(getResources().getColor(R.color.training_text_color));
             dividerHorizontal1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
             dividerHorizontal2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
 
@@ -1716,6 +1888,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //            txtVwMiddle.setAlpha(0.45f);
             txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color_dark));
             txtVwMiddle.setTextColor(getResources().getColor(R.color.training_text_color_dark));
+            txtVwInterval.setTextColor(getResources().getColor(R.color.training_text_color_dark));
             btnMode.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_mode_dark));
             btnOrientation.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_orientation_dark));
             btnStyle.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_style_dark));
@@ -1821,5 +1994,32 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         return;
     }
+
+//    private void showDialogCustomSettings() {
+//
+//        Dialog dialog = new Dialog(this);
+//        dialog.setContentView(R.layout.view_menu_custom_color);
+//        EditText  edR = dialog.findViewById(R.id.editTextColorR);
+//        EditText  edG = dialog.findViewById(R.id.editTextColorG);
+//        EditText  edB = dialog.findViewById(R.id.editTextColorB);
+//        TextView  edRH = dialog.findViewById(R.id.hintTextViewColorR);
+//        TextView  edGH = dialog.findViewById(R.id.hintTextViewColorG);
+//        TextView  edBH = dialog.findViewById(R.id.hintTextViewColorB);
+//
+//        btn_manual.setOnClickListener(c -> {
+//            SessionParameters.openManual = true;
+//            Intent intent = new Intent(ActivityMenu.this, ActivityAbout.class);
+//            try {
+//                Thread.sleep(300);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            startActivity(intent);
+//        });
+//
+//
+//
+//        dialog.show();
+//    }
 
 }

@@ -75,6 +75,12 @@ public class FileLogicSettings {
                     SessionParameters.adMissedCounter = Integer.parseInt(scn.next());
                     scn.next();
                     SessionParameters.missedAdDialogHasBeenShown = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.r= Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.g= Integer.parseInt(scn.next());
+                    scn.next();
+                    SessionParameters.b= Integer.parseInt(scn.next());
 
 
                 } catch (Exception e) {
@@ -134,8 +140,10 @@ public class FileLogicSettings {
                         "showSessionInResults\t" + SessionParameters.showSessionInResults + "\n" +
                         "showTrialInResults\t" + SessionParameters.showTrialInResults + "\n" +
                         "adMissedCounter\t" + SessionParameters.adMissedCounter + "\n" +
-                        "missedAdDialogHasBeenShown\t" + SessionParameters.missedAdDialogHasBeenShown;
-
+                        "missedAdDialogHasBeenShown\t" + SessionParameters.missedAdDialogHasBeenShown + "\n" +
+                        "r\t" + SessionParameters.r + "\n" +
+                        "g\t" + SessionParameters.g + "\n" +
+                        "b\t" + SessionParameters.b;
         return temp;
     }
 

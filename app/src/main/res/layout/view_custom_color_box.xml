@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/alert_background"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/alert_background">
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextColorR"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/input_border"
+        android:gravity="center"
+        android:inputType="number"
+        android:textColor="@color/menu_text_color"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/hintTextViewColorR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="-12dp"
+        android:background="@drawable/input_border_label"
+        android:text="@string/nback"
+        android:textColor="@color/menu_text_color"
+        app:layout_constraintStart_toStartOf="@+id/editTextColorR"
+        app:layout_constraintTop_toTopOf="@+id/editTextColorR" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextColorG"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/input_border"
+        android:gravity="center"
+        android:inputType="number"
+        android:textColor="@color/menu_text_color"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/editTextColorR"
+        app:layout_constraintTop_toBottomOf="@+id/editTextColorR" />
+
+    <TextView
+        android:id="@+id/hintTextViewColorG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="-12dp"
+        android:background="@drawable/input_border_label"
+        android:text="@string/nback"
+        android:textColor="@color/menu_text_color"
+        app:layout_constraintStart_toStartOf="@+id/editTextColorG"
+        app:layout_constraintTop_toTopOf="@+id/editTextColorG" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextColorB"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/input_border"
+        android:gravity="center"
+        android:inputType="number"
+        android:textColor="@color/menu_text_color"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/editTextColorG"
+        app:layout_constraintTop_toBottomOf="@+id/editTextColorG" />
+
+    <TextView
+        android:id="@+id/hintTextViewColorB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="-12dp"
+        android:background="@drawable/input_border_label"
+        android:text="@string/nback"
+        android:textColor="@color/menu_text_color"
+        app:layout_constraintStart_toStartOf="@+id/editTextColorB"
+        app:layout_constraintTop_toTopOf="@+id/editTextColorB" />
+
+    <Button
+        android:id="@+id/btn_manual"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/custom_button_training"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextColorB" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

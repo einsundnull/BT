@@ -126,6 +126,7 @@
     <color name="menu_button_stroke_color_dark_3">#131313</color>
     <color name="menu_button_stroke_color_dark_4">#191818</color>
     <color name="border_color_no_position_dark">#929191</color>
+    <color name="menu_background_stroke_color">#AAA8A8</color>
     <color name="carmin">#DD2C00</color>
     <color name="carmin2">#D50000</color>
 
@@ -144,6 +145,7 @@
     <color name="sevenX">#533A15</color>
     <color name="nineX">#838588</color>
     <color name="eightX">#5A5A5A</color>
+
     <!--    <color name="ten">#FFFFFF</color>-->
 
 </resources>
