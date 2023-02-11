@@ -207,6 +207,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private ConstraintLayout layout_training;
     int alphaLayout = 0;
     private View[] views;
+    private Button onlyColor;
     private SoundPool appSounds;
     private int buttonSound;
     private int[] trainingSound;
@@ -243,13 +244,15 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_training_layout);
+        allowToChangeSquareSize = false;
+        allowToChangeColorStyle = false;
         activity = this;
         setFullScreen();
         setOrientationListener();
         getViews();
         setCustomSize(false, 1);
         setModeColors();
-        setSquareSize();
+//        setSquareSize();
         setSounds();
         setFadeInAnimation();
         setFadeInAnimation(views);
@@ -292,14 +295,25 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //        }
         txtVwnBackLevelInfo.setText(String.valueOf(nBack));
         setIntervalText();
+        setSquareSize();
 //        showCustomColorDialog();
     }
 
     private void setSquareSize() {
-        for (int i = 0; i < squares.size(); i++) {
-            squares.get(i).setScaleX(SessionParameters.customSquareSize);
-            squares.get(i).setScaleY(SessionParameters.customSquareSize);
+
+        if (includeColor && !includePosition) {
+
+            onlyColor.setScaleX(SessionParameters.customSquareSize * 2);
+            onlyColor.setScaleY(SessionParameters.customSquareSize * 2);
+            squares.get(4).setScaleX(SessionParameters.customSquareSize * 2);
+            squares.get(4).setScaleY(SessionParameters.customSquareSize * 2);
+        } else {
+            for (int i = 0; i < squares.size(); i++) {
+                squares.get(i).setScaleX(SessionParameters.customSquareSize);
+                squares.get(i).setScaleY(SessionParameters.customSquareSize);
+            }
         }
+
     }
 
     private void setSounds() {
@@ -433,15 +447,24 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         if (includeColor && !includePosition) {
             GradientDrawable border = new GradientDrawable();
             if (darkModeTraining) {
-                border.setColor(getResources().getColor(R.color.menu_background_color_dark)); // Background Color
-                border.setStroke(1, getResources().getColor(R.color.training_text_color_dark)); // BorderColor
-                squares.get(4).setBackground(border);
-                squares.get(4).setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
+                if (!zenMode) {
+                    border.setColor(getResources().getColor(R.color.menu_background_color_dark)); // Background Color
+                    border.setStroke(1, getResources().getColor(R.color.training_text_color_dark)); // BorderColor
+//                    squares.get(4).setBackground(border);
+//                    squares.get(4).setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
+                    onlyColor.setBackground(border);
+                    onlyColor.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
+
+                }
             } else {
-                border.setColor(getResources().getColor(R.color.menu_background_color)); // Background Color
-                border.setStroke(1, getResources().getColor(R.color.border_color_no_position)); // BorderColor
-                squares.get(4).setBackground(border);
-                squares.get(4).setBackgroundColor(getResources().getColor(R.color.menu_background_color));
+                if (!zenMode) {
+                    border.setColor(getResources().getColor(R.color.menu_background_color)); // Background Color
+                    border.setStroke(1, getResources().getColor(R.color.border_color_no_position)); // BorderColor
+//                    squares.get(4).setBackground(border);
+//                    squares.get(4).setBackgroundColor(getResources().getColor(R.color.menu_background_color));
+                    onlyColor.setBackground(border);
+                    onlyColor.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
+                }
             }
 
 
@@ -478,9 +501,20 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         if (includeColor && !includePosition) {
             GradientDrawable border = new GradientDrawable();
+            border.setColor(0x00FFFFFF); //white background
+            border.setStroke(1, getResources().getColor(R.color.border_color_no_position)); //black border with full opacity
             border.setColor(getResources().getColor(colors[shownIndexesColor.get(presentedScreens)])); // Background Color
-            border.setStroke(1, getResources().getColor(R.color.border_color_default)); // BorderColor
-            squares.get(4).setBackground(border);
+//            border.setStroke(1, getResources().getColor(R.color.border_color_default)); // BorderColor
+//            squares.get(4).setBackground(border);
+            if (zenMode) {
+                if (includeColor) {
+//                    squares.get(4).setBackground(border);
+                    onlyColor.setBackground(border);
+//                    squares.get(4).setBackgroundColor(getResources().getColor(colors[shownIndexesColor.get(presentedScreens)]));
+                }
+//                setFadeInAnimationSquaresForZenMode(squares.get(4));
+                setFadeInAnimationSquaresForZenMode(onlyColor);
+            }
         }
     }
 
@@ -535,6 +569,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         squares.add(findViewById(R.id.button6));
         squares.add(findViewById(R.id.button7));
         squares.add(findViewById(R.id.button8));
+        onlyColor = findViewById(R.id.onlyColor);
 
 
         btnPosition = (Button) findViewById(R.id.buttonPosition);
@@ -611,24 +646,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void setOnClickListenersToUiElements() {
-        btnPosition.setOnClickListener(this);
-        btnAudio.setOnClickListener(this);
-        btnPositionII.setOnClickListener(this);
-        btnAudioII.setOnClickListener(this);
-        btnColor.setOnClickListener(this);
-        btnExit.setOnClickListener(this);
-        squares.get(4).setOnClickListener(this);
-        txtVwMiddle.setOnClickListener(this);
-        infoTxt.setOnClickListener(this);
-        btnSoundOff.setOnClickListener(this);
-        btnOrientation.setOnClickListener(this);
-        btnMode.setOnClickListener(this);
-        btnStyle.setOnClickListener(this);
-        btnSize.setOnClickListener(this);
-        btnGrid.setOnClickListener(this);
-        btnFade.setOnClickListener(this);
-    }
 
     private void setTrialIndexes() {
         trialIsRunning = true;
@@ -675,9 +692,17 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         border.setColor(0x00FFFFFF); //white background
         border.setStroke(1, getResources().getColor(borderColor)); //black border with full opacity
         // END TEST
+//        int factor = 1;
+//        if (includeColor && !includePosition) {
+//            factor = 2;
+//        }
+
         squares.get(4).setBackground(border);
         squares.get(4).setScaleX(squareScale);
         squares.get(4).setScaleY(squareScale);
+        onlyColor.setScaleX(squareScale);
+        onlyColor.setScaleY(squareScale);
+
         squares.get(4).setVisibility(middleBtnVisible);
         txtVwMiddle.setText(textMiddle);
         txtVwMiddle.setTextSize(unit, textSize);
@@ -707,6 +732,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             timeTrial = RepeatStorage.getStartTime();
 //            SessionParameters.dayStartTrial = RepeatStorage.getDay();
         }
+        setSquareSize();
         startClockTimer();
         startTrialTimer();
     }
@@ -827,6 +853,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             // That has to be set. Otherwhise the trial results that are shown at
             // the end of the trial will be displayed to large end exceed the screen.
             // That method must be reversed when the trial is continued.
+//            int factor = 1;
+//            if (includeColor && !includePosition) {
+//                factor = 2;
+//            }
             setMiddleSquareToRightSizeUI(scaleDefault, R.color.border_color_default, cross, textUnit, textSizeMiddleTrial, INVISIBLE, VISIBLE);
             dividerVertical1.setVisibility(VISIBLE);
             dividerVertical2.setVisibility(VISIBLE);
@@ -1075,7 +1105,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 showScreenEndTrialResults();
             }
         } else if (paused && trialIsRunning) {
-            showScreenPause();
+
+            showAndHidePauseScreen();
         }
         setDeveloperInfoText(infoTxt);
         return clicked;
@@ -1128,7 +1159,19 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         return indicator;
     }
 
-    private void showScreenPause() {
+    private void showAndHidePauseScreen() {
+        if (paused) {
+            FileLogicSettings.saveSettings(this);
+            allowToChangeSquareSize = false;
+            allowToChangeColorStyle = false;
+            if (!includePosition && includeColor) {
+//                squares.get(4).setAlpha(0);
+//                squares.get(4).setVisibility(INVISIBLE);
+                onlyColor.setAlpha(0);
+                onlyColor.setVisibility(INVISIBLE);
+
+            }
+        }
         paused = false;
         if (developerTimer == null) {
             startDeveloperTimer();
@@ -1147,6 +1190,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 setDividersVisibleAddaptToMode(VISIBLE);
             } else {
                 squares.get(4).setVisibility(View.VISIBLE);
+                onlyColor.setVisibility(INVISIBLE);
                 setDividersVisibleAddaptToMode(INVISIBLE);
             }
         }
@@ -1408,6 +1452,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             txtVwMiddle.setVisibility(View.VISIBLE);
             squares.get(4).setVisibility(View.INVISIBLE);
 
+
             if (resultScreenIndex == 0) {
                 Strings.createTrialEndTextPercentage();
                 endOfTrialDialogIsVisible = true;
@@ -1535,6 +1580,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onAnimationStart(Animation arg0) {
+                v.setAlpha(1);
             }
         });
 
@@ -1549,6 +1595,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         mLoadAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation arg0) {
+                if (zenMode && includeColor && !includePosition) {
+                    v.setAlpha(0);
+                }
             }
 
             @Override
@@ -1557,19 +1606,27 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onAnimationStart(Animation arg0) {
+
             }
         });
         v.startAnimation(mLoadAnimation);
     }
 
     private void setColorAndInvisible() {
+
         for (int i = 0; i < squares.size(); i++) {
-//            if (i != 4) {
-            squares.get(i).setBackgroundColor(getResources().getColor(colors[squareDefaultColorIndex]));
-            squares.get(i).setVisibility(INVISIBLE);
-//            squares.get(i).setScaleX(SessionParameters.customSquareSize);
-//            squares.get(i).setScaleY(SessionParameters.customSquareSize);
-//            }
+            if (i != 4) {
+                squares.get(i).setBackgroundColor(getResources().getColor(colors[squareDefaultColorIndex]));
+                squares.get(i).setVisibility(INVISIBLE);
+            }
+        }
+        if (!includePosition && includeColor) {
+            squares.get(4).setVisibility(VISIBLE);
+            squares.get(4).setAlpha(1);
+            onlyColor.setVisibility(INVISIBLE);
+            onlyColor.setAlpha(0);
+            txtVwMiddle.setVisibility(INVISIBLE);
+
         }
         allowToChangeSquareSize = false;
         allowToChangeColorStyle = false;
@@ -1591,6 +1648,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             squaresOnClickLogic(4);
         });
         squares.get(4).setOnClickListener(c -> {
+            setPausedFromMiddle();
+            squaresOnClickLogic(5);
+        });
+        onlyColor.setOnClickListener(c -> {
             setPausedFromMiddle();
             squaresOnClickLogic(5);
         });
@@ -1618,6 +1679,25 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private void setOnClickListenersToUiElements() {
+        btnPosition.setOnClickListener(this);
+        btnAudio.setOnClickListener(this);
+        btnPositionII.setOnClickListener(this);
+        btnAudioII.setOnClickListener(this);
+        btnColor.setOnClickListener(this);
+        btnExit.setOnClickListener(this);
+        squares.get(4).setOnClickListener(this);
+        onlyColor.setOnClickListener(this);
+        txtVwMiddle.setOnClickListener(this);
+        infoTxt.setOnClickListener(this);
+        btnSoundOff.setOnClickListener(this);
+        btnOrientation.setOnClickListener(this);
+        btnMode.setOnClickListener(this);
+        btnStyle.setOnClickListener(this);
+        btnSize.setOnClickListener(this);
+        btnGrid.setOnClickListener(this);
+        btnFade.setOnClickListener(this);
+    }
 
     @Override
     public void onClick(View v) {
@@ -1629,13 +1709,12 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         if (v.getId() == R.id.buttonPosition2) {
             //-
-            if (SessionParameters.allowToChangeSquareSize) {
+            if (allowToChangeSquareSize) {
                 setCustomSize(true, 1);
                 FileLogicSettings.saveSettings(this);
             } else {
                 speedPercentage = speedPercentage + 0.05;
                 setIntervalText();
-
                 if (timerTrial != null) {
                     timerTrial.cancel();
                     startTrialTimer();
@@ -1644,9 +1723,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         if (v.getId() == R.id.buttonAudio2) {
             //+
-            if (SessionParameters.allowToChangeSquareSize) {
+            if (allowToChangeSquareSize) {
                 setCustomSize(true, -1);
                 FileLogicSettings.saveSettings(this);
+
             } else {
                 speedPercentage = speedPercentage - 0.05;
                 setIntervalText();
@@ -1700,7 +1780,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //            setDividersVisible(true);
         }
         if (v.getId() == R.id.button_click_training_style) {
-            if (!SessionParameters.allowToChangeSquareSize) {
+            if (!allowToChangeSquareSize) {
 
 //                if (SessionParameters.colorArrayIndex == 0) {
 //                    colors = SessionParameters.colorsII;
@@ -1743,7 +1823,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(this, Strings.changeSquareColorText, Toast.LENGTH_LONG).show();
                 } else {
                     try {
-                        SessionParameters.allowToChangeColorStyle = false;
+                        allowToChangeSquareSize = false;
+                        allowToChangeColorStyle = false;
                         for (int i = 0; i < squares.size(); i++) {
                             squares.get(i).setVisibility(INVISIBLE);
                         }
@@ -1758,22 +1839,31 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                     setSquareSize();
                 }
                 allowToChangeSquareSize = false;
+                allowToChangeColorStyle = false;
             }
         }
         if (v.getId() == R.id.button_click_training_size) {
             allowToChangeColorStyle = false;
-            if (!SessionParameters.allowToChangeSquareSize) {
+            if (!allowToChangeSquareSize) {
 //                setSquareSize();
-                for (int i = 0; i < squares.size(); i++) {
-                    squares.get(i).setVisibility(VISIBLE);
+                if (!includePosition && includeColor) {
+                    squares.get(4).setVisibility(VISIBLE);
+                    squares.get(4).setAlpha(1);
+//                    onlyColor.setVisibility(INVISIBLE);
+//                    onlyColor.setAlpha(0);
+                } else {
+                    for (int i = 0; i < squares.size(); i++) {
+                        squares.get(i).setVisibility(VISIBLE);
+                    }
                 }
-                SessionParameters.allowToChangeSquareSize = true;
+
+                allowToChangeSquareSize = true;
                 Toast.makeText(this, Strings.changeSquareSizeText, Toast.LENGTH_SHORT).show();
             } else {
                 setColorAndInvisible();
                 setCustomSize(true, 1);
                 FileLogicSettings.saveSettings(this);
-                SessionParameters.allowToChangeSquareSize = false;
+                allowToChangeSquareSize = false;
             }
         }
 
@@ -1806,7 +1896,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         if (v.getId() == R.id.txtVwMiddle) {
             setPausedFromMiddle();
-
         }
         if (v.getId() == R.id.btn_positive) {
 
@@ -1839,10 +1928,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
     private void setIntervalText() {
-        if (speedPercentage <= 0.25) {
+        if (speedPercentage < 0.25) {
             speedPercentage = 0.25;
         }
-        if (speedPercentage >= 2.75) {
+        if (speedPercentage > 2.75) {
             speedPercentage = 2.75;
         }
         countDownInterval = countDownIntervalDefault * speedPercentage;
@@ -2015,18 +2104,36 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //        }
 //    }
 
+
     private void setCustomSize(boolean changeSize, int pos) {
         if (changeSize) {
-            SessionParameters.customSquareSize = SessionParameters.customSquareSize - 0.05f * pos;
-            if (SessionParameters.customSquareSize <= 0.1f) {
-                SessionParameters.customSquareSize = 0.1f;
+
+            float squareSize = SessionParameters.customSquareSize;
+
+            if (squareSize <= 0.1f) {
+                squareSize = 0.1f;
             }
-            if (SessionParameters.customSquareSize > 0.99f) {
-                SessionParameters.customSquareSize = 1f;
+            if (squareSize > 0.99f) {
+                squareSize = 1f;
             }
+
+            SessionParameters.customSquareSize = (squareSize - 0.05f * pos);
         }
         setSquareSize();
     }
+
+//    private void setCustomSize(boolean changeSize, int pos) {
+//        if (changeSize) {
+//            SessionParameters.customSquareSize = SessionParameters.customSquareSize - 0.05f * pos;
+//            if (SessionParameters.customSquareSize <= 0.1f) {
+//                SessionParameters.customSquareSize = 0.1f;
+//            }
+//            if (SessionParameters.customSquareSize > 0.99f) {
+//                SessionParameters.customSquareSize = 1f;
+//            }
+//        }
+//        setSquareSize();
+//    }
 
     public static void setCountdown(View view, int durationInMilliSeconds) {
         view.setEnabled(false);
