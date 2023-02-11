@@ -198,6 +198,7 @@ public class SessionParameters {
     // This boolean prevents the tempResults to be stored again and again if I open the resultsScreen.
     public static boolean tempResultsAlreadyStored = false;
     public static boolean includeFeature;
+    public static boolean returnFromResultScreen;
 
 
 //    String[]  colors = new String[] { "white", "yellow", "chocolate", "green", "rgb(136,163,19)", "rgb(3,211,252)", "blue", "red", "purple","grey","darkgrey" };

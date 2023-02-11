@@ -336,7 +336,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private void setFadeOutAnimation(View... v) {
 
         setTransitionToBlack();
-
         Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
         mLoadAnimation.setDuration(1200);
         mLoadAnimation.setStartOffset(00);

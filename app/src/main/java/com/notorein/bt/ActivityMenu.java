@@ -4,13 +4,14 @@ import static android.content.ContentValues.TAG;
 import static com.notorein.bt.ResultsFiles.copyResults;
 import static com.notorein.bt.ResultsFiles.deleteResults;
 import static com.notorein.bt.ResultsFiles.initialiseStoringFilePaths;
-import static com.notorein.bt.SessionParameters.*;
 import static com.notorein.bt.SessionParameters.adMissedCounter;
 import static com.notorein.bt.SessionParameters.convertedTrialToTime;
 import static com.notorein.bt.SessionParameters.countDownInterval;
 import static com.notorein.bt.SessionParameters.darkModeTraining;
 import static com.notorein.bt.SessionParameters.dateOfCurrentUse;
 import static com.notorein.bt.SessionParameters.daySession;
+import static com.notorein.bt.SessionParameters.displayHeight;
+import static com.notorein.bt.SessionParameters.displayWidth;
 import static com.notorein.bt.SessionParameters.duration;
 import static com.notorein.bt.SessionParameters.fadeoutAnimationDuration;
 import static com.notorein.bt.SessionParameters.firstStart;
@@ -18,8 +19,11 @@ import static com.notorein.bt.SessionParameters.includeAudio;
 import static com.notorein.bt.SessionParameters.includeColor;
 import static com.notorein.bt.SessionParameters.includePosition;
 import static com.notorein.bt.SessionParameters.includedModes;
+import static com.notorein.bt.SessionParameters.loadInterstitialAd;
+import static com.notorein.bt.SessionParameters.missedAdDialogHasBeenShown;
 import static com.notorein.bt.SessionParameters.nBack;
 import static com.notorein.bt.SessionParameters.nBackBegin;
+import static com.notorein.bt.SessionParameters.openManual;
 import static com.notorein.bt.SessionParameters.orientation;
 import static com.notorein.bt.SessionParameters.paused;
 import static com.notorein.bt.SessionParameters.resultsFilePath;
@@ -27,7 +31,9 @@ import static com.notorein.bt.SessionParameters.returnFromTraining;
 import static com.notorein.bt.SessionParameters.sessionWasCanceledEarly;
 import static com.notorein.bt.SessionParameters.stringToStore;
 import static com.notorein.bt.SessionParameters.stringToStoreInitial;
+import static com.notorein.bt.SessionParameters.tempResultsAlreadyStored;
 import static com.notorein.bt.SessionParameters.trialsMax;
+import static com.notorein.bt.SessionParameters.useTempResults;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -72,6 +78,8 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+
+import java.io.File;
 
 
 public class ActivityMenu extends AppCompatActivity implements View.OnClickListener {
@@ -123,6 +131,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private Dialog dialogAdReminder;
     private ConstraintLayout dialogAdReminderLayout;
     private boolean showReminderDialog;
+    private Dialog dialogAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +154,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         mAdView.loadAd(adRequest);
         loadInterstitialAd();
         FileLogicSettings.readSettings(ActivityMenu.this);
-        createDialogAdReminder();
+
         getViews();
         setImageNou();
         setSounds();
@@ -161,17 +170,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         if (!sessionWasCanceledEarly) {
             btnSave.setTextColor(getResources().getColor(R.color.button_save_enabled));
         }
-
-        initialiseStoringFilePaths(false);
-//        ResultsFiles.readResults(ActivityMenu.this);
         daySession = RepeatStorage.getDay();
-//        ResultsFiles.checkForLastDayOfUse();
-//        new ResultsFiles().calculateResultsForDisplay();
-//        try {
-//            convertedTrialToTimeMethod();
-//        } catch (Exception e) {
-////                    preventEmptyEditTextOrZero();
-//        }
         boolean internet = isInternetAvailable();
         if (internet && missedAdDialogHasBeenShown && adMissedCounter >= 5) {
             adMissedCounter = 0;
@@ -184,10 +183,23 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             if (adMissedCounter >= 5) {
                 showReminderDialog = true;
             }
+            createDialogAdReminder();
         }
+        if (new File(this.getFilesDir(), initialiseStoringFilePaths(true)).exists()) {
+            showAlertPleaseSaveResults(this, Strings.dontForgetToSaveResults, Strings.storeResults, Strings.dismissResults, () -> {
+                copyResults(this, initialiseStoringFilePaths(false), initialiseStoringFilePaths(true));
+                deleteResults(this, initialiseStoringFilePaths(true));
+
+            }, () -> {
+                deleteResults(this, initialiseStoringFilePaths(true));
+            });
+        }
+
         returnFromTraining = false;
+        SessionParameters.returnFromResultScreen = false;
 //        dialogAdReminder.show();
         test.setText("" + adMissedCounter);
+
     }
 
     private void loadInterstitialAd() {
@@ -415,7 +427,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 resultsFilePath = initialiseStoringFilePaths(false);
                 stringToStoreInitial = ResultsFiles.readResults(ActivityMenu.this);
                 ResultsFiles.copyResults(this, resultsFilePath, initialiseStoringFilePaths(true));
-                ResultsFiles.saveResults(this,true,initialiseStoringFilePaths(true));
+                ResultsFiles.saveResults(this, true, initialiseStoringFilePaths(true));
                 tempResultsAlreadyStored = true;
             }
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
@@ -740,10 +752,10 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 for (View i : views) {
                     i.setAlpha(1f);
                 }
-                if (showReminderDialog) {
-                    createDialogAdReminder();
-                    dialogAdReminder.show();
-                }
+
+                createDialogAdReminder();
+//
+
 
             }
 
@@ -774,10 +786,11 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 for (int i = 0; i < v.length; i++) {
                     v[i].setAlpha(0);
                 }
-                FileLogicSettings.saveSettings(ActivityMenu.this);
                 Intent intent = new Intent(ActivityMenu.this, ActivityTraining.class);
                 startActivity(intent);
                 finish();
+
+
             }
 
             @Override
@@ -786,6 +799,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onAnimationStart(Animation arg0) {
+                FileLogicSettings.saveSettings(ActivityMenu.this);
             }
         });
         for (View i : v) {
@@ -887,13 +901,13 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
     private void showDialogAbout() {
 
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.view_menu_about);
-        btn_manual = (Button) dialog.findViewById(R.id.btnBottom);
+        dialogAbout = new Dialog(this);
+        dialogAbout.setContentView(R.layout.view_menu_about);
+        btn_manual = (Button) dialogAbout.findViewById(R.id.btnBottom);
         btn_manual.setText(Strings.btnManualText);
-        btn_recommendations = (Button) dialog.findViewById(R.id.btn_about);
+        btn_recommendations = (Button) dialogAbout.findViewById(R.id.btn_about);
         btn_recommendations.setText(Strings.btnRecommendationsText);
-        btn_exit = (Button) dialog.findViewById(R.id.btn_exit);
+        btn_exit = (Button) dialogAbout.findViewById(R.id.btn_exit);
         btn_manual.setOnClickListener(c -> {
             openManual = true;
             Intent intent = new Intent(ActivityMenu.this, ActivityAbout.class);
@@ -920,33 +934,38 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 //        });
         btn_exit.setOnClickListener(c -> {
             if (!btnSave.isEnabled()) {
-                dialog.cancel();
+                dialogAbout.cancel();
                 finish();
             } else {
                 showAlertPleaseSaveResults(() -> {
-                    dialog.cancel();
+                    dialogAbout.cancel();
                     finish();
-                }, null);
+                }, ()->{
+                    dialogAbout.cancel();
+                });
             }
         });
-        dialog.show();
+        dialogAbout.show();
     }
 
     private void createDialogAdReminder() {
+        if (showReminderDialog) {
+            dialogAdReminder = new Dialog(this);
+            dialogAdReminder.setContentView(R.layout.view_menu_ad_reminder);
+            dialogAdReminderLayout = findViewById(R.id.dialogAdReminderLayout);
+            TextView btn_manual = dialogAdReminder.findViewById(R.id.btnBottom);
+            btn_manual.setText(Strings.adReminderTextI + adMissedCounter + Strings.adReminderTextII);
 
-        dialogAdReminder = new Dialog(this);
-        dialogAdReminder.setContentView(R.layout.view_menu_ad_reminder);
-        dialogAdReminderLayout = findViewById(R.id.dialogAdReminderLayout);
-        TextView btn_manual = dialogAdReminder.findViewById(R.id.btnBottom);
-        btn_manual.setText(Strings.adReminderTextI + adMissedCounter + Strings.adReminderTextII);
+            TextView btn_about = (TextView) dialogAdReminder.findViewById(R.id.btn_about);
+            btn_about.setText(Strings.adReminderTextIII);
+            btn_about.setOnClickListener(c -> {
+                dialogAdReminder.cancel();
+                missedAdDialogHasBeenShown = true;
+                FileLogicSettings.saveSettings(this);
+            });
 
-        TextView btn_about = (TextView) dialogAdReminder.findViewById(R.id.btn_about);
-        btn_about.setText(Strings.adReminderTextIII);
-        btn_about.setOnClickListener(c -> {
-            dialogAdReminder.cancel();
-            missedAdDialogHasBeenShown = true;
-            FileLogicSettings.saveSettings(this);
-        });
+            dialogAdReminder.show();
+        }
     }
 
     private void showAlertPleaseSaveResults(Runnable dissmissLogic, Runnable goBackLogic) {
@@ -957,12 +976,34 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (goBackLogic != null)
                     goBackLogic.run();
+
             }
         }).setPositiveButton(Strings.dismissResults, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (dissmissLogic != null)
                     dissmissLogic.run();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        builder.show();
+    }
+
+
+    public static void showAlertPleaseSaveResults(Context c, String title, String dismiss, String confirm, Runnable dismissLogic, Runnable confirmLogic) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(c);
+        builder.setMessage(title).setCancelable(true).setNegativeButton(confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (confirmLogic != null)
+                    confirmLogic.run();
+            }
+        }).setPositiveButton(dismiss, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (dismissLogic != null)
+                    dismissLogic.run();
             }
         });
         AlertDialog alertDialog = builder.create();
