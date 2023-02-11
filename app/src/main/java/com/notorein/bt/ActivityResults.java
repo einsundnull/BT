@@ -183,19 +183,6 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         loadInterstitialAd = false;
     }
 
-//    public void onDestroy() {
-//
-//        if (useTempResults) {
-//            showAlertPleaseSaveResults(this, Strings.dontForgetToSaveResults, Strings.storeResults, Strings.dismissResults, () -> {
-//
-//            }, () -> {
-//                super.onDestroy();
-//            });
-//        }
-//
-//
-//    }
-
     public static float dpFromPx(final Context context, final float px) {
         return px / context.getResources().getDisplayMetrics().density;
     }
