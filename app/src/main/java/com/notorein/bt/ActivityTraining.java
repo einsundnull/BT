@@ -230,6 +230,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private ConstraintLayout colorChooseLayout;
     private Dialog dialog;
     private Activity activity;
+    private int visibility , alpha;
 
 
     @Override
@@ -1182,6 +1183,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             paused = false;
             setSettingsButtonVisibility(INVISIBLE);
             txtVwMiddle.setText(cross);
+            if(!includePosition && includeColor){
+                txtVwMiddle.setText("");
+            }
             txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
             for (int i = 0; i < squares.size(); i++) {
                 squares.get(i).setVisibility(View.INVISIBLE);
@@ -1559,6 +1563,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             squares.get(i).setBackgroundColor(getResources().getColor(SessionParameters.colors[squareDefaultColorIndex]));
             squares.get(i).setVisibility(INVISIBLE);
         }
+        if(!includePosition && includeColor){
+            onlyColor.setBackgroundColor(getResources().getColor(SessionParameters.colors[squareDefaultColorIndex]));
+        }
         FileLogicSettings.saveSettings(this);
     }
 
@@ -1625,7 +1632,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             squares.get(4).setAlpha(1);
             onlyColor.setVisibility(INVISIBLE);
             onlyColor.setAlpha(0);
-            txtVwMiddle.setVisibility(INVISIBLE);
+
 
         }
         allowToChangeSquareSize = false;
@@ -1849,19 +1856,23 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 if (!includePosition && includeColor) {
                     squares.get(4).setVisibility(VISIBLE);
                     squares.get(4).setAlpha(1);
-//                    onlyColor.setVisibility(INVISIBLE);
-//                    onlyColor.setAlpha(0);
+
+                    onlyColor.setVisibility(VISIBLE);
+                    onlyColor.setAlpha(1);
                 } else {
                     for (int i = 0; i < squares.size(); i++) {
                         squares.get(i).setVisibility(VISIBLE);
                     }
+
                 }
 
                 allowToChangeSquareSize = true;
                 Toast.makeText(this, Strings.changeSquareSizeText, Toast.LENGTH_SHORT).show();
             } else {
+                squares.get(4).setAlpha(alpha);
+                squares.get(4).setVisibility(visibility);
                 setColorAndInvisible();
-                setCustomSize(true, 1);
+                setCustomSize(false, 1);
                 FileLogicSettings.saveSettings(this);
                 allowToChangeSquareSize = false;
             }
@@ -1869,7 +1880,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
 
         if (v.getId() == R.id.button_click_training_grid) {
-            setDividersVisible(true);
+
+                setDividersVisible(true);
+
             FileLogicSettings.saveSettings(this);
         }
         if (v.getId() == R.id.button_click_training_fade) {
@@ -1950,7 +1963,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         if (changeVisibility) {
             SessionParameters.showGrid = !SessionParameters.showGrid;
         }
-        int visibility, alpha;
+
         if (showGrid) {
             visibility = View.VISIBLE;
             alpha = 1;
@@ -1960,15 +1973,21 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             alpha = 0;
             Toast.makeText(this, Strings.showGridTextNo, Toast.LENGTH_SHORT).show();
         }
-        dividerVertical1.setAlpha(alpha);
-        dividerVertical2.setAlpha(alpha);
-        dividerHorizontal1.setAlpha(alpha);
-        dividerHorizontal2.setAlpha(alpha);
+        if(!includePosition && includeColor){
+            squares.get(4).setAlpha(alpha);
+            squares.get(4).setVisibility(visibility);
+        } else {
+            dividerVertical1.setAlpha(alpha);
+            dividerVertical2.setAlpha(alpha);
+            dividerHorizontal1.setAlpha(alpha);
+            dividerHorizontal2.setAlpha(alpha);
 
-        dividerVertical1.setVisibility(visibility);
-        dividerVertical2.setVisibility(visibility);
-        dividerHorizontal1.setVisibility(visibility);
-        dividerHorizontal2.setVisibility(visibility);
+            dividerVertical1.setVisibility(visibility);
+            dividerVertical2.setVisibility(visibility);
+            dividerHorizontal1.setVisibility(visibility);
+            dividerHorizontal2.setVisibility(visibility);
+        }
+
     }
 
     private void styleButtonLogic() {
