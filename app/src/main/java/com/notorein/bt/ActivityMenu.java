@@ -13,6 +13,7 @@ import static com.notorein.bt.SessionParameters.daySession;
 import static com.notorein.bt.SessionParameters.displayHeight;
 import static com.notorein.bt.SessionParameters.displayWidth;
 import static com.notorein.bt.SessionParameters.duration;
+import static com.notorein.bt.SessionParameters.exitButtonWasPressed;
 import static com.notorein.bt.SessionParameters.fadeoutAnimationDuration;
 import static com.notorein.bt.SessionParameters.firstStart;
 import static com.notorein.bt.SessionParameters.includeAudio;
@@ -166,7 +167,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         getDisplaySize();
 
         btnStart.setEnabled(true);
-        btnSave.setEnabled(!sessionWasCanceledEarly);
+        btnSave.setEnabled(!sessionWasCanceledEarly && !exitButtonWasPressed);
         if (!sessionWasCanceledEarly) {
             btnSave.setTextColor(getResources().getColor(R.color.button_save_enabled));
         }
@@ -183,7 +184,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             if (adMissedCounter >= 5) {
                 showReminderDialog = true;
             }
-            createDialogAdReminder();
         }
         if (new File(this.getFilesDir(), initialiseStoringFilePaths(true)).exists()) {
             showAlertPleaseSaveResults(this, Strings.dontForgetToSaveResults, Strings.storeResults, Strings.dismissResults, () -> {
@@ -197,6 +197,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
         returnFromTraining = false;
         SessionParameters.returnFromResultScreen = false;
+        exitButtonWasPressed = false;
 //        dialogAdReminder.show();
         test.setText("" + adMissedCounter);
 
@@ -935,10 +936,13 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         btn_exit.setOnClickListener(c -> {
             if (!btnSave.isEnabled()) {
                 dialogAbout.cancel();
+                exitButtonWasPressed = true;
                 finish();
             } else {
                 showAlertPleaseSaveResults(() -> {
                     dialogAbout.cancel();
+                    btnSave.setEnabled(false);
+                    exitButtonWasPressed = true;
                     finish();
                 }, ()->{
                     dialogAbout.cancel();
