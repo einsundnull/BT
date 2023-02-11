@@ -1,7 +1,10 @@
 package com.notorein.bt;
 
 import static android.content.ContentValues.TAG;
+import static com.notorein.bt.ResultsFiles.copyResults;
+import static com.notorein.bt.ResultsFiles.deleteResults;
 import static com.notorein.bt.ResultsFiles.initialiseStoringFilePaths;
+import static com.notorein.bt.SessionParameters.*;
 import static com.notorein.bt.SessionParameters.adMissedCounter;
 import static com.notorein.bt.SessionParameters.convertedTrialToTime;
 import static com.notorein.bt.SessionParameters.countDownInterval;
@@ -19,6 +22,7 @@ import static com.notorein.bt.SessionParameters.nBack;
 import static com.notorein.bt.SessionParameters.nBackBegin;
 import static com.notorein.bt.SessionParameters.orientation;
 import static com.notorein.bt.SessionParameters.paused;
+import static com.notorein.bt.SessionParameters.resultsFilePath;
 import static com.notorein.bt.SessionParameters.returnFromTraining;
 import static com.notorein.bt.SessionParameters.sessionWasCanceledEarly;
 import static com.notorein.bt.SessionParameters.stringToStore;
@@ -158,7 +162,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             btnSave.setTextColor(getResources().getColor(R.color.button_save_enabled));
         }
 
-        initialiseStoringFilePaths();
+        initialiseStoringFilePaths(false);
 //        ResultsFiles.readResults(ActivityMenu.this);
         daySession = RepeatStorage.getDay();
 //        ResultsFiles.checkForLastDayOfUse();
@@ -169,12 +173,12 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 ////                    preventEmptyEditTextOrZero();
 //        }
         boolean internet = isInternetAvailable();
-        if (internet && SessionParameters.missedAdDialogHasBeenShown && adMissedCounter >= 5) {
+        if (internet && missedAdDialogHasBeenShown && adMissedCounter >= 5) {
             adMissedCounter = 0;
         }
         if (!internet) {
-            if(!returnFromTraining){
-                SessionParameters.adMissedCounter++;
+            if (!returnFromTraining) {
+                adMissedCounter++;
             }
             FileLogicSettings.saveSettings(this);
             if (adMissedCounter >= 5) {
@@ -183,8 +187,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         }
         returnFromTraining = false;
 //        dialogAdReminder.show();
-        test.setText("" + SessionParameters.adMissedCounter);
-
+        test.setText("" + adMissedCounter);
     }
 
     private void loadInterstitialAd() {
@@ -279,8 +282,8 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        SessionParameters.displayWidth = size.x;
-        SessionParameters.displayHeight = size.y;
+        displayWidth = size.x;
+        displayHeight = size.y;
     }
 
     private void setSounds() {
@@ -405,12 +408,19 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                     btnSave.setEnabled(ResultsFiles.test);
                     break;
             }
-
         }
         if (v.getId() == R.id.btnResults) {
+            if (useTempResults && !tempResultsAlreadyStored) {
+                // Here I am reading the original file
+                resultsFilePath = initialiseStoringFilePaths(false);
+                stringToStoreInitial = ResultsFiles.readResults(ActivityMenu.this);
+                ResultsFiles.copyResults(this, resultsFilePath, initialiseStoringFilePaths(true));
+                ResultsFiles.saveResults(this,true,initialiseStoringFilePaths(true));
+                tempResultsAlreadyStored = true;
+            }
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
             stringToStore = stringToStoreInitial + stringToStore;
-            SessionParameters.loadInterstitialAd = true;
+            loadInterstitialAd = true;
             if (isInternetAvailable()) {
 
                 if (mInterstitialAd != null) {
@@ -427,10 +437,28 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         }
 
         if (v.getId() == R.id.btnSave) {
+            // If I don't add the if statement, the results can be stored twice in the same file
+            // from the temporary results file.
+            if (tempResultsAlreadyStored) {
+                Log.i(TAG, "onClick:  " + tempResultsAlreadyStored);
+
+                resultsFilePath = initialiseStoringFilePaths(false);
+                copyResults(this, initialiseStoringFilePaths(true), resultsFilePath);
+                deleteResults(this, initialiseStoringFilePaths(true));
+
+            } else {
+                Log.i(TAG, "onClick:  " + tempResultsAlreadyStored);
+                resultsFilePath = initialiseStoringFilePaths(false);
+                Log.i(TAG, "tempFilePath: " + resultsFilePath + "   #############  ");
+                ResultsFiles.saveResults(ActivityMenu.this, true, resultsFilePath);
+            }
+            useTempResults = false;
+            tempResultsAlreadyStored = false;
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
             btnSave.setEnabled(false);
             btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
-            ResultsFiles.saveResults(ActivityMenu.this);
+
+
         }
 
         if (v.getId() == R.id.infoTextView) {
@@ -480,16 +508,59 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
     }
 
+//    private void switchLogic(boolean includeFeature, int featureFlag) {
+//        if (!btnSave.isEnabled()) {
+//            includedModes++;
+//           SessionParameters.includeFeature = !includeFeature;
+//            if (featureFlag == 1) {
+//                useTempResults = false;
+//                tempResultsAlreadyStored = false;
+//            }
+//            resultsFilePath = initialiseStoringFilePaths(useTempResults);
+//            stringToStoreInitial = ResultsFiles.readResults(ActivityMenu.this);
+//            btnSave.setEnabled(false);
+//            btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
+//            stringToStore = "";
+//
+//        } else {
+//            showAlertPleaseSaveResults(() -> {
+//                btnSave.setEnabled(false);
+//                btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
+//                switchLogic(includeFeature, featureFlag);
+//                resultsFilePath = initialiseStoringFilePaths(useTempResults);
+//            }, () -> {
+//                FileLogicSettings.readSettings(ActivityMenu.this);
+//                setSwitchesInPosition();
+//            });
+//        }
+//    }
+//    private void switchPositionLogic() {
+//        switchLogic(includePosition, 1);
+//    }
+//
+//    private void switchAudioLogic() {
+//        switchLogic(includeAudio, 1);
+//    }
+//
+//    private void switchColorLogic() {
+//        switchLogic(includeColor, 1);
+//    }
+
+
     private void switchPositionLogic() {
         if (!btnSave.isEnabled()) {
             includedModes++;
             includePosition = !includePosition;
-            stringToStoreInitial = ResultsFiles.readResults(ActivityMenu.this);
             btnSave.setEnabled(false);
             btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
             stringToStore = "";
         } else {
             showAlertPleaseSaveResults(() -> {
+                if (useTempResults) {
+                    ResultsFiles.deleteResults(this, initialiseStoringFilePaths(true));
+                }
+                useTempResults = false;
+                tempResultsAlreadyStored = false;
                 btnSave.setEnabled(false);
                 btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
                 switchPositionLogic();
@@ -504,12 +575,16 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         if (!btnSave.isEnabled()) {
             includedModes++;
             includeAudio = !includeAudio;
-            stringToStoreInitial = ResultsFiles.readResults(ActivityMenu.this);
             btnSave.setEnabled(false);
             btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
             stringToStore = "";
         } else {
             showAlertPleaseSaveResults(() -> {
+                if (useTempResults) {
+                    ResultsFiles.deleteResults(this, initialiseStoringFilePaths(true));
+                }
+                useTempResults = false;
+                tempResultsAlreadyStored = false;
                 btnSave.setEnabled(false);
                 btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
                 switchAudioLogic();
@@ -524,12 +599,16 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         if (!btnSave.isEnabled()) {
             includedModes++;
             includeColor = !includeColor;
-            stringToStoreInitial = ResultsFiles.readResults(ActivityMenu.this);
             btnSave.setEnabled(false);
             btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
             stringToStore = "";
         } else {
             showAlertPleaseSaveResults(() -> {
+                if (useTempResults) {
+                    ResultsFiles.deleteResults(this, initialiseStoringFilePaths(true));
+                }
+                useTempResults = false;
+                tempResultsAlreadyStored = false;
                 btnSave.setEnabled(false);
                 btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
                 switchColorLogic();
@@ -560,7 +639,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                     if (trialsMax < 1) {
                         trialsMax = 1;
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -574,6 +652,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             }
         } else {
             showAlertPleaseSaveResults(() -> {
+                useTempResults = false;
                 btnSave.setEnabled(false);
                 btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
                 startButtonLogic();
@@ -661,7 +740,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 for (View i : views) {
                     i.setAlpha(1f);
                 }
-                if(showReminderDialog){
+                if (showReminderDialog) {
                     createDialogAdReminder();
                     dialogAdReminder.show();
                 }
@@ -816,7 +895,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         btn_recommendations.setText(Strings.btnRecommendationsText);
         btn_exit = (Button) dialog.findViewById(R.id.btn_exit);
         btn_manual.setOnClickListener(c -> {
-            SessionParameters.openManual = true;
+            openManual = true;
             Intent intent = new Intent(ActivityMenu.this, ActivityAbout.class);
             try {
                 Thread.sleep(300);
@@ -826,7 +905,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         });
         btn_recommendations.setOnClickListener(c -> {
-            SessionParameters.openManual = false;
+            openManual = false;
             Intent intent = new Intent(ActivityMenu.this, ActivityAbout.class);
             try {
                 Thread.sleep(300);
@@ -865,25 +944,25 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         btn_about.setText(Strings.adReminderTextIII);
         btn_about.setOnClickListener(c -> {
             dialogAdReminder.cancel();
-            SessionParameters.missedAdDialogHasBeenShown = true;
+            missedAdDialogHasBeenShown = true;
             FileLogicSettings.saveSettings(this);
         });
     }
 
-    private void showAlertPleaseSaveResults(Runnable runContinue, Runnable runBack) {
+    private void showAlertPleaseSaveResults(Runnable dissmissLogic, Runnable goBackLogic) {
 
         builder = new AlertDialog.Builder(ActivityMenu.this);
         builder.setMessage(Strings.pleaseSaveResultsText).setCancelable(true).setNegativeButton(Strings.goBackAndStore, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (runBack != null)
-                    runBack.run();
+                if (goBackLogic != null)
+                    goBackLogic.run();
             }
         }).setPositiveButton(Strings.dismissResults, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (runContinue != null)
-                    runContinue.run();
+                if (dissmissLogic != null)
+                    dissmissLogic.run();
             }
         });
         AlertDialog alertDialog = builder.create();

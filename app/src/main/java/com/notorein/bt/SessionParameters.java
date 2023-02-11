@@ -1,13 +1,10 @@
 package com.notorein.bt;
 
 import android.graphics.Color;
-import android.view.View;
-
-import java.util.ArrayList;
 
 public class SessionParameters {
 
-    public static String user;
+//    public static String user;
 
     public static boolean playButtonSoundDuringTraining = true;
     public static boolean zenMode = true;
@@ -29,7 +26,7 @@ public class SessionParameters {
     public static boolean aud;
     public static boolean col;
 
-    public static boolean audioIsPlaying;
+//    public static boolean audioIsPlaying;
     public static boolean excludeFourFromRandomIndex = true;
     public static boolean showRightClicks = false;
 
@@ -64,7 +61,7 @@ public class SessionParameters {
     // Speed
     public static boolean increaseNumberOfMatches = true;
 
-    public static int countDownIntervalDefaultZenMode = 1850;
+//    public static int countDownIntervalDefaultZenMode = 1850;
     //    public static int countDownIntervalDefault = 1720;
     public static int countDownIntervalDefault = 1750;
     public static double speedPercentage = 1;
@@ -85,7 +82,7 @@ public class SessionParameters {
     public static int textSizeMiddleResults = 18;
     public static int textSizeMiddleTrial = 20;
     public static int orientation = 7;
-    public static int visibilityOfAllSquares = View.INVISIBLE;
+//    public static int visibilityOfAllSquares = View.INVISIBLE;
     // UI
     public static int scaleNoPos = 2;
     public static int scaleDefault = 1;
@@ -129,15 +126,15 @@ public class SessionParameters {
     // To Reset at end of session
     public static double nBackCulmulated = 0;
     public static double inOrDecreaseCulmulated = 0;
-    public static ArrayList<Double> inOrDecreaseSingle = new ArrayList<>();
+//    public static ArrayList<Double> inOrDecreaseSingle = new ArrayList<>();
 
     public static int[] colors = new int[]{R.color.zero, R.color.one, R.color.two, R.color.three, R.color.four, R.color.five, R.color.six, R.color.seven, R.color.eight, R.color.nine, R.color.ten};
-    public static int[] colorsII = new int[]{R.color.zeroII, R.color.oneII, R.color.twoII, R.color.threeII, R.color.fourII, R.color.fiveII, R.color.sixII, R.color.sevenII, R.color.eightII, R.color.nineII, R.color.tenII};
-    public static int[] colorsIII = new int[]{R.color.zero, R.color.one, R.color.two, R.color.three, R.color.four, R.color.five, R.color.six, R.color.seven, R.color.eight, R.color.nine, R.color.ten};
-    //    public static int[] colorsDefault = new int[]{R.color.square_color_one, R.color.caparol_yellow,
-//            R.color.square_color_two, R.color.square_color_three,
-//            R.color.square_color_four, R.color.square_color_five,
-//            R.color.six, R.color.eleven, R.color.light_blue_900,R.color.zero, R.color.one, R.color.two, R.color.three, R.color.carmin,R.color.carmin2, R.color.four, R.color.five, R.color.six, R.color.seven, R.color.eight, R.color.nine, R.color.ten,R.color.menu_button_stroke_color_dark_2, R.color.menu_button_stroke_color_dark_4,R.color.menu_button_stroke_color_dark,R.color.menu_button_stroke_color_default};
+//    public static int[] colorsII = new int[]{R.color.zeroII, R.color.oneII, R.color.twoII, R.color.threeII, R.color.fourII, R.color.fiveII, R.color.sixII, R.color.sevenII, R.color.eightII, R.color.nineII, R.color.tenII};
+//    public static int[] colorsIII = new int[]{R.color.zero, R.color.one, R.color.two, R.color.three, R.color.four, R.color.five, R.color.six, R.color.seven, R.color.eight, R.color.nine, R.color.ten};
+//    //    public static int[] colorsDefault = new int[]{R.color.square_color_one, R.color.caparol_yellow,
+////            R.color.square_color_two, R.color.square_color_three,
+////            R.color.square_color_four, R.color.square_color_five,
+////            R.color.six, R.color.eleven, R.color.light_blue_900,R.color.zero, R.color.one, R.color.two, R.color.three, R.color.carmin,R.color.carmin2, R.color.four, R.color.five, R.color.six, R.color.seven, R.color.eight, R.color.nine, R.color.ten,R.color.menu_button_stroke_color_dark_2, R.color.menu_button_stroke_color_dark_4,R.color.menu_button_stroke_color_dark,R.color.menu_button_stroke_color_default};
 
 
 
@@ -146,9 +143,9 @@ public class SessionParameters {
     public static final String daySessionMarker = "DaySession";
     public static final String daySessionEndMarker = "DayEndSession";
 
-    public static final String dayTrialMarker = "DayTrial";
+//    public static final String dayTrialMarker = "DayTrial";
     public static final String timeSessionMarker = "TimeSession";
-    public static final String timeTrialMarker = "TimeTrial";
+//    public static final String timeTrialMarker = "TimeTrial";
     public static final String percentageSessionMarker = "PercentageSession";
     public static final String percentageTrialMarker = "PercentageTrial";
     public static final String increaseSessionMarker = "IncreaseSession";
@@ -160,16 +157,18 @@ public class SessionParameters {
 
     public static String modeOneDirectory;
     public static String resultsFilePath;
+//    public static String resultsFilePathTemp = "TEMP";
+
     public static int screenShowOrder = 0;
-    public static int screenShowOrderTrial = 0;
+//    public static int screenShowOrderTrial = 0;
     public static int resultScreenIndex = 0;
     public static int convertedTrialToTime;
-    public static String dateOflastUse;
+    public static String dateOfLastUse;
     public static String dateOfCurrentUse;
     public static boolean firstStart = true;
     public static int squareDefaultColorIndex = 5;
     public static String lastDayOfUse;
-    public static String currentDayOfUse;
+//    public static String currentDayOfUse;
     public static int displayHeight;
     public static int displayWidth;
     public static int mode;
@@ -194,7 +193,11 @@ public class SessionParameters {
     public static int customColorSquare ;
     public static String hexColor;
     // Has the purpose to chose between the soft and the hard color palette.
-    public static int colorArrayIndex = 0;
+//    public static int colorArrayIndex = 0;
+    public static boolean useTempResults = false;
+    // This boolean prevents the tempResults to be stored again and again if I open the resultsScreen.
+    public static boolean tempResultsAlreadyStored = false;
+    public static boolean includeFeature;
 
 
 //    String[]  colors = new String[] { "white", "yellow", "chocolate", "green", "rgb(136,163,19)", "rgb(3,211,252)", "blue", "red", "purple","grey","darkgrey" };

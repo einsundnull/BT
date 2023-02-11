@@ -14,9 +14,12 @@ import static com.notorein.bt.SessionParameters.stringToStore;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -47,50 +50,6 @@ public class ResultsFiles {
     public static boolean test;
     public static int testStringIndex = 0;
 
-
-    public static void initialiseStoringFilePaths() {
-        if (durationTraining) {
-            modeOneDirectory = "durationSessionInTrials";
-        } else {
-            modeOneDirectory = "classic";
-        }
-
-
-        if (includeAudio && includeColor && includePosition) {
-            resultsFilePath = "Pos_Aud_Col";
-        }
-        // only audio
-        if (includeAudio && !includeColor && !includePosition) {
-            resultsFilePath = "Aud";
-
-        }
-        // only color
-        if (!includeAudio && includeColor && !includePosition) {
-            resultsFilePath = "Col";
-        }
-
-        // only position
-        if (!includeAudio && !includeColor && includePosition) {
-            resultsFilePath = "Pos";
-        }
-
-        // audio and color
-        if (includeAudio && includeColor && !includePosition) {
-            resultsFilePath = "Aud_Col";
-        }
-
-        // audio and position
-        if (includeAudio && !includeColor && includePosition) {
-            resultsFilePath = "Pos_Aud";
-        }
-
-        // color and position
-        if (!includeAudio && includeColor && includePosition) {
-            resultsFilePath = "Pos_Col";
-        }
-
-        resultsFilePath = modeOneDirectory + resultsFilePath;
-    }
 
     public static void calculateResultsForDisplay() {
 
@@ -207,9 +166,9 @@ public class ResultsFiles {
         }
         try {
             // If i don't add these lines the calculated arrays misses one value in the end
-            sessionsNBack.get(sessionsNBack.size()-1).add(trialsNBackTemp.get(trialsNBackTemp.size()-1));
-        } catch ( Exception e){
-
+            sessionsNBack.get(sessionsNBack.size() - 1).add(trialsNBackTemp.get(trialsNBackTemp.size() - 1));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // If i don't add these lines the calculated arrays contain an empty array in the end
@@ -217,13 +176,13 @@ public class ResultsFiles {
             daysNBack.remove(daysNBack.size() - 1);
         }
 
-//        // Otherwhise the app will crash when there are no result
+//        // Otherwise the app will crash when there are no result
         try {
-            if(daysNBack.get(0).isEmpty() ){
-                daysNBack.get(0).add((double)nBackMaxAbsolute);
+            if (daysNBack.get(0).isEmpty()) {
+                daysNBack.get(0).add((double) nBackMaxAbsolute);
             }
-        } catch (Exception e){
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // In these steps I reduce the arrays to the display values
@@ -324,27 +283,78 @@ public class ResultsFiles {
         }
     }
 
+    public static String initialiseStoringFilePaths(boolean useTempFile) {
+        // This first IF-Statement is not really in use. It is supposed to change the filename when I implemented a duration mode
+        // what I have not done yet.
+        String resultsFilePath = "";
+        if (durationTraining) {
+            modeOneDirectory = "durationSessionInTrials";
+        } else {
+            modeOneDirectory = "classic";
+        }
+        if (includeAudio && includeColor && includePosition) {
+            resultsFilePath = "Pos_Aud_Col";
+        }
+        // only audio
+        if (includeAudio && !includeColor && !includePosition) {
+            resultsFilePath = "Aud";
 
-    public static void saveResults(Context c) {
-        // Initialize the file path
-        initialiseStoringFilePaths();
+        }
+        // only color
+        if (!includeAudio && includeColor && !includePosition) {
+            resultsFilePath = "Col";
+        }
 
-        try (FileOutputStream out = c.getApplicationContext().openFileOutput(resultsFilePath, Context.MODE_APPEND)) {
+        // only position
+        if (!includeAudio && !includeColor && includePosition) {
+            resultsFilePath = "Pos";
+        }
+
+        // audio and color
+        if (includeAudio && includeColor && !includePosition) {
+            resultsFilePath = "Aud_Col";
+        }
+
+        // audio and position
+        if (includeAudio && !includeColor && includePosition) {
+            resultsFilePath = "Pos_Aud";
+        }
+
+        // color and position
+        if (!includeAudio && includeColor && includePosition) {
+            resultsFilePath = "Pos_Col";
+        }
+
+        if (useTempFile) {
+            resultsFilePath = resultsFilePath + "TEMP";
+        }
+        resultsFilePath = modeOneDirectory + resultsFilePath;
+
+        return resultsFilePath;
+    }
+
+    public static void saveResults(Context c, boolean append, String resultsFilePath) {
+        int mode = Context.MODE_APPEND;
+        if(!append){
+            mode = Context.MODE_PRIVATE;
+        }
+        Log.i(TAG, "saveResults: "+ mode);
+        try (FileOutputStream out = c.getApplicationContext().openFileOutput(resultsFilePath, mode)) {
             // Write the text to the file and flush the output stream
-            if (test) {
-                switch (testStringIndex) {
-                    case 0:
-                        stringToStore = Test.testI;
-                        break;
-                    case 1:
-                        stringToStore = Test.testII;
-                        break;
-                    case 2:
-                        stringToStore = Test.testIII;
-                        break;
-                }
-
-            }
+//            if (test) {
+//                switch (testStringIndex) {
+//                    case 0:
+//                        stringToStore = Test.testI;
+//                        break;
+//                    case 1:
+//                        stringToStore = Test.testII;
+//                        break;
+//                    case 2:
+//                        stringToStore = Test.testIII;
+//                        break;
+//                }
+//
+//            }
             out.write(stringToStore.getBytes());
             out.flush();
         } catch (IOException e) {
@@ -354,7 +364,7 @@ public class ResultsFiles {
 
     public static String readResults(Context c) {
         // Initialize the file paths
-        initialiseStoringFilePaths();
+//        initialiseStoringFilePaths(useTempFile);
 
         // Initialize the variables
         StringBuilder stringToStore = new StringBuilder();
@@ -399,5 +409,36 @@ public class ResultsFiles {
 
         // Return the string to store
         return stringToStore.toString();
+    }
+
+
+    public static void deleteResults(Context c, String filePath) {
+        File file = new File(c.getApplicationContext().getFilesDir(),filePath);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+
+    public static void copyResults(Context c, String inputPath, String outputPath) {
+        try {
+
+            InputStream in = c.getApplicationContext().openFileInput(inputPath);
+            OutputStream out = c.getApplicationContext().openFileOutput(outputPath, Context.MODE_PRIVATE);
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            Log.e("copyFile", "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            Log.e("copyFile", "Error copying file: " + e.getMessage());
+        }
+
+
     }
 }

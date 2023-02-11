@@ -50,7 +50,7 @@ public class FileLogicSettings {
                     scn.next();
                     SessionParameters.playButtonSoundDuringTraining = Boolean.parseBoolean(scn.next());
                     scn.next();
-                    SessionParameters.dateOflastUse = scn.next();
+                    SessionParameters.dateOfLastUse = scn.next();
                     scn.next();
                     SessionParameters.squareDefaultColorIndex = Integer.parseInt(scn.next());
                     scn.next();

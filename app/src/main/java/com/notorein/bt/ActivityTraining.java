@@ -778,7 +778,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                     storeTrialResults();
                     if (trialCounter >= trialsMax) {
                         endOfSession = true;
-                        storeSessionResults();
+
                     }
                 }
 
@@ -973,7 +973,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private void storeSessionResults() {
+    private void storeSessionResultsTemporarily() {
 
     }
 
@@ -1065,7 +1065,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //            finish();
 //            txtVwMiddle.setTextSize(32f);
 //            txtVwMiddle.setText(Strings.goodJob);
-
+            SessionParameters.useTempResults = true;
             setFadeOutAnimation(views);
 //            Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
 //            startActivity(intent);

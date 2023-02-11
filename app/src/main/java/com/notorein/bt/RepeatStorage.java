@@ -1,6 +1,7 @@
 package com.notorein.bt;
 
 import static android.content.ContentValues.TAG;
+import static com.notorein.bt.SessionParameters.MAX_PRESENT_DEFAULT;
 import static com.notorein.bt.SessionParameters.daySession;
 import static com.notorein.bt.SessionParameters.daySessionEndMarker;
 import static com.notorein.bt.SessionParameters.daySessionMarker;
@@ -14,6 +15,9 @@ import static com.notorein.bt.SessionParameters.nBackCulmulated;
 import static com.notorein.bt.SessionParameters.nBackMax;
 import static com.notorein.bt.SessionParameters.nBackSessionMarker;
 import static com.notorein.bt.SessionParameters.nBackTrialMarker;
+import static com.notorein.bt.SessionParameters.percentageRightTrialAudio;
+import static com.notorein.bt.SessionParameters.percentageRightTrialColor;
+import static com.notorein.bt.SessionParameters.percentageRightTrialPosition;
 import static com.notorein.bt.SessionParameters.percentageSessionMarker;
 import static com.notorein.bt.SessionParameters.percentageTrialMarker;
 import static com.notorein.bt.SessionParameters.stringToStore;
@@ -136,14 +140,15 @@ public class RepeatStorage {
         int increase = 0;
         boolean allowIncrease = true;
         boolean forceDecrease = false;
+
         if (SessionParameters.includePosition) {
-            increase = RepeatStorage.decideWhetherToInOrDecreaseNBackLevel(SessionParameters.percentageRightTrialPosition);
+            increase = RepeatStorage.decideWhetherToInOrDecreaseNBackLevel(percentageRightTrialPosition);
         }
         if (SessionParameters.includeAudio && increase > -1) {
-            increase = RepeatStorage.decideWhetherToInOrDecreaseNBackLevel(SessionParameters.percentageRightTrialAudio);
+            increase = RepeatStorage.decideWhetherToInOrDecreaseNBackLevel(percentageRightTrialAudio);
         }
         if (SessionParameters.includeColor && increase > -1) {
-            increase = RepeatStorage.decideWhetherToInOrDecreaseNBackLevel(SessionParameters.percentageRightTrialColor);
+            increase = RepeatStorage.decideWhetherToInOrDecreaseNBackLevel(percentageRightTrialColor);
         }
         if (increase < 0) {
             forceDecrease = true;
@@ -156,6 +161,20 @@ public class RepeatStorage {
                 increase = 0;
             }
         }
+        if (increase < 0) {
+            SessionParameters.nBack--;
+        }
+        if (increase == 1) {
+            SessionParameters.nBack++;
+        }
+        if (SessionParameters.nBack < 1) {
+            SessionParameters.nBack = 1;
+        }
+        if ((nBackMax <= nBack) && (trialCounter < trialsMax)) {
+            nBackMax = nBack;
+        }
+        SessionParameters.maxPresentations = MAX_PRESENT_DEFAULT + SessionParameters.nBack;
+
     }
 
 //    public static void inOrDecreaseNBackLevel() {

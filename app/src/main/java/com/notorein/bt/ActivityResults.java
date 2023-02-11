@@ -8,6 +8,7 @@ import static com.notorein.bt.SessionParameters.showSessionInResults;
 import static com.notorein.bt.SessionParameters.showTrialInResults;
 import static com.notorein.bt.SessionParameters.stringToStore;
 import static com.notorein.bt.SessionParameters.stringToStoreInitial;
+import static com.notorein.bt.SessionParameters.useTempResults;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -48,6 +49,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("ALL")
 public class ActivityResults extends AppCompatActivity implements View.OnClickListener {
 
     TextView[] datapointTrialPerc;
@@ -56,7 +58,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
     double displayHeight;
     double displayWidth;
 
-    private double distanceX;
+//    private double distanceX;
     private double distanceY;
 
     private final int dotSize = 9;
@@ -67,18 +69,12 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
     private ConstraintLayout activity_results_layout;
     private boolean portraitMode;
-    // This int sets the scale lines. If it is 3 and maxNBack is 5 it will give 3+5 = 8 scale lines.
-    private final double linesMoreThanNBack = 4;
     ArrayList<ArrayList<Double[]>> resultLines;
     Bitmap bg;
     Canvas canvas;
     int lineColorTrial, lineColorSession, lineColorDay, backgroundColor;
     private ImageView setting_button_result_screen;
-    private AdView mAdView;
     private InterstitialAd mInterstitialAd;
-
-
-    private TextView goodJob;
 
 
     @Override
@@ -88,18 +84,19 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         ConstraintLayout layout = this.findViewById(R.id.activity_results_layout);
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
             }
         });
-        mAdView = layout.findViewById(R.id.adView);
+        AdView mAdView = layout.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         activity_results_layout = findViewById(R.id.activity_results_layout);
         setting_button_result_screen = findViewById(R.id.setting_button_result_screen);
         setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image);
-        goodJob = activity_results_layout.findViewById(R.id.goodJob);
+        TextView goodJob = activity_results_layout.findViewById(R.id.goodJob);
         goodJob.setText(Strings.goodJob);
         // This part was in onClick ResultsBtn in ActivityMain
+        SessionParameters.resultsFilePath = ResultsFiles.initialiseStoringFilePaths(useTempResults);
         stringToStoreInitial = ResultsFiles.readResults(ActivityResults.this);
         ResultsFiles.calculateResultsForDisplay();
         stringToStore = stringToStoreInitial + stringToStore;
@@ -116,18 +113,13 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
     private void loadInterstitialAd(AdRequest adRequest) {
         if (SessionParameters.loadInterstitialAd) {
-            mInterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
+            InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                             // The mInterstitialAd reference will be null until
                             // an ad is loaded.
                             mInterstitialAd = interstitialAd;
-                            if (mInterstitialAd != null) {
-                                for (int i = 0; i < 200; i++) {
-                                    Log.i(TAG, "null");
-                                }
-                            }
 
                             Log.i(TAG, "onAdLoaded");
                             mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -146,7 +138,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
                                 }
 
                                 @Override
-                                public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                                     // Called when ad fails to show.
                                     Log.e(TAG, "Ad failed to show fullscreen content.");
                                     mInterstitialAd = null;
@@ -221,6 +213,8 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
     void setDivider() {
         double tempWidth;
         double tempHeight = 0;
+        // This int sets the scale lines. If it is 3 and maxNBack is 5 it will give 3+5 = 8 scale lines.
+        double linesMoreThanNBack = 4;
         double maxNBack = ResultsFiles.nBackMaxAbsolute + linesMoreThanNBack;
         if (portraitMode) {
             tempWidth = displayHeight;
