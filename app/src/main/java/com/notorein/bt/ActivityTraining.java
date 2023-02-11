@@ -230,7 +230,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private ConstraintLayout colorChooseLayout;
     private Dialog dialog;
     private Activity activity;
-    private int visibility , alpha;
+    private int visibility, alpha;
 
 
     @Override
@@ -453,9 +453,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                     border.setStroke(1, getResources().getColor(R.color.training_text_color_dark)); // BorderColor
 //                    squares.get(4).setBackground(border);
 //                    squares.get(4).setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
-                    onlyColor.setBackground(border);
-                    onlyColor.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
-
+//                    onlyColor.setBackground(border);
+//                    onlyColor.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
+//                    onlyColor.setAlpha(0);
+                    onlyColor.setVisibility(INVISIBLE);
                 }
             } else {
                 if (!zenMode) {
@@ -463,8 +464,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                     border.setStroke(1, getResources().getColor(R.color.border_color_no_position)); // BorderColor
 //                    squares.get(4).setBackground(border);
 //                    squares.get(4).setBackgroundColor(getResources().getColor(R.color.menu_background_color));
-                    onlyColor.setBackground(border);
-                    onlyColor.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
+//                    onlyColor.setBackground(border);
+//                    onlyColor.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
+                    onlyColor.setVisibility(INVISIBLE);
                 }
             }
 
@@ -515,6 +517,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 }
 //                setFadeInAnimationSquaresForZenMode(squares.get(4));
                 setFadeInAnimationSquaresForZenMode(onlyColor);
+            } else {
+                onlyColor.setBackground(border);
+                onlyColor.setAlpha(1);
+                onlyColor.setVisibility(VISIBLE);
             }
         }
     }
@@ -1183,7 +1189,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             paused = false;
             setSettingsButtonVisibility(INVISIBLE);
             txtVwMiddle.setText(cross);
-            if(!includePosition && includeColor){
+            if (!includePosition && includeColor) {
                 txtVwMiddle.setText("");
             }
             txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
@@ -1563,7 +1569,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             squares.get(i).setBackgroundColor(getResources().getColor(SessionParameters.colors[squareDefaultColorIndex]));
             squares.get(i).setVisibility(INVISIBLE);
         }
-        if(!includePosition && includeColor){
+        if (!includePosition && includeColor) {
             onlyColor.setBackgroundColor(getResources().getColor(SessionParameters.colors[squareDefaultColorIndex]));
         }
         FileLogicSettings.saveSettings(this);
@@ -1881,7 +1887,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
         if (v.getId() == R.id.button_click_training_grid) {
 
-                setDividersVisible(true);
+            setDividersVisible(true);
 
             FileLogicSettings.saveSettings(this);
         }
@@ -1973,7 +1979,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             alpha = 0;
             Toast.makeText(this, Strings.showGridTextNo, Toast.LENGTH_SHORT).show();
         }
-        if(!includePosition && includeColor){
+        if (!includePosition && includeColor) {
             squares.get(4).setAlpha(alpha);
             squares.get(4).setVisibility(visibility);
         } else {
