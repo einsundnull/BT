@@ -371,6 +371,10 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private void setImageNou() {
 //        nouImage.setBackgroundResource(R.drawable.genkou);
         splashImage.setText("健康");
+        if(!darkModeMenu){
+            splashImage.setTextColor(getResources().getColor(R.color.black));
+        }
+        splashImage.setTextSize(184f);
     }
 
     private void setSwitchesInPosition() {
@@ -764,6 +768,10 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
         dialogAbout = new Dialog(this);
         dialogAbout.setContentView(R.layout.view_menu_about);
+        ConstraintLayout layout = dialogAbout.findViewById(R.id.layout);
+        if(darkModeMenu){
+            layout.setBackground(getResources().getDrawable(R.drawable.alert_background_dark));
+        }
         btn_manual = (Button) dialogAbout.findViewById(R.id.btnBottom);
         btn_manual.setText(Strings.btnManualText);
         btn_recommendations = (Button) dialogAbout.findViewById(R.id.btn_about);
@@ -810,6 +818,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             }
         });
         dialogAbout.show();
+
     }
 
     private void createDialogAdReminder() {

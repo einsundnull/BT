@@ -45,7 +45,7 @@ public class TransitionActivityAToB {
 //        }
 //    }
 
-    private void setTransitionToBlack(int colorFrom, int colorTo) {
+    private final void setTransitionToBlack(int colorFrom, int colorTo) {
         if (darkModeTraining) {
             textView = new TextView(c);
             textView.setWidth(layout.getWidth());

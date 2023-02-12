@@ -1,6 +1,7 @@
 package com.notorein.bt;
 
 import static android.content.ContentValues.TAG;
+import static com.notorein.bt.SessionParameters.darkModeMenu;
 import static com.notorein.bt.SessionParameters.loadInterstitialAd;
 import static com.notorein.bt.SessionParameters.resultLineColorIndex;
 import static com.notorein.bt.SessionParameters.showDayInResults;
@@ -13,6 +14,7 @@ import static com.notorein.bt.SessionParameters.useTempResults;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -67,7 +69,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
     int dividerColor = Color.DKGRAY;
 
-    private ConstraintLayout activity_results_layout;
+    private ConstraintLayout layout;
     private boolean portraitMode;
     ArrayList<ArrayList<Double[]>> resultLines;
     Bitmap bg;
@@ -75,25 +77,27 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
     int lineColorTrial, lineColorSession, lineColorDay, backgroundColor;
     private ImageView setting_button_result_screen;
     private InterstitialAd mInterstitialAd;
+    private TextView goodJob;
+    private AdView mAdView;
+    private AdRequest adRequest;
+    private Dialog dialog;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results_layout);
-        ConstraintLayout layout = this.findViewById(R.id.activity_results_layout);
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
             }
         });
-        AdView mAdView = layout.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView = findViewById(R.id.adView);
+        adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        activity_results_layout = findViewById(R.id.activity_results_layout);
-        setting_button_result_screen = findViewById(R.id.setting_button_result_screen);
-        setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image);
-        TextView goodJob = activity_results_layout.findViewById(R.id.goodJob);
+        getViews();
+        setOnClickListener();
+        SessionParameters.returnFromResultScreen = true;
         goodJob.setText(Strings.goodJob);
         // This part was in onClick ResultsBtn in ActivityMain
         SessionParameters.resultsFilePath = ResultsFiles.initialiseStoringFilePaths(useTempResults);
@@ -103,11 +107,13 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         if (resultLineColorIndex == 0) {
             resultLineColorIndex = 4;
         }
-        SessionParameters.returnFromResultScreen = true;
+
         getDisplaySize();
-        setOnClickListener();
         setDivider();
         addResultLines();
+        if (darkModeMenu) {
+            setting_button_result_screen.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+        }
 
     }
 
@@ -204,11 +210,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         portraitMode = orientation == Configuration.ORIENTATION_PORTRAIT;
     }
 
-    private void setOnClickListener() {
-        activity_results_layout.setOnClickListener(this);
-        setting_button_result_screen.setOnClickListener(this);
 
-    }
 
     void setDivider() {
         double tempWidth;
@@ -242,8 +244,8 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
             divider[i].setY((float) (displayHeight - (distanceY * (i + 1))));
             divider[i].setX((float) 0);
 
-            activity_results_layout.addView(number);
-            activity_results_layout.addView(divider[i]);
+            layout.addView(number);
+            layout.addView(divider[i]);
         }
     }
 
@@ -279,7 +281,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
             datapointTrialPerc[i].setWidth((int) pxFromDp(this, dotSize));
             datapointTrialPerc[i].setHeight((int) pxFromDp(this, dotSize));
 
-            activity_results_layout.addView(datapointTrialPerc[i]);
+            layout.addView(datapointTrialPerc[i]);
         }
         return layoutX;
     }
@@ -356,7 +358,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void addResultLines() {
+    private final void addResultLines() {
         setLineColors();
         if (resultLines != null) {
             resultLines.clear();
@@ -386,9 +388,10 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
             }
         }
         drawResultLines(resultLines);
-        activity_results_layout.removeView(setting_button_result_screen);
-        activity_results_layout.addView(setting_button_result_screen);
-        activity_results_layout.setBackground(new BitmapDrawable(bg));
+        layout.removeView(setting_button_result_screen);
+        layout.addView(setting_button_result_screen);
+        layout.setBackground(new BitmapDrawable(bg));
+
     }
 
 
@@ -417,6 +420,11 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         lineColorSession = Color.BLUE;
         lineColorTrial = Color.RED;
         backgroundColor = Color.rgb(232, 236, 235);
+        if (darkModeMenu) {
+            backgroundColor = Color.rgb(0, 0, 0);
+            setting_button_result_screen.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+        }
+
 //        if (resultLineColorIndex == 1) {
 //            lineColorDay = Color.rgb(44,135,32);
 //            lineColorSession = Color.TRANSPARENT;
@@ -440,15 +448,15 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 //        }
     }
 
-//    public CheckBox one;
-//    public CheckBox two;
-//    public CheckBox three;
-//    public CheckBox four;
-//    public CheckBox five;
+    private CheckBox one;
+    private CheckBox two;
+    private CheckBox three;
+    private CheckBox four;
+    private CheckBox five;
 
     private void createSettingsDialog() {
 
-        Dialog dialog = new Dialog(this);
+        dialog = new Dialog(this);
         WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
 
         wmlp.gravity = Gravity.TOP | Gravity.START;
@@ -457,19 +465,18 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         wmlp.alpha = 0.78f;
 //        ConstraintLayout layout = dialog.findViewById(R.id.view_results);
         dialog.setContentView(R.layout.view_results_settings_layout);
-
-//        layout.setAlpha(0.3f);
-//        dialog.setOwnerActivity(this);
-        CheckBox one;
-        CheckBox two;
-        CheckBox three;
-        CheckBox four;
-        CheckBox five;
         one = dialog.findViewById(R.id.showPercentage);
         two = dialog.findViewById(R.id.showNBack);
         three = dialog.findViewById(R.id.showDay);
         four = dialog.findViewById(R.id.showSession);
         five = dialog.findViewById(R.id.showTrial);
+//        layout.setAlpha(0.3f);
+//        dialog.setOwnerActivity(this);
+
+//        getViews();
+//        setOnClickListeners();
+
+        setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image);
 
         one.setText(Strings.showPercentageInResults);
         two.setText(Strings.showNBackInResults);
@@ -484,48 +491,65 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         five.setTextColor(getResources().getColor(R.color.black));
 
 
+        one.setChecked(SessionParameters.showPercentageInResults);
+        two.setChecked(SessionParameters.showNBackInResults);
+        three.setChecked(SessionParameters.showDayInResults);
+        four.setChecked(showSessionInResults);
+        five.setChecked(showTrialInResults);
+        setOnClickListeners();
+        dialog.show();
+    }
+
+    private void setOnClickListener() {
+        layout.setOnClickListener(this);
+        setting_button_result_screen.setOnClickListener(this);
+
+    }
+
+    private void setOnClickListeners() {
         one.setOnClickListener(c -> {
             SessionParameters.showPercentageInResults = one.isChecked();
-            activity_results_layout.removeAllViews();
+            layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
         two.setOnClickListener(c -> {
             SessionParameters.showNBackInResults = two.isChecked();
-            activity_results_layout.removeAllViews();
+            layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
         three.setOnClickListener(c -> {
             showDayInResults = three.isChecked();
-            activity_results_layout.removeAllViews();
+            layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
         four.setOnClickListener(c -> {
             showSessionInResults = four.isChecked();
-            activity_results_layout.removeAllViews();
+            layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
         five.setOnClickListener(c -> {
             showTrialInResults = five.isChecked();
-            activity_results_layout.removeAllViews();
+            layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
+    }
 
-        one.setChecked(SessionParameters.showPercentageInResults);
-        two.setChecked(SessionParameters.showNBackInResults);
-        three.setChecked(SessionParameters.showDayInResults);
-        four.setChecked(showSessionInResults);
-        five.setChecked(showTrialInResults);
-        dialog.show();
+    private void getViews() {
+
+        layout = findViewById(R.id.layout);
+        setting_button_result_screen = layout.findViewById(R.id.setting_button_result_screen);
+        goodJob = layout.findViewById(R.id.goodJob);
+
     }
 
 
