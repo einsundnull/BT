@@ -53,7 +53,7 @@ public class ActivityAbout extends AppCompatActivity {
 //            hintTextViewNBack.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
 //            hintTextViewDuration.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
         } else {
-            textView.setBackground(getResources().getDrawable(R.drawable.btn_background_sun));
+            textView.setBackground(getResources().getDrawable(R.drawable.alert_background));
             textView.setTextColor(getResources().getColor(R.color.buttonTextColor));
             textView2.setBackgroundColor(getResources().getColor(R.color.menu_background_color));
             layout.setBackgroundColor(getResources().getColor(R.color.menu_background_color));
