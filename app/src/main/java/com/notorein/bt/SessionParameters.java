@@ -1,6 +1,7 @@
 package com.notorein.bt;
 
 import android.graphics.Color;
+import android.media.SoundPool;
 
 public class SessionParameters {
 
@@ -87,6 +88,7 @@ public class SessionParameters {
     public static int scaleNoPos = 2;
     public static int scaleDefault = 1;
     public static int squareSize = 115;
+    public static int squareSizeOnlyColor =(int) (squareSize*1.5f);
     public static float customSquareSize = 0.8f;
 
     public static int r = 5;
@@ -181,6 +183,7 @@ public class SessionParameters {
     public static boolean showSessionInResults = true;
     public static boolean orientationWasChangedDuringTraining;
     public static boolean darkModeTraining;
+    public static boolean darkModeMenu;
     public static int fadeoutAnimationDuration = 1220;
     public static boolean allowToChangeColorStyle;
     public static boolean allowToChangeSquareSize;
@@ -200,6 +203,9 @@ public class SessionParameters {
     public static boolean includeFeature;
     public static boolean returnFromResultScreen;
     public static boolean exitButtonWasPressed;
+//    public static SoundPool appSounds;
+//    public static int buttonSound;
+//    public static int dingSound;
 
 
 //    String[]  colors = new String[] { "white", "yellow", "chocolate", "green", "rgb(136,163,19)", "rgb(3,211,252)", "blue", "red", "purple","grey","darkgrey" };

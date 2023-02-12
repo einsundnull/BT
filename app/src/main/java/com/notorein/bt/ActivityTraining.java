@@ -30,6 +30,7 @@ import static com.notorein.bt.RepeatStorage.shownIndexesColor;
 import static com.notorein.bt.RepeatStorage.shownIndexesPosition;
 import static com.notorein.bt.RepeatStorage.storeShownIndexes;
 import static com.notorein.bt.SessionParameters.MAX_PRESENT_DEFAULT;
+import static com.notorein.bt.SessionParameters.adMissedCounter;
 import static com.notorein.bt.SessionParameters.allowCountingMatches;
 import static com.notorein.bt.SessionParameters.allowToChangeColorStyle;
 import static com.notorein.bt.SessionParameters.allowToChangeSquareSize;
@@ -52,6 +53,7 @@ import static com.notorein.bt.SessionParameters.counterMatchesAud;
 import static com.notorein.bt.SessionParameters.counterMatchesCol;
 import static com.notorein.bt.SessionParameters.counterMatchesPos;
 import static com.notorein.bt.SessionParameters.customColorSquare;
+import static com.notorein.bt.SessionParameters.darkModeMenu;
 import static com.notorein.bt.SessionParameters.darkModeTraining;
 import static com.notorein.bt.SessionParameters.daySession;
 import static com.notorein.bt.SessionParameters.dayTrial;
@@ -60,6 +62,8 @@ import static com.notorein.bt.SessionParameters.durationSessionTimer;
 import static com.notorein.bt.SessionParameters.endOfSession;
 import static com.notorein.bt.SessionParameters.endOfTrial;
 import static com.notorein.bt.SessionParameters.endOfTrialDialogIsVisible;
+import static com.notorein.bt.SessionParameters.fadeoutAnimationDuration;
+import static com.notorein.bt.SessionParameters.firstStart;
 import static com.notorein.bt.SessionParameters.g;
 import static com.notorein.bt.SessionParameters.hexColor;
 import static com.notorein.bt.SessionParameters.inOrDecreaseCulmulated;
@@ -69,6 +73,7 @@ import static com.notorein.bt.SessionParameters.includePosition;
 import static com.notorein.bt.SessionParameters.includedModes;
 import static com.notorein.bt.SessionParameters.increasedCounterPosition;
 import static com.notorein.bt.SessionParameters.maxPresentations;
+import static com.notorein.bt.SessionParameters.missedAdDialogHasBeenShown;
 import static com.notorein.bt.SessionParameters.nBack;
 import static com.notorein.bt.SessionParameters.nBackBegin;
 import static com.notorein.bt.SessionParameters.nBackCulmulated;
@@ -139,6 +144,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -160,7 +167,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
     private static Runnable fadeAction;
     public ConstraintLayout rectContainer;
-
+    private TextView splashImage;
     ArrayList<Button> squares = new ArrayList<>();
     private CountDownTimer timerTrial;
     private CountDownTimer timerClock;
@@ -204,7 +211,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     //    private int nBackCulmulated;
 // TestVariable
     public static int addedNBACK = 0;
-    private ConstraintLayout layout_training;
+    private ConstraintLayout layout;
     int alphaLayout = 0;
     private View[] views;
     private Button onlyColor;
@@ -231,6 +238,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private Dialog dialog;
     private Activity activity;
     private int visibility, alpha;
+    private TransitionActivityAToB transitionActivityAToB;
+    private Dialog dialogAdReminder;
+    private ConstraintLayout dialogAdReminderLayout;
+    private boolean showReminderDialog;
 
 
     @Override
@@ -251,14 +262,17 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         setFullScreen();
         setOrientationListener();
         getViews();
+        includeViewsToFadeInTransition();
         setCustomSize(false, 1);
         setModeColors();
 //        setSquareSize();
         setSounds();
-        setFadeInAnimation();
-        setFadeInAnimation(views);
+//        setFadeInAnimation();
+//        setFadeInAnimation(views);
+        setFadeInAnimationAndDingSound();
+        setActivityTransitions();
         prepareOtherStuff();
-        changeSquaresStandardColor(false);
+        changeSquaresStandardColor();
         setTextsToView();
         setOnClickListenersToUiElements();
         setOnClickListenersToSquares();
@@ -300,14 +314,17 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //        showCustomColorDialog();
     }
 
+
+
+
     private void setSquareSize() {
 
         if (includeColor && !includePosition) {
 
-            onlyColor.setScaleX(SessionParameters.customSquareSize * 2);
-            onlyColor.setScaleY(SessionParameters.customSquareSize * 2);
-            squares.get(4).setScaleX(SessionParameters.customSquareSize * 2);
-            squares.get(4).setScaleY(SessionParameters.customSquareSize * 2);
+            onlyColor.setScaleX(SessionParameters.customSquareSize * 1.48f);
+            onlyColor.setScaleY(SessionParameters.customSquareSize * 1.48f);
+            squares.get(4).setScaleX(SessionParameters.customSquareSize * 1.5f);
+            squares.get(4).setScaleY(SessionParameters.customSquareSize * 1.5f);
         } else {
             for (int i = 0; i < squares.size(); i++) {
                 squares.get(i).setScaleX(SessionParameters.customSquareSize);
@@ -317,87 +334,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void setSounds() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AudioAttributes attributes = new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).setUsage(AudioAttributes.USAGE_GAME).build();
-            appSounds = new SoundPool.Builder().setMaxStreams(4).setAudioAttributes(attributes).build();
-        } else {
-            appSounds = new SoundPool(6, AudioAttributes.CONTENT_TYPE_MUSIC, 0);
-        }
-        buttonSound = appSounds.load(this, R.raw.click_training, 1);
-        trainingSound = new int[10];
-        trainingSound[0] = appSounds.load(this, R.raw.en_0, 1);
-        trainingSound[1] = appSounds.load(this, R.raw.en_1, 1);
-        trainingSound[2] = appSounds.load(this, R.raw.en_2, 1);
-        trainingSound[3] = appSounds.load(this, R.raw.en_3, 1);
-        trainingSound[4] = appSounds.load(this, R.raw.en_4, 1);
-        trainingSound[5] = appSounds.load(this, R.raw.en_5, 1);
-        trainingSound[6] = appSounds.load(this, R.raw.en_6, 1);
-        trainingSound[7] = appSounds.load(this, R.raw.en_7, 1);
-        trainingSound[8] = appSounds.load(this, R.raw.en_8, 1);
-        trainingSound[9] = appSounds.load(this, R.raw.en_9, 1);
-    }
 
-    private void setTransitionToBlack() {
-        if (darkModeTraining) {
-            TransitionActivityAToB transitionActivityAToB = new TransitionActivityAToB();
-            int colorFrom = getResources().getColor(R.color.menu_background_color);
-            int colorTo = getResources().getColor(R.color.black);
-            transitionActivityAToB.setTransitionToBlack(this, layout_training, colorFrom, colorTo, true);
-        }
-    }
-
-    private void setFadeOutAnimation(View... v) {
-
-        setTransitionToBlack();
-        Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-        mLoadAnimation.setDuration(1200);
-        mLoadAnimation.setStartOffset(00);
-        mLoadAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-                SessionParameters.returnFromTraining = true;
-                Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                for (int i = 0; i < v.length; i++) {
-                    v[i].setAlpha(0);
-                }
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation arg0) {
-            }
-
-            @Override
-            public void onAnimationStart(Animation arg0) {
-            }
-        });
-
-        for (int i = 0; i < v.length; i++) {
-            v[i].startAnimation(mLoadAnimation);
-        }
-    }
-
-
-    public void setFadeInAnimation(View... v) {
-        Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
-        mLoadAnimation.setDuration(1000);
-        for (int i = 0; i < v.length; i++) {
-            try {
-                v[i].startAnimation(mLoadAnimation);
-            } catch (Exception e) {
-                break;
-            }
-
-        }
-    }
 
     private void showFirstScreenSplittedClick() {
 
@@ -563,9 +500,15 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
 
     private void getViews() {
-        layout_training = (ConstraintLayout) findViewById(R.id.activity_main_layout);
+        layout = (ConstraintLayout) findViewById(R.id.layout);
         rectContainer = (ConstraintLayout) findViewById(R.id.rectContainer);
 //        colorChooseLayout = (ConstraintLayout) findViewById(R.id.colorChooseLayout);
+        try {
+            splashImage = findViewById(R.id.splashImage);
+        } catch (Exception e) {
+
+        }
+
         txtVwnBackLevelInfo = (TextView) findViewById(R.id.nBackLevelInfo);
         squares.add(findViewById(R.id.button0));
         squares.add(findViewById(R.id.button1));
@@ -611,7 +554,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             }
         }
         // Here it is decided which elements are included in the fade in transition at the beginning of the Session.
-        includeViewsToFadeInTransition();
+
 
         txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.border_color_no_position));
     }
@@ -653,7 +596,71 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private final void startTransitionToActivityTraining() {
+//        transitionActivityAToB = new TransitionActivityAToB();
+        int colorFrom = 0;
+        int colorTo = 0;
+        if (darkModeTraining && darkModeMenu) {
+            colorFrom = getResources().getColor(R.color.black);
+            colorTo = getResources().getColor(R.color.black);
+        } else if (!darkModeTraining && darkModeMenu) {
+            colorFrom = getResources().getColor(R.color.white);
+            colorTo = getResources().getColor(R.color.black);
+        } else if (darkModeTraining && !darkModeMenu) {
+            colorFrom = getResources().getColor(R.color.black);
+            colorTo = getResources().getColor(R.color.white);
+        } else if (!darkModeTraining && !darkModeMenu) {
+            colorFrom = getResources().getColor(R.color.white);
+            colorTo = getResources().getColor(R.color.white);
+        }
+        transitionActivityAToB.startAnimation(colorFrom, colorTo);
+    }
 
+    private final void setActivityTransitions() {
+
+        transitionActivityAToB = new TransitionActivityAToB();
+        transitionActivityAToB.setTransitionAToB(this, this, layout, fadeoutAnimationDuration, 0, () -> {
+            FileLogicSettings.saveSettings(ActivityTraining.this);
+        }, () -> {
+            Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
+            startActivity(intent);
+            finish();
+        }, views);
+        transitionActivityAToB.setFadeInAnimationFirst();
+    }
+
+    private void setTrainingTransition() {
+        transitionActivityAToB = new TransitionActivityAToB();
+        transitionActivityAToB.setTransitionAToB(this, this, layout, fadeoutAnimationDuration, 0, () -> {
+
+        }, () -> {
+            Intent intent = new Intent(this, ActivityTraining.class);
+            startActivity(intent);
+            finish();
+        }, views);
+    }
+
+    private void setSounds() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes attributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).setUsage(AudioAttributes.USAGE_GAME).build();
+            appSounds = new SoundPool.Builder().setMaxStreams(4).setAudioAttributes(attributes).build();
+        } else {
+            appSounds = new SoundPool(6, AudioAttributes.CONTENT_TYPE_MUSIC, 0);
+        }
+        buttonSound = appSounds.load(this, R.raw.click_training, 1);
+        trainingSound = new int[10];
+        trainingSound[0] = appSounds.load(this, R.raw.en_0, 1);
+        trainingSound[1] = appSounds.load(this, R.raw.en_1, 1);
+        trainingSound[2] = appSounds.load(this, R.raw.en_2, 1);
+        trainingSound[3] = appSounds.load(this, R.raw.en_3, 1);
+        trainingSound[4] = appSounds.load(this, R.raw.en_4, 1);
+        trainingSound[5] = appSounds.load(this, R.raw.en_5, 1);
+        trainingSound[6] = appSounds.load(this, R.raw.en_6, 1);
+        trainingSound[7] = appSounds.load(this, R.raw.en_7, 1);
+        trainingSound[8] = appSounds.load(this, R.raw.en_8, 1);
+        trainingSound[9] = appSounds.load(this, R.raw.en_9, 1);
+    }
     private void setTrialIndexes() {
         trialIsRunning = true;
         paused = false;
@@ -1102,7 +1109,11 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //            txtVwMiddle.setTextSize(32f);
 //            txtVwMiddle.setText(Strings.goodJob);
             SessionParameters.useTempResults = true;
-            setFadeOutAnimation(views);
+
+//            setFadeOutAnimation(views);
+//            transitionActivityAToB.startAnimation();
+            setDividersVisibleAddaptToMode(INVISIBLE);
+            startTransitionToActivityTraining();
 //            Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
 //            startActivity(intent);
         } else if (!trialIsRunning) {
@@ -1206,6 +1217,29 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private static void handleColorEdit(EditText editText, Button btn, int colorComponent) {
+        try {
+            String temp = editText.getText().toString();
+            if (!temp.isEmpty()) {
+                colorComponent = Integer.parseInt(temp);
+                if (colorComponent < 0) {
+                    colorComponent = 0;
+                    editText.setText("" + colorComponent);
+                }
+                if (colorComponent > 255) {
+                    colorComponent = 255;
+                    editText.setText("" + colorComponent);
+                }
+            }
+            customColorSquare = Color.rgb(r, g, b);
+            hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
+//            Button btn = findViewById(R.id.btnBottom);
+//            btn.setText(""+hexColor);
+            btn.setBackgroundColor(customColorSquare);
+        } catch (Exception e) {
+
+        }
+    }
 
     private void setSettingsButtonVisibility(int visibility) {
         btnPositionII.setVisibility(visibility);
@@ -1382,29 +1416,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private static void handleColorEdit(EditText editText, Button btn, int colorComponent) {
-        try {
-            String temp = editText.getText().toString();
-            if (!temp.isEmpty()) {
-                colorComponent = Integer.parseInt(temp);
-                if (colorComponent < 0) {
-                    colorComponent = 0;
-                    editText.setText("" + colorComponent);
-                }
-                if (colorComponent > 255) {
-                    colorComponent = 255;
-                    editText.setText("" + colorComponent);
-                }
-            }
-            customColorSquare = Color.rgb(r, g, b);
-            hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
-//            Button btn = findViewById(R.id.btnBottom);
-//            btn.setText(""+hexColor);
-            btn.setBackgroundColor(customColorSquare);
-        } catch (Exception e) {
 
-        }
-    }
 
 
 //    public GradientDrawable createDrawable(Context context) {
@@ -1443,8 +1455,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 timerClock.onFinish();
             }
             dialog.cancel();
-
-            setFadeOutAnimation(views);
+//            transitionActivityAToB.startAnimation();
+            setDividersVisibleAddaptToMode(INVISIBLE);
+            startTransitionToActivityTraining();
+//            setFadeOutAnimation(views);
         });
         positive.setOnClickListener(c -> {
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
@@ -1557,11 +1571,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         };
     }
 
-    private void changeSquaresStandardColor(boolean countIndex) {
-//        if (countIndex) {
-//            SessionParameters.squareDefaultColorIndex++;
-//        }
-//
+    private void changeSquaresStandardColor() {
         if (squareDefaultColorIndex > SessionParameters.colors.length - 1) {
             squareDefaultColorIndex = 0;
         }
@@ -1688,7 +1698,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private void squaresOnClickLogic(int i) {
         if (allowToChangeColorStyle) {
             squareDefaultColorIndex = i;
-            changeSquaresStandardColor(true);
+            changeSquaresStandardColor();
         }
     }
 
@@ -1886,9 +1896,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
 
         if (v.getId() == R.id.button_click_training_grid) {
-
             setDividersVisible(true);
-
             FileLogicSettings.saveSettings(this);
         }
         if (v.getId() == R.id.button_click_training_fade) {
@@ -1961,7 +1969,17 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             percentage = 100;
         }
         fadeInterval = (long) (countDownInterval / squareFadeDuration);
-        txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII + " (" + (percentage) + "%)");
+        double fadePercentage = percentage - 100;
+        String add = "±";
+        if (fadePercentage > 0) {
+            add = "+";
+        } else if (fadePercentage == 0) {
+            add = "±";
+        } else if (fadePercentage < 0) {
+            add = "";
+        }
+        add = "    " + Strings.speedText + add;
+        txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII + add + +(fadePercentage) + "%");
 //            txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII);
     }
 
@@ -2000,7 +2018,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         int visibility = INVISIBLE;
         if (SessionParameters.allowToChangeColorStyle) {
             SessionParameters.allowToChangeColorStyle = false;
-            changeSquaresStandardColor(true);
+            changeSquaresStandardColor();
             FileLogicSettings.saveSettings(this);
         } else {
             visibility = VISIBLE;
@@ -2014,9 +2032,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void setModeColors() {
+    private final void setModeColors() {
         if (!darkModeTraining) {
-            layout_training.setBackground(getResources().getDrawable(R.drawable.training_background));
+            layout.setBackground(getResources().getDrawable(R.drawable.training_background));
             btnMode.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_mode));
             btnOrientation.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_orientation));
             btnStyle.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_style));
@@ -2055,10 +2073,13 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
 
         } else {
-            layout_training.setBackground(getResources().getDrawable(R.drawable.training_background_dark));
-            btnPosition.setAlpha(0.3f);
-            btnAudio.setAlpha(0.3f);
-            btnColor.setAlpha(0.3f);
+            layout.setBackground(getResources().getDrawable(R.drawable.training_background_dark));
+//            btnPosition.setAlpha(0.3f);
+//            btnAudio.setAlpha(0.3f);
+//            btnColor.setAlpha(0.3f);
+            btnPosition.setAlpha(0.17f);
+            btnAudio.setAlpha(0.17f);
+            btnColor.setAlpha(0.17f);
             btnPositionII.setAlpha(0.3f);
             btnAudioII.setAlpha(0.3f);
             txtVwInterval.setAlpha(0.3f);
@@ -2132,8 +2153,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
     private void setCustomSize(boolean changeSize, int pos) {
         if (changeSize) {
+            float squareSize;
 
-            float squareSize = SessionParameters.customSquareSize;
+            squareSize = SessionParameters.customSquareSize;
 
             if (squareSize <= 0.1f) {
                 squareSize = 0.1f;
@@ -2216,5 +2238,115 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //
 //        dialog.show();
 //    }
+
+    private final void setFadeInAnimationAndDingSound(long duration, long delay, View... v) {
+        Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+        mLoadAnimation.setDuration(duration);
+        mLoadAnimation.setStartOffset(delay);
+        for (View i : v) {
+            i.startAnimation(mLoadAnimation);
+        }
+    }
+
+    private final void setFadeInAnimationAndDingSound() {
+        // Here I make sure that the splash screen will only be shown on startup
+        if (firstStart) {
+            // This is called at the first start. It fades the splash screen out.
+            // Then it calls the setFadeOutAnima
+            firstStart = false;
+            for (View i : views) {
+                i.setAlpha(0);
+            }
+
+            if (splashImage != null) {
+                setFadeOutAnimationLogo(1000, 2500, splashImage);
+            }
+            // Here I set the sound that will appear with the splash screen.
+            long millisInFuture = 80;
+            long countDownInterval = 20;
+            CountDownTimer tmr = new CountDownTimer(millisInFuture, countDownInterval) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+//                    appSounds.play(SessionParameters.dingSound, 1, 1, 1, 0, 1);
+                }
+            };
+            tmr.start();
+        } else {
+            // Here I make sure that the splash screen will only be shown on startup
+            if (splashImage != null) {
+                splashImage.setVisibility(View.INVISIBLE);
+            }
+            setFadeInAnimationAndDingSound(1800, 50, views);
+        }
+    }
+
+    private final void setFadeOutAnimationLogo(long duration, long delay, View... v) {
+        Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+        Animation fadeOut = new AlphaAnimation(1f, 0f);
+        mLoadAnimation.setInterpolator(new AccelerateInterpolator()); //and this
+        mLoadAnimation.setDuration(duration);
+        mLoadAnimation.setStartOffset(delay);
+        mLoadAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+//                main_menu.setAlpha(0);
+                // This three lines set the image invisible after fade_out
+                for (View i : v) {
+                    i.setAlpha(0f);
+                }
+                setFadeInAnimationAndDingSound(1800, 50, views);
+                // Here the delay sets the time when the image disappeared and the buttons start to appear.
+//                setFadeInAnimationFirst(1200, 0, views);
+//                transitionActivityAToB.setFadeInAnimationFirst(null,()->{
+//                    setTrainingTransition();
+//                });
+//                transitionActivityAToB.setFadeInAnimationFirst();
+//                transitionActivityAToB.startAnimationIn();
+                if (views != null) {
+                    for (View i : views) {
+                        i.setAlpha(1f);
+                    }
+                }
+                createDialogAdReminder();
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+            }
+        });
+        for (View i : v) {
+            i.startAnimation(mLoadAnimation);
+        }
+    }
+
+    private final void createDialogAdReminder() {
+        if (showReminderDialog) {
+            dialogAdReminder = new Dialog(this);
+            dialogAdReminder.setContentView(R.layout.view_menu_ad_reminder);
+            dialogAdReminderLayout = findViewById(R.id.dialogAdReminderLayout);
+            TextView btn_manual = dialogAdReminder.findViewById(R.id.btnBottom);
+            btn_manual.setText(Strings.adReminderTextI + adMissedCounter + Strings.adReminderTextII);
+
+            TextView btn_about = (TextView) dialogAdReminder.findViewById(R.id.btn_about);
+            btn_about.setText(Strings.adReminderTextIII);
+            btn_about.setOnClickListener(c -> {
+                dialogAdReminder.cancel();
+                missedAdDialogHasBeenShown = true;
+                FileLogicSettings.saveSettings(this);
+            });
+
+            dialogAdReminder.show();
+        }
+    }
 
 }

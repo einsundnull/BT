@@ -22,6 +22,8 @@ public class FileLogicSettings {
                     scn.next();
                     SessionParameters.squareSize = Integer.parseInt(scn.next());
                     scn.next();
+                    SessionParameters.squareSizeOnlyColor= Integer.parseInt(scn.next());
+                    scn.next();
                     SessionParameters.decreaseThreshold = Double.parseDouble(scn.next());
                     scn.next();
                     SessionParameters.increaseThreshold = Double.parseDouble(scn.next());
@@ -55,6 +57,8 @@ public class FileLogicSettings {
                     SessionParameters.squareDefaultColorIndex = Integer.parseInt(scn.next());
                     scn.next();
                     SessionParameters.darkModeTraining = Boolean.parseBoolean(scn.next());
+                    scn.next();
+                    SessionParameters.darkModeMenu = Boolean.parseBoolean(scn.next());
                     scn.next();
                     SessionParameters.customSquareSize = Float.parseFloat(scn.next());
                     scn.next();
@@ -113,6 +117,7 @@ public class FileLogicSettings {
     private static String getFileSaveText() {
         String temp =
                 "squareSize\t" + SessionParameters.squareSize + "\n" +
+                        "squareSizeOnlyColor\t" + SessionParameters.squareSizeOnlyColor + "\n" +
                         "decreaseThreshold\t" + SessionParameters.decreaseThreshold + "\n" +
                         "increaseThreshold\t" + SessionParameters.increaseThreshold + "\n" +
 //                        "MAX_PRESENT_DEFAULT\t" + SessionParameters.MAX_PRESENT_DEFAULT + "\n" +
@@ -131,6 +136,7 @@ public class FileLogicSettings {
                         "dateOfLastUse\t" + SessionParameters.dateOfCurrentUse + "\n" +
                         "squareDefaultColorIndex\t" + SessionParameters.squareDefaultColorIndex + "\n" +
                         "darkModeTraining\t" + SessionParameters.darkModeTraining + "\n" +
+                        "darkModeMenu\t" + SessionParameters.darkModeMenu + "\n" +
                         "customSquareSize\t" + SessionParameters.customSquareSize + "\n" +
                         "showDividers\t" + SessionParameters.showGrid + "\n" +
                         "zenMode\t" + SessionParameters.zenMode + "\n" +

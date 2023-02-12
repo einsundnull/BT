@@ -5,11 +5,14 @@ import static com.notorein.bt.ResultsFiles.copyResults;
 import static com.notorein.bt.ResultsFiles.deleteResults;
 import static com.notorein.bt.ResultsFiles.initialiseStoringFilePaths;
 import static com.notorein.bt.SessionParameters.adMissedCounter;
+
 import static com.notorein.bt.SessionParameters.convertedTrialToTime;
 import static com.notorein.bt.SessionParameters.countDownInterval;
+import static com.notorein.bt.SessionParameters.darkModeMenu;
 import static com.notorein.bt.SessionParameters.darkModeTraining;
 import static com.notorein.bt.SessionParameters.dateOfCurrentUse;
 import static com.notorein.bt.SessionParameters.daySession;
+
 import static com.notorein.bt.SessionParameters.displayHeight;
 import static com.notorein.bt.SessionParameters.displayWidth;
 import static com.notorein.bt.SessionParameters.duration;
@@ -28,6 +31,7 @@ import static com.notorein.bt.SessionParameters.openManual;
 import static com.notorein.bt.SessionParameters.orientation;
 import static com.notorein.bt.SessionParameters.paused;
 import static com.notorein.bt.SessionParameters.resultsFilePath;
+import static com.notorein.bt.SessionParameters.returnFromResultScreen;
 import static com.notorein.bt.SessionParameters.returnFromTraining;
 import static com.notorein.bt.SessionParameters.sessionWasCanceledEarly;
 import static com.notorein.bt.SessionParameters.stringToStore;
@@ -93,7 +97,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private Button btn_recommendations;
     private Button btn_exit;
 
-    private Button test;
+    private ImageView btnSun;
 
 
     private EditText editTextNBackLevel;
@@ -121,7 +125,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private View dividerMenu2;
     private View dividerMenu3;
     private View[] views;
-    private ImageView nouImage;
+    private TextView splashImage;
     private SoundPool appSounds;
     private int buttonSound;
     private int dingSound;
@@ -133,6 +137,8 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private ConstraintLayout dialogAdReminderLayout;
     private boolean showReminderDialog;
     private Dialog dialogAbout;
+    //    TransitionActivityAToB transitionToTraining;
+    private TransitionActivityAToB transitionActivityAToB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,23 +155,24 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
-
         mAdView = findViewById(R.id.adView);
         adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         loadInterstitialAd();
-        FileLogicSettings.readSettings(ActivityMenu.this);
-
+        if(firstStart){
+            FileLogicSettings.readSettings(ActivityMenu.this);
+        }
         getViews();
+        includeViewsToFadeInTransition();
         setImageNou();
         setSounds();
         setFadeInAnimationAndDingSound();
+        setActivityTransitions();
         setOnClickListeners();
         setTextToInput();
         convertedTrialToTimeMethod();
         setSwitchesInPosition();
         getDisplaySize();
-
         btnStart.setEnabled(true);
         btnSave.setEnabled(!sessionWasCanceledEarly && !exitButtonWasPressed);
         if (!sessionWasCanceledEarly) {
@@ -185,22 +192,80 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 showReminderDialog = true;
             }
         }
-        if (new File(this.getFilesDir(), initialiseStoringFilePaths(true)).exists()) {
-            showAlertPleaseSaveResults(this, Strings.dontForgetToSaveResults, Strings.storeResults, Strings.dismissResults, () -> {
-                copyResults(this, initialiseStoringFilePaths(false), initialiseStoringFilePaths(true));
-                deleteResults(this, initialiseStoringFilePaths(true));
+        if (firstStart || returnFromResultScreen) {
+            if (new File(this.getFilesDir(), initialiseStoringFilePaths(true)).exists()) {
+                showAlertPleaseSaveResults(this, Strings.dontForgetToSaveResults, Strings.storeResults, Strings.dismissResults, () -> {
+                    copyResults(this, initialiseStoringFilePaths(false), initialiseStoringFilePaths(true));
+                    deleteResults(this, initialiseStoringFilePaths(true));
 
-            }, () -> {
-                deleteResults(this, initialiseStoringFilePaths(true));
-            });
+                }, () -> {
+                    deleteResults(this, initialiseStoringFilePaths(true));
+                });
+            }
         }
 
         returnFromTraining = false;
         SessionParameters.returnFromResultScreen = false;
         exitButtonWasPressed = false;
 //        dialogAdReminder.show();
-        test.setText("" + adMissedCounter);
+//        btnLight.setText("" + adMissedCounter);
+        setDayAndNightMode();
+    }
 
+    private final void setActivityTransitions() {
+
+        transitionActivityAToB = new TransitionActivityAToB();
+        transitionActivityAToB.setTransitionAToB(this, this, layout, fadeoutAnimationDuration, 0, () -> {
+            FileLogicSettings.saveSettings(ActivityMenu.this);
+        }, () -> {
+//            for (int i = 0; i < views.length; i++) {
+//                views[i].setAlpha(0);
+//            }
+            Intent intent = new Intent(ActivityMenu.this, ActivityTraining.class);
+            startActivity(intent);
+            finish();
+        }, views);
+//        transitionActivityAToB.setFadeInAnimationFirst();
+    }
+
+
+    private final void startTransitionToActivityTraining() {
+//        transitionActivityAToB = new TransitionActivityAToB();
+        int colorFrom = 0;
+        int colorTo = 0;
+        if (darkModeTraining && darkModeMenu) {
+            colorFrom = getResources().getColor(R.color.black);
+            colorTo = getResources().getColor(R.color.black);
+            Log.i(TAG, "                                 startTransitionToActivityTraining: I");
+        } else if (!darkModeTraining && darkModeMenu) {
+            colorFrom = getResources().getColor(R.color.black);
+            colorTo = getResources().getColor(R.color.white);
+            Log.i(TAG, "                                 startTransitionToActivityTraining: II");
+        } else if (darkModeTraining && !darkModeMenu) {
+            colorFrom = getResources().getColor(R.color.white);
+            colorTo = getResources().getColor(R.color.black);
+            Log.i(TAG, "                                 startTransitionToActivityTraining: III");
+        } else if (!darkModeTraining && !darkModeMenu) {
+            colorFrom = getResources().getColor(R.color.white);
+            colorTo = getResources().getColor(R.color.white);
+            Log.i(TAG, "                                 startTransitionToActivityTraining: IV");
+        }
+        transitionActivityAToB.startAnimation(colorFrom, colorTo);
+    }
+
+
+    private void setDayAndNightMode() {
+        if (darkModeMenu) {
+            btnSun.setBackground(getResources().getDrawable(R.drawable.btn_background_sun_dark));
+            layout.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
+            hintTextViewNBack.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
+            hintTextViewDuration.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
+        } else {
+            btnSun.setBackground(getResources().getDrawable(R.drawable.btn_background_sun));
+            layout.setBackgroundColor(getResources().getColor(R.color.menu_background_color));
+            hintTextViewNBack.setBackgroundColor(getResources().getColor(R.color.menu_background_color));
+            hintTextViewDuration.setBackgroundColor(getResources().getColor(R.color.menu_background_color));
+        }
     }
 
     private void loadInterstitialAd() {
@@ -281,16 +346,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     }
 
 
-//    public boolean isInternetAvailable() {
-//        try {
-//            InetAddress ipAddr = InetAddress.getByName("google.com");
-//            //You can replace it with your name
-//            return !ipAddr.equals("");
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
-
     private void getDisplaySize() {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -314,7 +369,8 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
 
     private void setImageNou() {
-        nouImage.setBackgroundResource(R.drawable.genkou);
+//        nouImage.setBackgroundResource(R.drawable.genkou);
+        splashImage.setText("健康");
     }
 
     private void setSwitchesInPosition() {
@@ -340,10 +396,10 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private void getViews() {
 
         layout = (ConstraintLayout) findViewById(R.id.menu_layout);
-        nouImage = (ImageView) findViewById(R.id.nouImage);
+        splashImage = findViewById(R.id.splashImage);
 
-        test = (Button) findViewById(R.id.test);
-        test.setVisibility(View.INVISIBLE);
+        btnSun = findViewById(R.id.btnSun);
+//        btnLight.setVisibility(View.INVISIBLE);
         btnStart = (Button) findViewById(R.id.btnStart);
         btnResults = (Button) findViewById(R.id.btnResults);
         btnSave = (Button) findViewById(R.id.btnSave);
@@ -368,17 +424,24 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         btnPort = (RadioButton) findViewById(R.id.radioButtonPort);
         btnLand = (RadioButton) findViewById(R.id.radioButtonLand);
 
+
+
+
+
+    }
+
+    private void includeViewsToFadeInTransition() {
         views = new View[]{btnStart, btnResults, btnSave, hintTextViewNBack, hintTextViewDuration,
                 dividerMenu1, dividerMenu2, dividerMenu3,
                 editTextNBackLevel, editTextDuration,
                 textViewTime, textViewInfo,
                 switchPosition, switchAudio, switchColor,
-                btnPort, btnLand, mAdView
+                btnPort, btnLand, mAdView, btnSun
         };
     }
 
     private void setOnClickListeners() {
-        test.setOnClickListener(this);
+        btnSun.setOnClickListener(this);
         btnStart.setOnClickListener(this);
         btnResults.setOnClickListener(this);
         btnSave.setOnClickListener(this);
@@ -410,17 +473,21 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             startButtonLogic();
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
         }
-        if (v.getId() == R.id.test) {
-            ResultsFiles.test = true;
-            btnSave.setEnabled(true);
-            ResultsFiles.testStringIndex++;
-            switch (ResultsFiles.testStringIndex) {
-                case 3:
-                    ResultsFiles.testStringIndex = 0;
-                    ResultsFiles.test = false;
-                    btnSave.setEnabled(ResultsFiles.test);
-                    break;
-            }
+        if (v.getId() == R.id.btnSun) {
+            darkModeMenu = !darkModeMenu;
+            setDayAndNightMode();
+            FileLogicSettings.saveSettings(this);
+
+//            ResultsFiles.test = true;
+//            btnSave.setEnabled(true);
+//            ResultsFiles.testStringIndex++;
+//            switch (ResultsFiles.testStringIndex) {
+//                case 3:
+//                    ResultsFiles.testStringIndex = 0;
+//                    ResultsFiles.test = false;
+//                    btnSave.setEnabled(ResultsFiles.test);
+//                    break;
+//            }
         }
         if (v.getId() == R.id.btnResults) {
             if (useTempResults && !tempResultsAlreadyStored) {
@@ -521,45 +588,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
     }
 
-//    private void switchLogic(boolean includeFeature, int featureFlag) {
-//        if (!btnSave.isEnabled()) {
-//            includedModes++;
-//           SessionParameters.includeFeature = !includeFeature;
-//            if (featureFlag == 1) {
-//                useTempResults = false;
-//                tempResultsAlreadyStored = false;
-//            }
-//            resultsFilePath = initialiseStoringFilePaths(useTempResults);
-//            stringToStoreInitial = ResultsFiles.readResults(ActivityMenu.this);
-//            btnSave.setEnabled(false);
-//            btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
-//            stringToStore = "";
-//
-//        } else {
-//            showAlertPleaseSaveResults(() -> {
-//                btnSave.setEnabled(false);
-//                btnSave.setTextColor(getResources().getColor(R.color.button_save_disabled));
-//                switchLogic(includeFeature, featureFlag);
-//                resultsFilePath = initialiseStoringFilePaths(useTempResults);
-//            }, () -> {
-//                FileLogicSettings.readSettings(ActivityMenu.this);
-//                setSwitchesInPosition();
-//            });
-//        }
-//    }
-//    private void switchPositionLogic() {
-//        switchLogic(includePosition, 1);
-//    }
-//
-//    private void switchAudioLogic() {
-//        switchLogic(includeAudio, 1);
-//    }
-//
-//    private void switchColorLogic() {
-//        switchLogic(includeColor, 1);
-//    }
-
-
     private void switchPositionLogic() {
         if (!btnSave.isEnabled()) {
             includedModes++;
@@ -656,8 +684,9 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
                 dateOfCurrentUse = RepeatStorage.getDay();
-                setFadeOutAnimation(fadeoutAnimationDuration, 0, views);
-                setTransitionToBlack();
+//                setFadeOutAnimation(fadeoutAnimationDuration, 0, views);
+
+                startTransitionToActivityTraining();
             } else {
                 resetStartWithoutMode();
                 setTextToInput();
@@ -672,175 +701,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 stringToStoreInitial = ResultsFiles.readResults(ActivityMenu.this);
                 stringToStore = "";
             }, null);
-        }
-    }
-
-    private void setTransitionToBlack() {
-        if (darkModeTraining) {
-            TransitionActivityAToB transitionActivityAToB = new TransitionActivityAToB();
-            int colorFrom = getResources().getColor(R.color.menu_background_color);
-            int colorTo = getResources().getColor(R.color.black);
-            transitionActivityAToB.setTransitionToBlack(this, layout, colorFrom, colorTo, false);
-        }
-    }
-
-    private void setFadeInAnimationTextView(View v) {
-        Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
-        mLoadAnimation.setDuration(fadeoutAnimationDuration);
-        mLoadAnimation.setStartOffset(0);
-        mLoadAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation arg0) {
-            }
-
-            @Override
-            public void onAnimationStart(Animation arg0) {
-            }
-        });
-
-        v.startAnimation(mLoadAnimation);
-    }
-
-    private void setFadeInAnimationAndDingSound() {
-        if (firstStart) {
-            firstStart = false;
-            for (View i : views) {
-                i.setAlpha(0);
-            }
-
-            setFadeOutAnimationLogo(1000, 2500, nouImage);
-            CountDownTimer tmr = new CountDownTimer(80, 20) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-
-                }
-
-                @Override
-                public void onFinish() {
-                    appSounds.play(dingSound, 1, 1, 1, 0, 1);
-                }
-            };
-            tmr.start();
-        } else {
-            nouImage.setVisibility(View.INVISIBLE);
-            setFadeInAnimationAndDingSound(1800, 50, views);
-        }
-    }
-
-
-    private void setFadeOutAnimationLogo(long duration, long delay, View... v) {
-
-        Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-        Animation fadeOut = new AlphaAnimation(1f, 0f);
-        mLoadAnimation.setInterpolator(new AccelerateInterpolator()); //and this
-        mLoadAnimation.setDuration(duration);
-        mLoadAnimation.setStartOffset(delay);
-        mLoadAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-//                main_menu.setAlpha(0);
-                // This three lines set the image invisible after fade_out
-                for (View i : v) {
-                    i.setAlpha(0f);
-                }
-                // Here the delay sets the time when the image disappeared and the buttons start to appear.
-                setFadeInAnimationFirst(1200, 0, views);
-                for (View i : views) {
-                    i.setAlpha(1f);
-                }
-
-                createDialogAdReminder();
-//
-
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation arg0) {
-            }
-
-            @Override
-            public void onAnimationStart(Animation arg0) {
-            }
-        });
-        for (View i : v) {
-            i.startAnimation(mLoadAnimation);
-        }
-
-//        main_menu.startAnimation(mLoadAnimation);
-    }
-
-    private void setFadeOutAnimation(long duration, long delay, View... v) {
-        // This is the transiton from ActivityMenu to ActivityTraining
-
-        Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-        mLoadAnimation.setDuration(duration);
-        mLoadAnimation.setStartOffset(delay);
-        mLoadAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-                for (int i = 0; i < v.length; i++) {
-                    v[i].setAlpha(0);
-                }
-                Intent intent = new Intent(ActivityMenu.this, ActivityTraining.class);
-                startActivity(intent);
-                finish();
-
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation arg0) {
-            }
-
-            @Override
-            public void onAnimationStart(Animation arg0) {
-                FileLogicSettings.saveSettings(ActivityMenu.this);
-            }
-        });
-        for (View i : v) {
-            i.startAnimation(mLoadAnimation);
-        }
-
-    }
-
-
-    private void setFadeInAnimationFirst(long duration, long delay, View... v) {
-        Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
-        mLoadAnimation.setDuration(duration);
-        mLoadAnimation.setStartOffset(delay);
-        mLoadAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation arg0) {
-            }
-
-            @Override
-            public void onAnimationStart(Animation arg0) {
-            }
-        });
-        for (View i : v) {
-            i.startAnimation(mLoadAnimation);
-        }
-
-//        main_menu.startAnimation(mLoadAnimation);
-    }
-
-    public void setFadeInAnimationAndDingSound(long duration, long delay, View... v) {
-        Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
-        mLoadAnimation.setDuration(duration);
-        mLoadAnimation.setStartOffset(delay);
-        for (View i : v) {
-            i.startAnimation(mLoadAnimation);
         }
     }
 
@@ -944,7 +804,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                     btnSave.setEnabled(false);
                     exitButtonWasPressed = true;
                     finish();
-                }, ()->{
+                }, () -> {
                     dialogAbout.cancel();
                 });
             }
@@ -1012,6 +872,97 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         });
         AlertDialog alertDialog = builder.create();
         builder.show();
+    }
+
+    public void setFadeInAnimationAndDingSound(long duration, long delay, View... v) {
+        Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+        mLoadAnimation.setDuration(duration);
+        mLoadAnimation.setStartOffset(delay);
+        for (View i : v) {
+            i.startAnimation(mLoadAnimation);
+        }
+    }
+
+    private final void setFadeInAnimationAndDingSound() {
+        // Here I make sure that the splash screen will only be shown on startup
+        if (firstStart) {
+            // This is called at the first start. It fades the splash screen out.
+            // Then it calls the setFadeOutAnima
+            firstStart = false;
+            for (View i : views) {
+                i.setAlpha(0);
+            }
+            if (splashImage != null) {
+                setFadeOutAnimationLogo(1000, 2500, splashImage);
+            }
+            // Here I set the sound that will appear with the splash screen.
+            long millisInFuture = 80;
+            long countDownInterval = 20;
+            CountDownTimer tmr = new CountDownTimer(millisInFuture, countDownInterval) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    appSounds.play(dingSound, 1, 1, 1, 0, 1);
+
+                }
+            };
+            tmr.start();
+        } else {
+            // Here I make sure that the splash screen will only be shown on startup
+            if (splashImage != null) {
+                splashImage.setVisibility(View.INVISIBLE);
+            }
+            setFadeInAnimationAndDingSound(1800, 50, views);
+        }
+    }
+
+
+    private final void setFadeOutAnimationLogo(long duration, long delay, View... v) {
+        Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+        Animation fadeOut = new AlphaAnimation(1f, 0f);
+        mLoadAnimation.setInterpolator(new AccelerateInterpolator()); //and this
+        mLoadAnimation.setDuration(duration);
+        mLoadAnimation.setStartOffset(delay);
+        mLoadAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+//                main_menu.setAlpha(0);
+                // This three lines set the image invisible after fade_out
+                for (View i : v) {
+                    i.setAlpha(0f);
+                }
+                setFadeInAnimationAndDingSound(1800, 50, views);
+                // Here the delay sets the time when the image disappeared and the buttons start to appear.
+//                setFadeInAnimationFirst(1200, 0, views);
+//                transitionActivityAToB.setFadeInAnimationFirst(null,()->{
+//                    setTrainingTransition();
+//                });
+//                transitionActivityAToB.setFadeInAnimationFirst();
+//                transitionActivityAToB.startAnimationIn();
+                if (views != null) {
+                    for (View i : views) {
+                        i.setAlpha(1f);
+                    }
+                }
+                createDialogAdReminder();
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+            }
+        });
+        for (View i : v) {
+            i.startAnimation(mLoadAnimation);
+        }
     }
 
 }

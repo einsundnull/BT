@@ -247,25 +247,23 @@
         app:layout_constraintStart_toEndOf="@+id/editTextDuration"
         app:layout_constraintTop_toTopOf="@+id/editTextDuration" />
 
-    <ImageView
-        android:id="@+id/nouImage"
+    <TextView
+        android:id="@+id/splashImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.447"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/test"
+    <ImageView
+        android:id="@+id/btnSun"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="77dp"
-        android:layout_marginTop="35dp"
-        android:text="Button"
+        android:layout_marginStart="212dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/btn_background_sun"
         app:layout_constraintStart_toEndOf="@+id/editTextNBackLevel"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -25,6 +25,16 @@
     <!--        app:layout_constraintTop_toBottomOf="@+id/textViewDuration" />-->
 
 
+    <ImageView
+        android:id="@+id/btnSun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/btn_background_sun"
+        app:layout_constraintStart_toEndOf="@+id/editTextNBackLevel"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textViewTime"
         android:layout_width="wrap_content"
@@ -228,7 +238,7 @@
     </RadioGroup>
 
     <ImageView
-        android:id="@+id/nouImage"
+        android:id="@+id/splashImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
