@@ -112,6 +112,8 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         setDivider();
         addResultLines();
         if (darkModeMenu) {
+//            setting_button_result_screen.setBackgroundColor(getResources().getColor(R.color.white));
+            setting_button_result_screen.setBackground(getResources().getDrawable(R.drawable.result_screen_settings_button_image_dark));
             setting_button_result_screen.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
         }
 
@@ -422,8 +424,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         backgroundColor = Color.rgb(232, 236, 235);
         if (darkModeMenu) {
             backgroundColor = Color.rgb(0, 0, 0);
-            setting_button_result_screen.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
-        }
+     }
 
 //        if (resultLineColorIndex == 1) {
 //            lineColorDay = Color.rgb(44,135,32);
@@ -475,8 +476,12 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
 //        getViews();
 //        setOnClickListeners();
+        if (darkModeMenu){
+            setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image_dark);
+        } else {
+            setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image);
+        }
 
-        setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image);
 
         one.setText(Strings.showPercentageInResults);
         two.setText(Strings.showNBackInResults);
