@@ -10,6 +10,7 @@
     <string name="include_position">Position</string>
     <string name="mode">Modes</string>
     <string name="nback">N-Back</string>
+    <string name="repeat">Repeat</string>
     <string name="duration">Duration</string>
     <string name="durationAsTrial">Trials</string>
     <string name="results">Results</string>

@@ -94,6 +94,31 @@
         app:layout_constraintStart_toStartOf="@+id/editTextColorB"
         app:layout_constraintTop_toTopOf="@+id/editTextColorB" />
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/repeat"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="144dp"
+        android:background="@drawable/input_border"
+        android:gravity="center"
+        android:inputType="number"
+        android:textColor="@color/menu_text_color"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/editTextColorG"
+        app:layout_constraintTop_toTopOf="@+id/editTextColorB" />
+
+    <TextView
+        android:id="@+id/repeatHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="-12dp"
+        android:background="@drawable/input_border_label"
+        android:text="@string/repeat"
+        android:textColor="@color/menu_text_color"
+        app:layout_constraintStart_toStartOf="@+id/repeat"
+        app:layout_constraintTop_toTopOf="@+id/repeat" />
+
     <Button
         android:id="@+id/btnBottom"
         android:layout_width="0dp"

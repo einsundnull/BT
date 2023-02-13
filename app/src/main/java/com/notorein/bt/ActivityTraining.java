@@ -74,6 +74,7 @@ import static com.notorein.bt.SessionParameters.includedModes;
 import static com.notorein.bt.SessionParameters.increasedCounterPosition;
 import static com.notorein.bt.SessionParameters.maxPresentations;
 import static com.notorein.bt.SessionParameters.missedAdDialogHasBeenShown;
+import static com.notorein.bt.SessionParameters.mode;
 import static com.notorein.bt.SessionParameters.nBack;
 import static com.notorein.bt.SessionParameters.nBackBegin;
 import static com.notorein.bt.SessionParameters.nBackCulmulated;
@@ -311,7 +312,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         txtVwnBackLevelInfo.setText(String.valueOf(nBack));
         setIntervalText();
         setSquareSize();
-//        showCustomColorDialog();
+//
     }
 
 
@@ -521,12 +522,27 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         squares.add(findViewById(R.id.button8));
         onlyColor = findViewById(R.id.onlyColor);
 
-
-        btnPosition = (Button) findViewById(R.id.buttonPosition);
-        btnAudio = (Button) findViewById(R.id.buttonAudio);
-        btnPositionII = (Button) findViewById(R.id.buttonPosition2);
-        btnAudioII = (Button) findViewById(R.id.buttonAudio2);
         btnColor = (Button) findViewById(R.id.buttonColor);
+        btnAudio = (Button) findViewById(R.id.buttonAudio);
+        btnPosition = (Button) findViewById(R.id.buttonPosition);
+//        if(!includeColor){
+//            if (orientation != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+//                btnColor.setScaleY(0.0f);
+//                btnPosition.setScaleY(1.5f);
+//                btnPosition.setY(-100f);
+//                btnAudio.setScaleY(1.5f);
+//                btnAudio.setY(-100f);
+//            } else {
+//
+//
+//            }
+//
+//        }
+
+
+
+        btnAudioII = (Button) findViewById(R.id.buttonAudio2);
+        btnPositionII = (Button) findViewById(R.id.buttonPosition2);
         btnExit = (Button) findViewById(R.id.buttonExit);
         btnSoundOff = (ImageView) findViewById(R.id.button_click_training_sound_off);
         btnOrientation = (ImageView) findViewById(R.id.button_click_training_orientation);
@@ -1104,18 +1120,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             clicked = true;
         }
         if (endOfSession) {
-            resetTrialCounters();
-//            finish();
-//            txtVwMiddle.setTextSize(32f);
-//            txtVwMiddle.setText(Strings.goodJob);
-            SessionParameters.useTempResults = true;
-
-//            setFadeOutAnimation(views);
-//            transitionActivityAToB.startAnimation();
-            setDividersVisibleAddaptToMode(INVISIBLE);
-            startTransitionToActivityTraining();
-//            Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
-//            startActivity(intent);
+            endSession();
         } else if (!trialIsRunning) {
             if (resultScreenIndex == 0) {
                 startTrial();
@@ -1128,6 +1133,22 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         setDeveloperInfoText(infoTxt);
         return clicked;
+    }
+
+    private void endSession() {
+        resetTrialCounters();
+//            finish();
+//            txtVwMiddle.setTextSize(32f);
+//            txtVwMiddle.setText(Strings.goodJob);
+        SessionParameters.useTempResults = true;
+
+//            setFadeOutAnimation(views);
+//            transitionActivityAToB.startAnimation();
+        setDividersVisibleAddaptToMode(INVISIBLE);
+        ResultsFiles.storeTempResults(this);
+        startTransitionToActivityTraining();
+//            Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
+//            startActivity(intent);
     }
 
     private void setPausedFromMiddleSplittedClick() {
@@ -1303,13 +1324,20 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         edG.setBackground(gradientDrawableBackground);
         edB.setBackground(gradientDrawableBackground);
 
+        EditText repeat = dialog.findViewById(R.id.repeat);
+        TextView repeatHint = dialog.findViewById(R.id.repeatHint);
+        repeat.setBackground(gradientDrawableBackground);
+        repeatHint.setBackground(gradientDrawableBackground);
+
         edRH.setBackground(gradientDrawableLabel);
         edGH.setBackground(gradientDrawableLabel);
         edBH.setBackground(gradientDrawableLabel);
+        repeatHint.setBackground(gradientDrawableLabel);
 
         edR.setText("" + SessionParameters.r);
         edG.setText("" + SessionParameters.g);
         edB.setText("" + SessionParameters.b);
+        repeat.setText("" + MAX_PRESENT_DEFAULT);
         customColorSquare = Color.rgb(r, g, b);
         hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
 
@@ -1317,9 +1345,38 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         edGH.setText(Strings.labelEditTextCustomColorTextG);
         edBH.setText(Strings.labelEditTextCustomColorTextB);
         Button btn = dialog.findViewById(R.id.btnBottom);
-        btn.setBackgroundColor(customColorSquare);
+//        btn.setBackgroundColor(customColorSquare);
         Button sampleSquare = dialog.findViewById(R.id.sampleSquare);
         sampleSquare.setBackgroundColor(customColorSquare);
+
+        btn.setOnClickListener(c->{
+            FileLogicSettings.saveSettings(this);
+        });
+
+        repeat.setOnKeyListener(new EditText.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                try {
+                    String temp = repeat.getText().toString();
+                    int MAX_PRESENT = Integer.parseInt(temp);
+                    if (!temp.isEmpty()) {
+                        MAX_PRESENT = Integer.parseInt(temp);
+                        if (MAX_PRESENT < 1) {
+                            MAX_PRESENT= 15;
+                            repeat.setText("" + MAX_PRESENT);
+                        }
+                        if (MAX_PRESENT > 150) {
+                            MAX_PRESENT = 50;
+                            repeat.setText("" + MAX_PRESENT);
+                        }
+                       MAX_PRESENT_DEFAULT = MAX_PRESENT;
+                    }
+                } catch (Exception e) {
+
+                }
+                return false;
+            }
+        });
+
         edR.setOnKeyListener(new EditText.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 try {
@@ -1573,7 +1630,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
     private void changeSquaresStandardColor() {
         if (squareDefaultColorIndex > SessionParameters.colors.length - 1) {
-            squareDefaultColorIndex = 0;
+            squareDefaultColorIndex = 1;
         }
         for (int i = 0; i < squares.size(); i++) {
             squares.get(i).setBackgroundColor(getResources().getColor(SessionParameters.colors[squareDefaultColorIndex]));
@@ -1676,7 +1733,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         });
         onlyColor.setOnClickListener(c -> {
             setPausedFromMiddle();
-            squaresOnClickLogic(5);
+//            squaresOnClickLogic(5);
         });
         squares.get(5).setOnClickListener(c -> {
             squaresOnClickLogic(6);
@@ -1866,8 +1923,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             }
         }
         if (v.getId() == R.id.button_click_training_size) {
+
             allowToChangeColorStyle = false;
             if (!allowToChangeSquareSize) {
+                showCustomColorDialog();
 //                setSquareSize();
                 if (!includePosition && includeColor) {
                     squares.get(4).setVisibility(VISIBLE);

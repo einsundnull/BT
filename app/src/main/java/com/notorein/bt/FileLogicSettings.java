@@ -1,5 +1,7 @@
 package com.notorein.bt;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -22,11 +24,13 @@ public class FileLogicSettings {
                     scn.next();
                     SessionParameters.squareSize = Integer.parseInt(scn.next());
                     scn.next();
-                    SessionParameters.squareSizeOnlyColor= Integer.parseInt(scn.next());
+                    SessionParameters.squareSizeOnlyColor = Integer.parseInt(scn.next());
                     scn.next();
                     SessionParameters.decreaseThreshold = Double.parseDouble(scn.next());
                     scn.next();
                     SessionParameters.increaseThreshold = Double.parseDouble(scn.next());
+                    scn.next();
+                    SessionParameters.MAX_PRESENT_DEFAULT = Integer.parseInt(scn.next());
                     scn.next();
                     SessionParameters.duration = Integer.parseInt(scn.next());
                     scn.next();
@@ -80,12 +84,12 @@ public class FileLogicSettings {
                     scn.next();
                     SessionParameters.missedAdDialogHasBeenShown = Boolean.parseBoolean(scn.next());
                     scn.next();
-                    SessionParameters.r= Integer.parseInt(scn.next());
+                    SessionParameters.r = Integer.parseInt(scn.next());
                     scn.next();
-                    SessionParameters.g= Integer.parseInt(scn.next());
+                    SessionParameters.g = Integer.parseInt(scn.next());
                     scn.next();
-                    SessionParameters.b= Integer.parseInt(scn.next());
-
+                    SessionParameters.b = Integer.parseInt(scn.next());
+                    Log.i(TAG, "readSettings: "+SessionParameters.darkModeMenu);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -120,7 +124,7 @@ public class FileLogicSettings {
                         "squareSizeOnlyColor\t" + SessionParameters.squareSizeOnlyColor + "\n" +
                         "decreaseThreshold\t" + SessionParameters.decreaseThreshold + "\n" +
                         "increaseThreshold\t" + SessionParameters.increaseThreshold + "\n" +
-//                        "MAX_PRESENT_DEFAULT\t" + SessionParameters.MAX_PRESENT_DEFAULT + "\n" +
+                        "MAX_PRESENT_DEFAULT\t" + SessionParameters.MAX_PRESENT_DEFAULT + "\n" +
                         "durationSessionInTrials\t" + SessionParameters.duration + "\n" +
                         "maxPresentations\t" + SessionParameters.maxPresentations + "\n" +
                         "nBackBegin\t" + SessionParameters.nBackBegin + "\n" +

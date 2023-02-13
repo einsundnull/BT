@@ -50,7 +50,9 @@ public class Strings {
     public static String pleaseSaveResultsText = "Please save your results first!\nOtherwise the last results will be lost!";
     public static String dismissResults = "Dismiss Results";
     public static String goBackAndStore = "Go Back And Store";
-    public static String dontForgetToSaveResults = "It seems like you forgot to save your results the last time you used the app! Do you want to keep them?";
+    public static String youForgotToStoreYourResultsText = "It seems like you forgot to save your results the last time you used the app! Do you want to keep them?";
+    public static String dontForgetToSaveResults = "Please don't forget to store your results before you close the app!";
+
     public static String storeResults = "Store";
     public static String sound_click_training_off = "Button Click Sound Is Off";
     public static String sound_click_training_on = "Button Click Sound Is On";

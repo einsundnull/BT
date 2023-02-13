@@ -10,6 +10,9 @@ import static com.notorein.bt.SessionParameters.lastDayOfUse;
 import static com.notorein.bt.SessionParameters.modeOneDirectory;
 import static com.notorein.bt.SessionParameters.resultsFilePath;
 import static com.notorein.bt.SessionParameters.stringToStore;
+import static com.notorein.bt.SessionParameters.stringToStoreInitial;
+import static com.notorein.bt.SessionParameters.tempResultsAlreadyStored;
+import static com.notorein.bt.SessionParameters.useTempResults;
 
 import android.content.Context;
 import android.util.Log;
@@ -419,7 +422,16 @@ public class ResultsFiles {
         }
     }
 
-
+    public static void storeTempResults(Context c) {
+        if (useTempResults && !tempResultsAlreadyStored) {
+            // Here I am reading the original file
+            resultsFilePath = initialiseStoringFilePaths(false);
+            stringToStoreInitial = ResultsFiles.readResults(c);
+            ResultsFiles.copyResults(c, resultsFilePath, initialiseStoringFilePaths(true));
+            ResultsFiles.saveResults(c, true, initialiseStoringFilePaths(true));
+            tempResultsAlreadyStored = true;
+        }
+    }
     public static void copyResults(Context c, String inputPath, String outputPath) {
         try {
 

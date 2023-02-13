@@ -159,9 +159,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         loadInterstitialAd();
-        if(firstStart){
-            FileLogicSettings.readSettings(ActivityMenu.this);
-        }
+        FileLogicSettings.readSettings(ActivityMenu.this);
         getViews();
         includeViewsToFadeInTransition();
         setImageNou();
@@ -194,13 +192,14 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         }
         if (firstStart || returnFromResultScreen) {
             if (new File(this.getFilesDir(), initialiseStoringFilePaths(true)).exists()) {
-                showAlertPleaseSaveResults(this, Strings.dontForgetToSaveResults, Strings.storeResults, Strings.dismissResults, () -> {
-                    copyResults(this, initialiseStoringFilePaths(false), initialiseStoringFilePaths(true));
-                    deleteResults(this, initialiseStoringFilePaths(true));
-
-                }, () -> {
-                    deleteResults(this, initialiseStoringFilePaths(true));
-                });
+//                showAlertPleaseSaveResults(this, Strings.dontForgetToSaveResults, Strings.storeResults, Strings.dismissResults, () -> {
+//                    copyResults(this, initialiseStoringFilePaths(false), initialiseStoringFilePaths(true));
+//                    deleteResults(this, initialiseStoringFilePaths(true));
+//
+//                }, () -> {
+//                    deleteResults(this, initialiseStoringFilePaths(true));
+//                });
+                createDialogAdReminder(true, Strings.pleaseSaveResultsText, Strings.adReminderTextIII, null);
             }
         }
 
@@ -371,7 +370,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private void setImageNou() {
 //        nouImage.setBackgroundResource(R.drawable.genkou);
         splashImage.setText("健康");
-        if(!darkModeMenu){
+        if (!darkModeMenu) {
             splashImage.setTextColor(getResources().getColor(R.color.black));
         }
         splashImage.setTextSize(184f);
@@ -427,9 +426,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
         btnPort = (RadioButton) findViewById(R.id.radioButtonPort);
         btnLand = (RadioButton) findViewById(R.id.radioButtonLand);
-
-
-
 
 
     }
@@ -494,14 +490,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 //            }
         }
         if (v.getId() == R.id.btnResults) {
-            if (useTempResults && !tempResultsAlreadyStored) {
-                // Here I am reading the original file
-                resultsFilePath = initialiseStoringFilePaths(false);
-                stringToStoreInitial = ResultsFiles.readResults(ActivityMenu.this);
-                ResultsFiles.copyResults(this, resultsFilePath, initialiseStoringFilePaths(true));
-                ResultsFiles.saveResults(this, true, initialiseStoringFilePaths(true));
-                tempResultsAlreadyStored = true;
-            }
+//            ResultsFiles.storeTempResults(this);
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
             stringToStore = stringToStoreInitial + stringToStore;
             loadInterstitialAd = true;
@@ -591,6 +580,17 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
 
     }
+
+//    public static void storeTempResults() {
+//        if (useTempResults && !tempResultsAlreadyStored) {
+//            // Here I am reading the original file
+//            resultsFilePath = initialiseStoringFilePaths(false);
+//            stringToStoreInitial = ResultsFiles.readResults(ActivityMenu.this);
+//            ResultsFiles.copyResults(this, resultsFilePath, initialiseStoringFilePaths(true));
+//            ResultsFiles.saveResults(this, true, initialiseStoringFilePaths(true));
+//            tempResultsAlreadyStored = true;
+//        }
+//    }
 
     private void switchPositionLogic() {
         if (!btnSave.isEnabled()) {
@@ -769,7 +769,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         dialogAbout = new Dialog(this);
         dialogAbout.setContentView(R.layout.view_menu_about);
         ConstraintLayout layout = dialogAbout.findViewById(R.id.layout);
-        if(darkModeMenu){
+        if (darkModeMenu) {
             layout.setBackground(getResources().getDrawable(R.drawable.alert_background_dark));
         }
         btn_manual = (Button) dialogAbout.findViewById(R.id.btnBottom);
@@ -835,6 +835,27 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 dialogAdReminder.cancel();
                 missedAdDialogHasBeenShown = true;
                 FileLogicSettings.saveSettings(this);
+            });
+
+            dialogAdReminder.show();
+        }
+    }
+
+    private void createDialogAdReminder(boolean showReminderDialog, String reminderText, String btnText, Runnable runOnOkay) {
+        if (showReminderDialog) {
+            Dialog dialogAdReminder = new Dialog(this);
+            dialogAdReminder.setContentView(R.layout.view_menu_ad_reminder);
+            ConstraintLayout dialogAdReminderLayout = findViewById(R.id.dialogAdReminderLayout);
+            TextView btn_manual = dialogAdReminder.findViewById(R.id.btnBottom);
+            btn_manual.setText(reminderText);
+
+            TextView btn_about = (TextView) dialogAdReminder.findViewById(R.id.btn_about);
+            btn_about.setText(btnText);
+            btn_about.setOnClickListener(c -> {
+                dialogAdReminder.cancel();
+                if (runOnOkay != null) {
+                    runOnOkay.run();
+                }
             });
 
             dialogAdReminder.show();
@@ -957,6 +978,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                         i.setAlpha(1f);
                     }
                 }
+                // Here I show the turn you internet on for ads dialog.
                 createDialogAdReminder();
 
             }
