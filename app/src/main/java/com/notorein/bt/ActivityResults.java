@@ -98,6 +98,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         getViews();
         setOnClickListener();
         SessionParameters.returnFromResultScreen = true;
+        FileLogicSettings.saveSettings(this);
         goodJob.setText(Strings.goodJob);
         // This part was in onClick ResultsBtn in ActivityMain
         SessionParameters.resultsFilePath = ResultsFiles.initialiseStoringFilePaths(useTempResults);

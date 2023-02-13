@@ -190,18 +190,19 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 showReminderDialog = true;
             }
         }
-        if (firstStart || returnFromResultScreen) {
-            if (new File(this.getFilesDir(), initialiseStoringFilePaths(true)).exists()) {
-//                showAlertPleaseSaveResults(this, Strings.dontForgetToSaveResults, Strings.storeResults, Strings.dismissResults, () -> {
-//                    copyResults(this, initialiseStoringFilePaths(false), initialiseStoringFilePaths(true));
-//                    deleteResults(this, initialiseStoringFilePaths(true));
-//
-//                }, () -> {
-//                    deleteResults(this, initialiseStoringFilePaths(true));
-//                });
-                createDialogAdReminder(true, Strings.pleaseSaveResultsText, Strings.adReminderTextIII, null);
-            }
-        }
+//        if (firstStart || returnFromResultScreen) {
+////            if (new File(this.getFilesDir(), initialiseStoringFilePaths(true)).exists()) {
+//////                showAlertPleaseSaveResults(this, Strings.dontForgetToSaveResults, Strings.storeResults, Strings.dismissResults, () -> {
+//////                    copyResults(this, initialiseStoringFilePaths(false), initialiseStoringFilePaths(true));
+//////                    deleteResults(this, initialiseStoringFilePaths(true));
+//////
+//////                }, () -> {
+//////                    deleteResults(this, initialiseStoringFilePaths(true));
+//////                });
+////                createDialogAdReminder(true, Strings.dontForgetToSaveResults, Strings.adReminderTextIII, null);
+////            }
+//        }
+//        showDialogPleaseDontForgetToStoreyourResults();
 
         returnFromTraining = false;
         SessionParameters.returnFromResultScreen = false;
@@ -209,6 +210,19 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 //        dialogAdReminder.show();
 //        btnLight.setText("" + adMissedCounter);
         setDayAndNightMode();
+    }
+
+    private void showDialogPleaseDontForgetToStoreyourResults() {
+        if (new File(this.getFilesDir(), initialiseStoringFilePaths(true)).exists()) {
+//                showAlertPleaseSaveResults(this, Strings.dontForgetToSaveResults, Strings.storeResults, Strings.dismissResults, () -> {
+//                    copyResults(this, initialiseStoringFilePaths(false), initialiseStoringFilePaths(true));
+//                    deleteResults(this, initialiseStoringFilePaths(true));
+//
+//                }, () -> {
+//                    deleteResults(this, initialiseStoringFilePaths(true));
+//                });
+            createDialogAdReminder(true, Strings.dontForgetToSaveResults, Strings.adReminderTextIII, null);
+        }
     }
 
     private final void setActivityTransitions() {
@@ -904,7 +918,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         builder.show();
     }
 
-    public void setFadeInAnimationAndDingSound(long duration, long delay, View... v) {
+    public final void setFadeInAnimationAndDingSound(long duration, long delay, View... v) {
         Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
         mLoadAnimation.setDuration(duration);
         mLoadAnimation.setStartOffset(delay);
@@ -947,6 +961,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 splashImage.setVisibility(View.INVISIBLE);
             }
             setFadeInAnimationAndDingSound(1800, 50, views);
+            showDialogPleaseDontForgetToStoreyourResults();
         }
     }
 
