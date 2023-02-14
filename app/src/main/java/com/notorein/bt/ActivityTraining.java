@@ -132,6 +132,7 @@ import static com.notorein.bt.Strings.nBackLevel;
 import static com.notorein.bt.Strings.pressButtonToC;
 import static com.notorein.bt.Strings.pressButtonToS;
 import static com.notorein.bt.Strings.setDeveloperInfoText;
+import static com.notorein.bt.Strings.textViewTimeAdd_II;
 import static com.notorein.bt.Strings.trialEndTextPercentage;
 
 import android.app.Activity;
@@ -1869,36 +1870,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             darkModeTraining = !darkModeTraining;
             FileLogicSettings.saveSettings(this);
             setModeColors();
-//            setDividersVisible(true);
         }
         if (v.getId() == R.id.button_click_training_style) {
             if (!allowToChangeSquareSize) {
-
-//                if (SessionParameters.colorArrayIndex == 0) {
-//                    colors = SessionParameters.colorsII;
-//                    for (int i = 0; i < squares.size(); i++) {
-//                        squares.get(i).setBackgroundColor(getResources().getColor(colors[i + 1]));
-//                        squares.get(i).setVisibility(VISIBLE);
-//                        squares.get(i).setScaleX(0.9f);
-//                        squares.get(i).setScaleY(0.9f);
-//                    }
-//
-//                } else if (SessionParameters.colorArrayIndex == 1) {
-//                    colors = SessionParameters.colorsIII;
-//                    for (int i = 0; i < squares.size(); i++) {
-//                        squares.get(i).setBackgroundColor(getResources().getColor(colors[i + 1]));
-//                        squares.get(i).setVisibility(VISIBLE);
-//                        squares.get(i).setScaleX(0.9f);
-//                        squares.get(i).setScaleY(0.9f);
-//                    }
-//
-//                }
-//                SessionParameters.colorArrayIndex++;
-//                boolean allowToClose = false;
-//                if (SessionParameters.colorArrayIndex >= 2) {
-//                    SessionParameters.colorArrayIndex = 0;
-//                     allowToClose = true;
-//                }
 
                 if (!allowToChangeColorStyle) {
                     try {
@@ -2059,7 +2033,13 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         lengthTrial = CustomClock.convertMillisecondsToMinutesAndSeconds(estimatedTrialLength);
         lengthSession = CustomClock.convertToMinutes(estimatedLengthSession);
         lengthSessionII = CustomClock.convertToMinutes(estimatedLengthSessionII);
-        lengthSessionII = Strings.textViewTimeAdd_I + lengthSession + " - " + lengthSessionII + Strings.textViewTimeAdd_II;
+        if(lengthSessionII.equals(lengthSession)){
+            lengthSessionII = Strings.textViewTimeAdd_I + lengthSession + textViewTimeAdd_II;
+        } else {
+            lengthSessionII = Strings.textViewTimeAdd_I + lengthSession + " -" + lengthSessionII + textViewTimeAdd_II;
+        }
+
+
 //        add = "    " + Strings.speedText + add;
 //        add = Strings.speedText + Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII;
         add = Strings.changeIntervalInfoText + fadeInterval
@@ -2067,7 +2047,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 + +(percentageCorrected) + "%  "
                 + Strings.estimatedTrialLengthText
                 + lengthTrial
-                + Strings.textViewTimeAdd_II
+                + textViewTimeAdd_II
                 + Strings.estimatedSessionLengthText
                 + lengthSessionII;
         lengthTrial = add;
@@ -2125,90 +2105,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
-//    private final void setModeColors() {
-//        if (!darkModeTraining) {
-//            layout.setBackground(getResources().getDrawable(R.drawable.training_background));
-//            btnMode.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_mode));
-//            btnOrientation.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_orientation));
-//            btnStyle.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_style));
-//            btnSize.setBackground(getResources().getDrawable(R.drawable.button_training_settings_size));
-//            btnGrid.setBackground(getResources().getDrawable(R.drawable.button_training_settings_grid));
-//            if (zenMode) {
-//                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_true));
-//            } else {
-//                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_false));
-//            }
-//            btnPosition.setAlpha(0.8f);
-//            btnAudio.setAlpha(0.8f);
-//            btnColor.setAlpha(0.8f);
-//            btnPositionII.setAlpha(0.8f);
-//            btnAudioII.setAlpha(0.8f);
-//
-//            btnExit.setAlpha(0.6f);
-//            btnMode.setAlpha(0.6f);
-//            btnOrientation.setAlpha(0.6f);
-//            btnSoundOff.setAlpha(0.6f);
-//            btnStyle.setAlpha(0.6f);
-//            btnSize.setAlpha(0.6f);
-//            btnGrid.setAlpha(0.6f);
-//            btnFade.setAlpha(0.6f);
-//            txtVwInterval.setAlpha(0.6f);
-//            txtVwnBackLevelInfo.setAlpha(0.6f);
-//            txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color));
-//
-//            txtVwMiddle.setTextColor(getResources().getColor(R.color.training_text_color));
-//            txtVwInterval.setTextColor(getResources().getColor(R.color.training_text_color));
-//            dividerHorizontal1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
-//            dividerHorizontal2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
-//
-//            dividerVertical1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
-//            dividerVertical2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
-//
-//
-//        } else {
-//            layout.setBackground(getResources().getDrawable(R.drawable.training_background_dark));
-////            btnPosition.setAlpha(0.3f);
-////            btnAudio.setAlpha(0.3f);
-////            btnColor.setAlpha(0.3f);
-//            btnPosition.setAlpha(0.17f);
-//            btnAudio.setAlpha(0.17f);
-//            btnColor.setAlpha(0.17f);
-//            btnPositionII.setAlpha(0.3f);
-//            btnAudioII.setAlpha(0.3f);
-//            txtVwInterval.setAlpha(0.3f);
-////            txtVwMiddle.setAlpha(0.45f);
-//            txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color_dark));
-//            txtVwMiddle.setTextColor(getResources().getColor(R.color.training_text_color_dark));
-//            txtVwInterval.setTextColor(getResources().getColor(R.color.training_text_color_dark));
-//            btnMode.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_mode_dark));
-//            btnOrientation.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_orientation_dark));
-//            btnStyle.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_style_dark));
-//            btnSize.setBackground(getResources().getDrawable(R.drawable.button_training_settings_size_dark));
-//            btnGrid.setBackground(getResources().getDrawable(R.drawable.button_training_settings_grid_dark));
-//            if (zenMode) {
-//                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_true_dark));
-//            } else {
-//                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_false_dark));
-//            }
-//            btnExit.setAlpha(0.6f);
-//            btnMode.setAlpha(0.45f);
-//            btnOrientation.setAlpha(0.45f);
-//            btnSoundOff.setAlpha(0.45f);
-//            btnStyle.setAlpha(0.45f);
-//            btnSize.setAlpha(0.45f);
-//            btnGrid.setAlpha(0.45f);
-//            btnFade.setAlpha(0.45f);
-//            txtVwInterval.setAlpha(0.45f);
-//            txtVwnBackLevelInfo.setAlpha(0.45f);
-//
-//            dividerHorizontal1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
-//            dividerHorizontal2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
-//
-//            dividerVertical1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
-//            dividerVertical2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
-//        }
-//        setSettingsBtnSoundColor();
-//    }
+
 
     private final void setModeColors() {
         Drawable trainingBackground;
@@ -2311,7 +2208,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         btnExit.setAlpha(alphaExitButton);
         btnMode.setAlpha(alphaModeButton);
         btnOrientation.setAlpha(alphaOrientationButton);
-        btnSoundOff.setAlpha(alphaAudioButtons);
+        btnSoundOff.setAlpha(alphaSoundOffButton);
         btnStyle.setAlpha(alphaStyleButton);
         btnSize.setAlpha(alphaSizeButton);
         btnGrid.setAlpha(alphaGridButton);
@@ -2394,32 +2291,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         return;
     }
 
-//    private void showDialogCustomSettings() {
-//
-//        Dialog dialog = new Dialog(this);
-//        dialog.setContentView(R.layout.view_menu_custom_color);
-//        EditText  edR = dialog.findViewById(R.id.editTextColorR);
-//        EditText  edG = dialog.findViewById(R.id.editTextColorG);
-//        EditText  edB = dialog.findViewById(R.id.editTextColorB);
-//        TextView  edRH = dialog.findViewById(R.id.hintTextViewColorR);
-//        TextView  edGH = dialog.findViewById(R.id.hintTextViewColorG);
-//        TextView  edBH = dialog.findViewById(R.id.hintTextViewColorB);
-//
-//        btn_manual.setOnClickListener(c -> {
-//            SessionParameters.openManual = true;
-//            Intent intent = new Intent(ActivityMenu.this, ActivityAbout.class);
-//            try {
-//                Thread.sleep(300);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            startActivity(intent);
-//        });
-//
-//
-//
-//        dialog.show();
-//    }
+
 
     private final void setFadeInAnimationAndDingSound(long duration, long delay, View... v) {
         Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);

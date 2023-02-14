@@ -45,7 +45,7 @@ public class Strings {
     public static String nBackLevel = "-back";
     public static String trialActualIndicator = " █ ";
     public static String trialDefaultIndicator = " ▄ ";
-    public static String textViewTimeAdd_II = " min";
+    public static String textViewTimeAdd_II = "min";
     public static String textViewTimeAdd_I = "~ ";
     public static String pleaseSaveResultsText = "Please save your results first!\nOtherwise the last results will be lost!";
     public static String dismissResults = "Dismiss Results";
@@ -179,7 +179,7 @@ public class Strings {
     public static String pressButtonToC = "Press button to continue";
     public static String firstStartTextOnlyPos = "Press button to start";
     public static String pressButtonToFinish = "Press button to finish";
-    public static String firstStartTextPressButtonToS = "Press button to start\n\nTap the center to interrupt training";
+    public static String firstStartTextPressButtonToS = "Tap the center to pause training\n\nPress button to start";
 
 
     public static String firstStartTextOnlyAud;

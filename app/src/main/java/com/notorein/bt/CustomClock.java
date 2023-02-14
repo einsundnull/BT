@@ -169,7 +169,7 @@ public class CustomClock {
     public static String convertToMinutes(long milliseconds) {
         int minutes = (int) (milliseconds / 1000) / 60;
 
-        return String.format("%02d", minutes);
+        return String.format("%2d", minutes);
     }
 
 
