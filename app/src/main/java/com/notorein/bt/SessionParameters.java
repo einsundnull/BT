@@ -1,7 +1,6 @@
 package com.notorein.bt;
 
 import android.graphics.Color;
-import android.media.SoundPool;
 
 public class SessionParameters {
 
@@ -50,7 +49,7 @@ public class SessionParameters {
 
     // Duration
     public static int duration = 7;
-    public static int MAX_PRESENT_DEFAULT = 33;
+    public static int MAX_PRESENT_DEFAULT = 22;
     public static int maxPresentations = 22;
     public static int nBackBegin = 1;
     public static int nBack = 1;
@@ -64,7 +63,9 @@ public class SessionParameters {
 
 //    public static int countDownIntervalDefaultZenMode = 1850;
     //    public static int countDownIntervalDefault = 1720;
-    public static int countDownIntervalDefault = 1750;
+//    public static int countDownIntervalDefault = 1750;
+    public static int countDownIntervalDefault = 1480;
+
     public static double speedPercentage = 1;
     public static double countDownInterval = countDownIntervalDefault * speedPercentage;
 
@@ -124,6 +125,10 @@ public class SessionParameters {
     public static int counterMatchesCol = 0;
 
     public static int trialsMax = 10;
+    public static long estimatedTrialLength = countDownIntervalDefault*MAX_PRESENT_DEFAULT;
+    public static long estimatedLengthSession = (long)estimatedTrialLength * trialsMax;
+    public static long estimatedLengthSessionII = (long)estimatedTrialLength * (trialsMax+1);
+
 
     // To Reset at end of session
     public static double nBackCulmulated = 0;
@@ -203,6 +208,10 @@ public class SessionParameters {
     public static boolean includeFeature;
     public static boolean returnFromResultScreen;
     public static boolean exitButtonWasPressed;
+    public static double squareFadeDuration = 1.2;
+    private static final long fadeInterval_DEFAULT = (long) (countDownIntervalDefault / squareFadeDuration);
+    public static long fadeInterval = fadeInterval_DEFAULT;
+
 //    public static SoundPool appSounds;
 //    public static int buttonSound;
 //    public static int dingSound;

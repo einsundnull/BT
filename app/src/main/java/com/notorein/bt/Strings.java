@@ -59,7 +59,7 @@ public class Strings {
     public static String changeIntervalText = "Tap the + or - button to change interval";
     public static String changeIntervalInfoText = "Interval: ";
     public static String changeIntervalInfoTextII = "ms";
-    public static String speedText = "Speed: ";
+    public static String speedText = "  Speed: ";
     public static String changeFadeIntervalText = "Tap the + or - button to change fade interval";
 
     public static String changedFadeIntervalText = "Fade interval: ";
@@ -145,6 +145,12 @@ public class Strings {
     public static String labelEditTextCustomColorTextR = "RED";
     public static String labelEditTextCustomColorTextG= "GREEN";
     public static String labelEditTextCustomColorTextB= "BLUE";
+    public static String estimatedSessionLengthText = " Session: ";
+    public static String estimatedTrialLengthText = " Trial: ";
+    public static String lengthSession;
+    public static String lengthSessionII;
+
+    public static String lengthTrial;
 
 
     //    private static String nextLevel = "Next: ";

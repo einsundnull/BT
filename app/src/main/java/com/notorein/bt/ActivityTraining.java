@@ -53,6 +53,7 @@ import static com.notorein.bt.SessionParameters.counterMatchesAud;
 import static com.notorein.bt.SessionParameters.counterMatchesCol;
 import static com.notorein.bt.SessionParameters.counterMatchesPos;
 import static com.notorein.bt.SessionParameters.customColorSquare;
+import static com.notorein.bt.SessionParameters.customSquareSize;
 import static com.notorein.bt.SessionParameters.darkModeMenu;
 import static com.notorein.bt.SessionParameters.darkModeTraining;
 import static com.notorein.bt.SessionParameters.daySession;
@@ -62,6 +63,10 @@ import static com.notorein.bt.SessionParameters.durationSessionTimer;
 import static com.notorein.bt.SessionParameters.endOfSession;
 import static com.notorein.bt.SessionParameters.endOfTrial;
 import static com.notorein.bt.SessionParameters.endOfTrialDialogIsVisible;
+import static com.notorein.bt.SessionParameters.estimatedLengthSession;
+import static com.notorein.bt.SessionParameters.estimatedLengthSessionII;
+import static com.notorein.bt.SessionParameters.estimatedTrialLength;
+import static com.notorein.bt.SessionParameters.fadeInterval;
 import static com.notorein.bt.SessionParameters.fadeoutAnimationDuration;
 import static com.notorein.bt.SessionParameters.firstStart;
 import static com.notorein.bt.SessionParameters.g;
@@ -74,7 +79,6 @@ import static com.notorein.bt.SessionParameters.includedModes;
 import static com.notorein.bt.SessionParameters.increasedCounterPosition;
 import static com.notorein.bt.SessionParameters.maxPresentations;
 import static com.notorein.bt.SessionParameters.missedAdDialogHasBeenShown;
-import static com.notorein.bt.SessionParameters.mode;
 import static com.notorein.bt.SessionParameters.nBack;
 import static com.notorein.bt.SessionParameters.nBackBegin;
 import static com.notorein.bt.SessionParameters.nBackCulmulated;
@@ -102,6 +106,7 @@ import static com.notorein.bt.SessionParameters.showHideScreen;
 import static com.notorein.bt.SessionParameters.shownAndCounted;
 import static com.notorein.bt.SessionParameters.speedPercentage;
 import static com.notorein.bt.SessionParameters.squareDefaultColorIndex;
+import static com.notorein.bt.SessionParameters.squareFadeDuration;
 import static com.notorein.bt.SessionParameters.stringToStore;
 import static com.notorein.bt.SessionParameters.textSizeMiddleResults;
 import static com.notorein.bt.SessionParameters.textSizeMiddleTrial;
@@ -112,6 +117,7 @@ import static com.notorein.bt.SessionParameters.trialCounter;
 import static com.notorein.bt.SessionParameters.trialIndicator;
 import static com.notorein.bt.SessionParameters.trialIsRunning;
 import static com.notorein.bt.SessionParameters.trialsMax;
+import static com.notorein.bt.SessionParameters.useTempResults;
 import static com.notorein.bt.SessionParameters.zenMode;
 import static com.notorein.bt.Strings.btnAudIIText;
 import static com.notorein.bt.Strings.btnAudText;
@@ -119,6 +125,9 @@ import static com.notorein.bt.Strings.btnColText;
 import static com.notorein.bt.Strings.btnPosIIText;
 import static com.notorein.bt.Strings.btnPosText;
 import static com.notorein.bt.Strings.cross;
+import static com.notorein.bt.Strings.lengthSession;
+import static com.notorein.bt.Strings.lengthSessionII;
+import static com.notorein.bt.Strings.lengthTrial;
 import static com.notorein.bt.Strings.nBackLevel;
 import static com.notorein.bt.Strings.pressButtonToC;
 import static com.notorein.bt.Strings.pressButtonToS;
@@ -133,6 +142,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
@@ -221,10 +231,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     private int[] trainingSound;
     //    public static double squareFadeDuration = 0.9;
 //    public static double squareFadeDuration = 1.1;
-    public static double squareFadeDuration = 1.2;
+
     //    public static double squareFadeDuration = 1.7;
-    private final long fadeInterval_DEFAULT = (long) (countDownIntervalDefault / squareFadeDuration);
-    private long fadeInterval = fadeInterval_DEFAULT;
+
     private ImageView btnSoundOff;
     private ImageView btnOrientation;
     private ImageView btnMode;
@@ -310,31 +319,28 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 ////            btnColor.setAlpha(0.1f);
 //        }
         txtVwnBackLevelInfo.setText(String.valueOf(nBack));
-        setIntervalText();
+        txtVwInterval.setText(lengthTrial);
         setSquareSize();
 //
     }
-
-
 
 
     private void setSquareSize() {
 
         if (includeColor && !includePosition) {
 
-            onlyColor.setScaleX(SessionParameters.customSquareSize * 1.48f);
-            onlyColor.setScaleY(SessionParameters.customSquareSize * 1.48f);
-            squares.get(4).setScaleX(SessionParameters.customSquareSize * 1.5f);
-            squares.get(4).setScaleY(SessionParameters.customSquareSize * 1.5f);
+            onlyColor.setScaleX(customSquareSize * 1.48f);
+            onlyColor.setScaleY(customSquareSize * 1.48f);
+            squares.get(4).setScaleX(customSquareSize * 1.5f);
+            squares.get(4).setScaleY(customSquareSize * 1.5f);
         } else {
             for (int i = 0; i < squares.size(); i++) {
-                squares.get(i).setScaleX(SessionParameters.customSquareSize);
-                squares.get(i).setScaleY(SessionParameters.customSquareSize);
+                squares.get(i).setScaleX(customSquareSize);
+                squares.get(i).setScaleY(customSquareSize);
             }
         }
 
     }
-
 
 
     private void showFirstScreenSplittedClick() {
@@ -540,7 +546,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //        }
 
 
-
         btnAudioII = (Button) findViewById(R.id.buttonAudio2);
         btnPositionII = (Button) findViewById(R.id.buttonPosition2);
         btnExit = (Button) findViewById(R.id.buttonExit);
@@ -677,6 +682,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         trainingSound[8] = appSounds.load(this, R.raw.en_8, 1);
         trainingSound[9] = appSounds.load(this, R.raw.en_9, 1);
     }
+
     private void setTrialIndexes() {
         trialIsRunning = true;
         paused = false;
@@ -781,24 +787,30 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
                 if (presentedScreens < 0) {
                     presentedScreens++;
-                    Strings.timeSession = clockSession.getClockTime(true);
+                    Strings.timeSession = clockSession.getDuration(true);
                     setDeveloperInfoText(infoTxt);
                     // if presentedScreens >= 0 the  presentedScreens++; will be executed
                     // 15-20 lines below
                 }
-                Strings.timeTrialDevOps = clockTrialDevOps.getClockTime(true);
+                Strings.timeTrialDevOps = clockTrialDevOps.getDuration(true);
                 //###################
-
+                if (endOfTrial) {
+                    processInputClicksDuringTrial();
+                    onFinish();
+                }
                 if (presentedScreens >= 0 && !paused) {
                     showHideScreen = !showHideScreen;
                     if (showHideScreen) {
                         screenTrialHide();
                     } else {
                         processInputClicksDuringTrial();
+//                        if(endOfTrial){
+//                            onFinish();
+//                        }
                         if (presentedScreens == maxPresentations) {
                             endOfTrial = true;
-                            onFinish();
-                        } else {
+//                            onFinish();
+                        } else if (presentedScreens != maxPresentations) {
                             // Sets the aquares visible or plays the sound colro etc.
                             screenTrialShow();
                         }
@@ -839,7 +851,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
                 inOrDecreaseNBackLevel();
                 showScreenEndTrialResults();
-                Strings.timeTrialDevOps = clockTrialDevOps.getClockTime(false);
+                Strings.timeTrialDevOps = clockTrialDevOps.getDuration(false);
                 setDeveloperInfoText(infoTxt);
                 for (int i = 0; i < squares.size(); i++) {
                     squares.get(i).setVisibility(INVISIBLE);
@@ -856,8 +868,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             @Override
             public void onTick(long millisUntilFinished) {
                 if (!paused) {
-                    Strings.time = clockTrial.getClockTime(true);
-                    Strings.timeSession = clockSession.getClockTime(true);
+                    Strings.time = clockTrial.getDuration(true);
+                    Strings.timeSession = clockSession.getDuration(true);
                     setDeveloperInfoText(infoTxt);
                 }
             }
@@ -1140,7 +1152,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //            finish();
 //            txtVwMiddle.setTextSize(32f);
 //            txtVwMiddle.setText(Strings.goodJob);
-        SessionParameters.useTempResults = true;
+        useTempResults = true;
 
 //            setFadeOutAnimation(views);
 //            transitionActivityAToB.startAnimation();
@@ -1334,9 +1346,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         edBH.setBackground(gradientDrawableLabel);
         repeatHint.setBackground(gradientDrawableLabel);
 
-        edR.setText("" + SessionParameters.r);
-        edG.setText("" + SessionParameters.g);
-        edB.setText("" + SessionParameters.b);
+        edR.setText("" + r);
+        edG.setText("" + g);
+        edB.setText("" + b);
         repeat.setText("" + MAX_PRESENT_DEFAULT);
         customColorSquare = Color.rgb(r, g, b);
         hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
@@ -1349,7 +1361,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         Button sampleSquare = dialog.findViewById(R.id.sampleSquare);
         sampleSquare.setBackgroundColor(customColorSquare);
 
-        btn.setOnClickListener(c->{
+        btn.setOnClickListener(c -> {
             FileLogicSettings.saveSettings(this);
         });
 
@@ -1361,14 +1373,14 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                     if (!temp.isEmpty()) {
                         MAX_PRESENT = Integer.parseInt(temp);
                         if (MAX_PRESENT < 1) {
-                            MAX_PRESENT= 15;
+                            MAX_PRESENT = 15;
                             repeat.setText("" + MAX_PRESENT);
                         }
                         if (MAX_PRESENT > 150) {
                             MAX_PRESENT = 50;
                             repeat.setText("" + MAX_PRESENT);
                         }
-                       MAX_PRESENT_DEFAULT = MAX_PRESENT;
+                        MAX_PRESENT_DEFAULT = MAX_PRESENT;
                     }
                 } catch (Exception e) {
 
@@ -1385,11 +1397,11 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                         r = Integer.parseInt(temp);
                         if (r < 0) {
                             r = 0;
-                            edR.setText("" + SessionParameters.r);
+                            edR.setText("" + r);
                         }
                         if (r > 255) {
                             r = 255;
-                            edR.setText("" + SessionParameters.r);
+                            edR.setText("" + r);
                         }
 //                        edR.setText(""+SessionParameters.r);
                     }
@@ -1411,11 +1423,11 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                         g = Integer.parseInt(temp);
                         if (g < 0) {
                             g = 0;
-                            edG.setText("" + SessionParameters.g);
+                            edG.setText("" + g);
                         }
                         if (g > 255) {
                             g = 255;
-                            edG.setText("" + SessionParameters.g);
+                            edG.setText("" + g);
                         }
 //
                     }
@@ -1438,11 +1450,11 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                         b = Integer.parseInt(temp);
                         if (b < 0) {
                             b = 0;
-                            edB.setText("" + SessionParameters.b);
+                            edB.setText("" + b);
                         }
                         if (b > 255) {
                             b = 255;
-                            edB.setText("" + SessionParameters.b);
+                            edB.setText("" + b);
                         }
 //
                     }
@@ -1472,8 +1484,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         dialog.show();
 
     }
-
-
 
 
 //    public GradientDrawable createDrawable(Context context) {
@@ -1629,15 +1639,15 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
     private void changeSquaresStandardColor() {
-        if (squareDefaultColorIndex > SessionParameters.colors.length - 1) {
+        if (squareDefaultColorIndex > colors.length - 1) {
             squareDefaultColorIndex = 1;
         }
         for (int i = 0; i < squares.size(); i++) {
-            squares.get(i).setBackgroundColor(getResources().getColor(SessionParameters.colors[squareDefaultColorIndex]));
+            squares.get(i).setBackgroundColor(getResources().getColor(colors[squareDefaultColorIndex]));
             squares.get(i).setVisibility(INVISIBLE);
         }
         if (!includePosition && includeColor) {
-            onlyColor.setBackgroundColor(getResources().getColor(SessionParameters.colors[squareDefaultColorIndex]));
+            onlyColor.setBackgroundColor(getResources().getColor(colors[squareDefaultColorIndex]));
         }
         FileLogicSettings.saveSettings(this);
     }
@@ -1748,7 +1758,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             squaresOnClickLogic(9);
         });
 
-        SessionParameters.allowToChangeColorStyle = false;
+        allowToChangeColorStyle = false;
         FileLogicSettings.saveSettings(this);
     }
 
@@ -1795,6 +1805,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             } else {
                 speedPercentage = speedPercentage + 0.05;
                 setIntervalText();
+                txtVwInterval.setText(lengthTrial);
                 if (timerTrial != null) {
                     timerTrial.cancel();
                     startTrialTimer();
@@ -1810,6 +1821,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             } else {
                 speedPercentage = speedPercentage - 0.05;
                 setIntervalText();
+                txtVwInterval.setText(lengthTrial);
                 if (timerTrial != null) {
                     timerTrial.cancel();
                     startTrialTimer();
@@ -1854,7 +1866,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
 
         if (v.getId() == R.id.button_click_training_mode) {
-            SessionParameters.darkModeTraining = !SessionParameters.darkModeTraining;
+            darkModeTraining = !darkModeTraining;
             FileLogicSettings.saveSettings(this);
             setModeColors();
 //            setDividersVisible(true);
@@ -1888,9 +1900,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //                     allowToClose = true;
 //                }
 
-                if (!SessionParameters.allowToChangeColorStyle) {
+                if (!allowToChangeColorStyle) {
                     try {
-                        SessionParameters.allowToChangeColorStyle = true;
+                        allowToChangeColorStyle = true;
                         for (int i = 0; i < squares.size(); i++) {
                             squares.get(i).setBackgroundColor(getResources().getColor(colors[i + 1]));
                             squares.get(i).setVisibility(VISIBLE);
@@ -2013,13 +2025,16 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void setIntervalText() {
+
+    public static void setIntervalText() {
         if (speedPercentage < 0.25) {
             speedPercentage = 0.25;
         }
         if (speedPercentage > 2.75) {
             speedPercentage = 2.75;
         }
+
+
         countDownInterval = countDownIntervalDefault * speedPercentage;
         double percentage = countDownIntervalDefault / countDownInterval * 100;
         int tempPercentage = (int) percentage;
@@ -2027,24 +2042,43 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         if (percentage == 99) {
             percentage = 100;
         }
-        fadeInterval = (long) (countDownInterval / squareFadeDuration);
-        double fadePercentage = percentage - 100;
+        SessionParameters.fadeInterval = (long) (countDownInterval / squareFadeDuration);
+        double percentageCorrected = percentage - 100;
         String add = "±";
-        if (fadePercentage > 0) {
+        if (percentageCorrected > 0) {
             add = "+";
-        } else if (fadePercentage == 0) {
+        } else if (percentageCorrected == 0) {
             add = "±";
-        } else if (fadePercentage < 0) {
+        } else if (percentageCorrected < 0) {
             add = "";
         }
-        add = "    " + Strings.speedText + add;
-        txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII + add + +(fadePercentage) + "%");
-//            txtVwInterval.setText(Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII);
+        estimatedTrialLength = (long) (countDownInterval * MAX_PRESENT_DEFAULT) * 2;
+
+        estimatedLengthSession = estimatedTrialLength * trialsMax;
+        estimatedLengthSessionII = estimatedTrialLength * (trialsMax + 1);
+        lengthTrial = CustomClock.convertMillisecondsToMinutesAndSeconds(estimatedTrialLength);
+        lengthSession = CustomClock.convertToMinutes(estimatedLengthSession);
+        lengthSessionII = CustomClock.convertToMinutes(estimatedLengthSessionII);
+        lengthSessionII = Strings.textViewTimeAdd_I + lengthSession + " - " + lengthSessionII + Strings.textViewTimeAdd_II;
+//        add = "    " + Strings.speedText + add;
+//        add = Strings.speedText + Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII;
+        add = Strings.changeIntervalInfoText + fadeInterval
+                + Strings.changeIntervalInfoTextII + Strings.speedText + add
+                + +(percentageCorrected) + "%  "
+                + Strings.estimatedTrialLengthText
+                + lengthTrial
+                + Strings.textViewTimeAdd_II
+                + Strings.estimatedSessionLengthText
+                + lengthSessionII;
+        lengthTrial = add;
+
+
     }
+
 
     private void setDividersVisible(boolean changeVisibility) {
         if (changeVisibility) {
-            SessionParameters.showGrid = !SessionParameters.showGrid;
+            showGrid = !showGrid;
         }
 
         if (showGrid) {
@@ -2075,13 +2109,13 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
     private void styleButtonLogic() {
         int visibility = INVISIBLE;
-        if (SessionParameters.allowToChangeColorStyle) {
-            SessionParameters.allowToChangeColorStyle = false;
+        if (allowToChangeColorStyle) {
+            allowToChangeColorStyle = false;
             changeSquaresStandardColor();
             FileLogicSettings.saveSettings(this);
         } else {
             visibility = VISIBLE;
-            SessionParameters.allowToChangeColorStyle = true;
+            allowToChangeColorStyle = true;
         }
 
         for (int i = 0; i < squares.size(); i++) {
@@ -2091,89 +2125,209 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
+//    private final void setModeColors() {
+//        if (!darkModeTraining) {
+//            layout.setBackground(getResources().getDrawable(R.drawable.training_background));
+//            btnMode.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_mode));
+//            btnOrientation.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_orientation));
+//            btnStyle.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_style));
+//            btnSize.setBackground(getResources().getDrawable(R.drawable.button_training_settings_size));
+//            btnGrid.setBackground(getResources().getDrawable(R.drawable.button_training_settings_grid));
+//            if (zenMode) {
+//                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_true));
+//            } else {
+//                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_false));
+//            }
+//            btnPosition.setAlpha(0.8f);
+//            btnAudio.setAlpha(0.8f);
+//            btnColor.setAlpha(0.8f);
+//            btnPositionII.setAlpha(0.8f);
+//            btnAudioII.setAlpha(0.8f);
+//
+//            btnExit.setAlpha(0.6f);
+//            btnMode.setAlpha(0.6f);
+//            btnOrientation.setAlpha(0.6f);
+//            btnSoundOff.setAlpha(0.6f);
+//            btnStyle.setAlpha(0.6f);
+//            btnSize.setAlpha(0.6f);
+//            btnGrid.setAlpha(0.6f);
+//            btnFade.setAlpha(0.6f);
+//            txtVwInterval.setAlpha(0.6f);
+//            txtVwnBackLevelInfo.setAlpha(0.6f);
+//            txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color));
+//
+//            txtVwMiddle.setTextColor(getResources().getColor(R.color.training_text_color));
+//            txtVwInterval.setTextColor(getResources().getColor(R.color.training_text_color));
+//            dividerHorizontal1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
+//            dividerHorizontal2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
+//
+//            dividerVertical1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
+//            dividerVertical2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
+//
+//
+//        } else {
+//            layout.setBackground(getResources().getDrawable(R.drawable.training_background_dark));
+////            btnPosition.setAlpha(0.3f);
+////            btnAudio.setAlpha(0.3f);
+////            btnColor.setAlpha(0.3f);
+//            btnPosition.setAlpha(0.17f);
+//            btnAudio.setAlpha(0.17f);
+//            btnColor.setAlpha(0.17f);
+//            btnPositionII.setAlpha(0.3f);
+//            btnAudioII.setAlpha(0.3f);
+//            txtVwInterval.setAlpha(0.3f);
+////            txtVwMiddle.setAlpha(0.45f);
+//            txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color_dark));
+//            txtVwMiddle.setTextColor(getResources().getColor(R.color.training_text_color_dark));
+//            txtVwInterval.setTextColor(getResources().getColor(R.color.training_text_color_dark));
+//            btnMode.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_mode_dark));
+//            btnOrientation.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_orientation_dark));
+//            btnStyle.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_style_dark));
+//            btnSize.setBackground(getResources().getDrawable(R.drawable.button_training_settings_size_dark));
+//            btnGrid.setBackground(getResources().getDrawable(R.drawable.button_training_settings_grid_dark));
+//            if (zenMode) {
+//                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_true_dark));
+//            } else {
+//                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_false_dark));
+//            }
+//            btnExit.setAlpha(0.6f);
+//            btnMode.setAlpha(0.45f);
+//            btnOrientation.setAlpha(0.45f);
+//            btnSoundOff.setAlpha(0.45f);
+//            btnStyle.setAlpha(0.45f);
+//            btnSize.setAlpha(0.45f);
+//            btnGrid.setAlpha(0.45f);
+//            btnFade.setAlpha(0.45f);
+//            txtVwInterval.setAlpha(0.45f);
+//            txtVwnBackLevelInfo.setAlpha(0.45f);
+//
+//            dividerHorizontal1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
+//            dividerHorizontal2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
+//
+//            dividerVertical1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
+//            dividerVertical2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
+//        }
+//        setSettingsBtnSoundColor();
+//    }
+
     private final void setModeColors() {
-        if (!darkModeTraining) {
-            layout.setBackground(getResources().getDrawable(R.drawable.training_background));
-            btnMode.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_mode));
-            btnOrientation.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_orientation));
-            btnStyle.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_style));
-            btnSize.setBackground(getResources().getDrawable(R.drawable.button_training_settings_size));
-            btnGrid.setBackground(getResources().getDrawable(R.drawable.button_training_settings_grid));
+        Drawable trainingBackground;
+        Drawable modeButtonBackground;
+        Drawable orientationButtonBackground;
+        Drawable styleButtonBackground;
+        Drawable sizeButtonBackground;
+        Drawable gridButtonBackground;
+        Drawable fadeButtonBackground;
+        float alphaPositionButtons;
+        float alphaAudioButtons;
+        float alphaColorButtons;
+        float alphaExitButton;
+        float alphaModeButton;
+        float alphaOrientationButton;
+        float alphaSoundOffButton;
+        float alphaStyleButton;
+        float alphaSizeButton;
+        float alphaGridButton;
+        float alphaFadeButton;
+        float alphaIntervalTextView;
+        float alphaBackLevelInfoTextView;
+        int textColor;
+
+        if (darkModeTraining) {
+            trainingBackground = getResources().getDrawable(R.drawable.training_background_dark);
+            modeButtonBackground = getResources().getDrawable(R.drawable.custom_button_training_settings_mode_dark);
+            orientationButtonBackground = getResources().getDrawable(R.drawable.custom_button_training_settings_orientation_dark);
+            styleButtonBackground = getResources().getDrawable(R.drawable.custom_button_training_settings_style_dark);
+            sizeButtonBackground = getResources().getDrawable(R.drawable.button_training_settings_size_dark);
+            gridButtonBackground = getResources().getDrawable(R.drawable.button_training_settings_grid_dark);
             if (zenMode) {
-                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_true));
+                fadeButtonBackground = getResources().getDrawable(R.drawable.button_training_settings_fade_true_dark);
             } else {
-                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_false));
+                fadeButtonBackground = getResources().getDrawable(R.drawable.button_training_settings_fade_false_dark);
             }
-            btnPosition.setAlpha(0.8f);
-            btnAudio.setAlpha(0.8f);
-            btnColor.setAlpha(0.8f);
-            btnPositionII.setAlpha(0.8f);
-            btnAudioII.setAlpha(0.8f);
-
-            btnExit.setAlpha(0.6f);
-            btnMode.setAlpha(0.6f);
-            btnOrientation.setAlpha(0.6f);
-            btnSoundOff.setAlpha(0.6f);
-            btnStyle.setAlpha(0.6f);
-            btnSize.setAlpha(0.6f);
-            btnGrid.setAlpha(0.6f);
-            btnFade.setAlpha(0.6f);
-            txtVwInterval.setAlpha(0.6f);
-            txtVwnBackLevelInfo.setAlpha(0.6f);
-            txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color));
-
-            txtVwMiddle.setTextColor(getResources().getColor(R.color.training_text_color));
-            txtVwInterval.setTextColor(getResources().getColor(R.color.training_text_color));
-            dividerHorizontal1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
-            dividerHorizontal2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
-
-            dividerVertical1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
-            dividerVertical2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color)));
-
-
+            alphaPositionButtons = 0.17f;
+            alphaAudioButtons = 0.17f;
+            alphaColorButtons = 0.17f;
+            alphaExitButton = 0.6f;
+            alphaModeButton = 0.45f;
+            alphaOrientationButton = 0.45f;
+            alphaSoundOffButton = 0.45f;
+            alphaStyleButton = 0.45f;
+            alphaSizeButton = 0.45f;
+            alphaGridButton = 0.45f;
+            alphaFadeButton = 0.45f;
+            alphaIntervalTextView = 0.45f;
+            alphaBackLevelInfoTextView = 0.45f;
+            textColor = getResources().getColor(R.color.training_text_color_dark);
         } else {
-            layout.setBackground(getResources().getDrawable(R.drawable.training_background_dark));
-//            btnPosition.setAlpha(0.3f);
-//            btnAudio.setAlpha(0.3f);
-//            btnColor.setAlpha(0.3f);
-            btnPosition.setAlpha(0.17f);
-            btnAudio.setAlpha(0.17f);
-            btnColor.setAlpha(0.17f);
-            btnPositionII.setAlpha(0.3f);
-            btnAudioII.setAlpha(0.3f);
-            txtVwInterval.setAlpha(0.3f);
-//            txtVwMiddle.setAlpha(0.45f);
-            txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.training_text_color_dark));
-            txtVwMiddle.setTextColor(getResources().getColor(R.color.training_text_color_dark));
-            txtVwInterval.setTextColor(getResources().getColor(R.color.training_text_color_dark));
-            btnMode.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_mode_dark));
-            btnOrientation.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_orientation_dark));
-            btnStyle.setBackground(getResources().getDrawable(R.drawable.custom_button_training_settings_style_dark));
-            btnSize.setBackground(getResources().getDrawable(R.drawable.button_training_settings_size_dark));
-            btnGrid.setBackground(getResources().getDrawable(R.drawable.button_training_settings_grid_dark));
+            trainingBackground = getResources().getDrawable(R.drawable.training_background);
+            modeButtonBackground = getResources().getDrawable(R.drawable.custom_button_training_settings_mode);
+            orientationButtonBackground = getResources().getDrawable(R.drawable.custom_button_training_settings_orientation);
+            styleButtonBackground = getResources().getDrawable(R.drawable.custom_button_training_settings_style);
+            sizeButtonBackground = getResources().getDrawable(R.drawable.button_training_settings_size);
+            gridButtonBackground = getResources().getDrawable(R.drawable.button_training_settings_grid);
             if (zenMode) {
-                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_true_dark));
+                fadeButtonBackground = getResources().getDrawable(R.drawable.button_training_settings_fade_true);
             } else {
-                btnFade.setBackground(getResources().getDrawable(R.drawable.button_training_settings_fade_false_dark));
+                fadeButtonBackground = getResources().getDrawable(R.drawable.button_training_settings_fade_false);
             }
-            btnExit.setAlpha(0.6f);
-            btnMode.setAlpha(0.45f);
-            btnOrientation.setAlpha(0.45f);
-            btnSoundOff.setAlpha(0.45f);
-            btnStyle.setAlpha(0.45f);
-            btnSize.setAlpha(0.45f);
-            btnGrid.setAlpha(0.45f);
-            btnFade.setAlpha(0.45f);
-            txtVwInterval.setAlpha(0.45f);
-            txtVwnBackLevelInfo.setAlpha(0.45f);
-
-            dividerHorizontal1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
-            dividerHorizontal2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
-
-            dividerVertical1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
-            dividerVertical2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.training_text_color_dark)));
+            alphaPositionButtons = 0.8f;
+            alphaAudioButtons = 0.8f;
+            alphaColorButtons = 0.8f;
+            alphaExitButton = 0.6f;
+            alphaModeButton = 0.6f;
+            alphaOrientationButton = 0.6f;
+            alphaSoundOffButton = 0.6f;
+            alphaStyleButton = 0.6f;
+            alphaSizeButton = 0.6f;
+            alphaGridButton = 0.6f;
+            alphaFadeButton = 0.6f;
+            alphaIntervalTextView = 0.6f;
+            alphaBackLevelInfoTextView = 0.6f;
+            textColor = getResources().getColor(R.color.training_text_color);
         }
-        setSettingsBtnSoundColor();
+
+        layout.setBackground(trainingBackground);
+        btnMode.setBackground(modeButtonBackground);
+        btnOrientation.setBackground(orientationButtonBackground);
+        btnStyle.setBackground(styleButtonBackground);
+        btnSize.setBackground(sizeButtonBackground);
+        btnGrid.setBackground(gridButtonBackground);
+
+        if (zenMode) {
+            btnFade.setBackground(fadeButtonBackground);
+        } else {
+            btnFade.setBackground(fadeButtonBackground);
+        }
+
+        btnPosition.setAlpha(alphaPositionButtons);
+        btnAudio.setAlpha(alphaAudioButtons);
+        btnColor.setAlpha(alphaColorButtons);
+        btnPositionII.setAlpha(alphaExitButton);
+        btnAudioII.setAlpha(alphaExitButton);
+        txtVwInterval.setAlpha(alphaExitButton);
+        txtVwnBackLevelInfo.setAlpha(alphaExitButton);
+
+        btnExit.setAlpha(alphaExitButton);
+        btnMode.setAlpha(alphaModeButton);
+        btnOrientation.setAlpha(alphaOrientationButton);
+        btnSoundOff.setAlpha(alphaAudioButtons);
+        btnStyle.setAlpha(alphaStyleButton);
+        btnSize.setAlpha(alphaSizeButton);
+        btnGrid.setAlpha(alphaGridButton);
+        btnFade.setAlpha(alphaFadeButton);
+        txtVwInterval.setAlpha(alphaIntervalTextView);
+        txtVwnBackLevelInfo.setAlpha(alphaIntervalTextView);
+
+        txtVwMiddle.setTextColor(textColor);
+        txtVwInterval.setTextColor(textColor);
+        dividerVertical2.setBackgroundTintList(ColorStateList.valueOf(textColor));
+//
+        dividerHorizontal1.setBackgroundTintList(ColorStateList.valueOf(textColor));
+        dividerHorizontal2.setBackgroundTintList(ColorStateList.valueOf(textColor));
+        dividerVertical1.setBackgroundTintList(ColorStateList.valueOf(textColor));
+        dividerVertical2.setBackgroundTintList(ColorStateList.valueOf(textColor));
+
     }
 
     private void setSettingsBtnSoundColor() {
@@ -2192,29 +2346,11 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
 
-//    private void setSettingsBtnSoundColor() {
-//        if (!playButtonSoundDuringTraining) {
-//            if (darkModeTraining) {
-//                btnSoundOff.setImageDrawable(getResources().getDrawable(R.drawable.button_training_settings_sound_off_dark));
-//            } else {
-//                btnSoundOff.setImageDrawable(getResources().getDrawable(R.drawable.button_training_settings_sound_off));
-//            }
-//            Toast.makeText(getApplicationContext(), Strings.sound_click_training_off, Toast.LENGTH_SHORT);
-//        } else {
-//            if (darkModeTraining) {
-//                btnSoundOff.setImageDrawable(getResources().getDrawable(R.drawable.button_training_settings_sound_on_dark));
-//            } else {
-//                btnSoundOff.setImageDrawable(getResources().getDrawable(R.drawable.button_training_settings_sound_on));
-//            }
-//        }
-//    }
-
-
     private void setCustomSize(boolean changeSize, int pos) {
         if (changeSize) {
             float squareSize;
 
-            squareSize = SessionParameters.customSquareSize;
+            squareSize = customSquareSize;
 
             if (squareSize <= 0.1f) {
                 squareSize = 0.1f;
@@ -2223,23 +2359,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 squareSize = 1f;
             }
 
-            SessionParameters.customSquareSize = (squareSize - 0.05f * pos);
+            customSquareSize = (squareSize - 0.05f * pos);
         }
         setSquareSize();
     }
-
-//    private void setCustomSize(boolean changeSize, int pos) {
-//        if (changeSize) {
-//            SessionParameters.customSquareSize = SessionParameters.customSquareSize - 0.05f * pos;
-//            if (SessionParameters.customSquareSize <= 0.1f) {
-//                SessionParameters.customSquareSize = 0.1f;
-//            }
-//            if (SessionParameters.customSquareSize > 0.99f) {
-//                SessionParameters.customSquareSize = 1f;
-//            }
-//        }
-//        setSquareSize();
-//    }
 
     public static void setCountdown(View view, int durationInMilliSeconds) {
         view.setEnabled(false);

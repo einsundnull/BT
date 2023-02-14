@@ -1,6 +1,7 @@
 package com.notorein.bt;
 
 import static android.content.ContentValues.TAG;
+import static com.notorein.bt.ActivityTraining.setIntervalText;
 import static com.notorein.bt.ResultsFiles.copyResults;
 import static com.notorein.bt.ResultsFiles.deleteResults;
 import static com.notorein.bt.ResultsFiles.initialiseStoringFilePaths;
@@ -31,7 +32,6 @@ import static com.notorein.bt.SessionParameters.openManual;
 import static com.notorein.bt.SessionParameters.orientation;
 import static com.notorein.bt.SessionParameters.paused;
 import static com.notorein.bt.SessionParameters.resultsFilePath;
-import static com.notorein.bt.SessionParameters.returnFromResultScreen;
 import static com.notorein.bt.SessionParameters.returnFromTraining;
 import static com.notorein.bt.SessionParameters.sessionWasCanceledEarly;
 import static com.notorein.bt.SessionParameters.stringToStore;
@@ -39,6 +39,9 @@ import static com.notorein.bt.SessionParameters.stringToStoreInitial;
 import static com.notorein.bt.SessionParameters.tempResultsAlreadyStored;
 import static com.notorein.bt.SessionParameters.trialsMax;
 import static com.notorein.bt.SessionParameters.useTempResults;
+import static com.notorein.bt.Strings.lengthSession;
+import static com.notorein.bt.Strings.lengthSessionII;
+import static com.notorein.bt.Strings.lengthTrial;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -221,7 +224,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 //                }, () -> {
 //                    deleteResults(this, initialiseStoringFilePaths(true));
 //                });
-            createDialogAdReminder(true, Strings.dontForgetToSaveResults, Strings.adReminderTextIII, null);
+            createDialogReminder(true, Strings.dontForgetToSaveResults, Strings.adReminderTextIII, null);
         }
     }
 
@@ -746,14 +749,9 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
 
     private void convertedTrialToTimeMethod() {
-        double duration = Double.parseDouble(editTextDuration.getText().toString());
-        double temp = duration * ((2 * countDownInterval) / 100000) * 60;
-        convertedTrialToTime = (int) Math.round(temp);
-        if (convertedTrialToTime <= 1) {
-            convertedTrialToTime = 2;
-        }
-        textViewTime.setText(String.format(Strings.textViewTimeAdd_I + "%d - %d" + Strings.textViewTimeAdd_II, convertedTrialToTime, convertedTrialToTime + 1));
-    }
+        ActivityTraining.setIntervalText();
+        textViewTime.setText(lengthSessionII);
+ }
 
     private void preventStartWithoutMode() {
         allowToStartSession = true;
@@ -782,6 +780,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
         dialogAbout = new Dialog(this);
         dialogAbout.setContentView(R.layout.view_menu_about);
+//        dialogAbout.setCancelable(false);
         ConstraintLayout layout = dialogAbout.findViewById(R.id.layout);
         if (darkModeMenu) {
             layout.setBackground(getResources().getDrawable(R.drawable.alert_background_dark));
@@ -838,6 +837,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private void createDialogAdReminder() {
         if (showReminderDialog) {
             dialogAdReminder = new Dialog(this);
+            dialogAdReminder.setCancelable(false);
             dialogAdReminder.setContentView(R.layout.view_menu_ad_reminder);
             dialogAdReminderLayout = findViewById(R.id.dialogAdReminderLayout);
             TextView btn_manual = dialogAdReminder.findViewById(R.id.btnBottom);
@@ -855,9 +855,10 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void createDialogAdReminder(boolean showReminderDialog, String reminderText, String btnText, Runnable runOnOkay) {
+    private void createDialogReminder(boolean showReminderDialog, String reminderText, String btnText, Runnable runOnOkay) {
         if (showReminderDialog) {
             Dialog dialogAdReminder = new Dialog(this);
+            dialogAdReminder.setCancelable(false);
             dialogAdReminder.setContentView(R.layout.view_menu_ad_reminder);
             ConstraintLayout dialogAdReminderLayout = findViewById(R.id.dialogAdReminderLayout);
             TextView btn_manual = dialogAdReminder.findViewById(R.id.btnBottom);
@@ -871,7 +872,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                     runOnOkay.run();
                 }
             });
-
+            dialogAdReminder.setCancelable(false);
             dialogAdReminder.show();
         }
     }
@@ -879,6 +880,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     private void showAlertPleaseSaveResults(Runnable dissmissLogic, Runnable goBackLogic) {
 
         builder = new AlertDialog.Builder(ActivityMenu.this);
+
         builder.setMessage(Strings.pleaseSaveResultsText).setCancelable(true).setNegativeButton(Strings.goBackAndStore, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -894,6 +896,8 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             }
         });
         AlertDialog alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        builder.setCancelable(false);
         builder.show();
     }
 
@@ -915,6 +919,8 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             }
         });
         AlertDialog alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        builder.setCancelable(false);
         builder.show();
     }
 
@@ -961,7 +967,10 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 splashImage.setVisibility(View.INVISIBLE);
             }
             setFadeInAnimationAndDingSound(1800, 50, views);
-            showDialogPleaseDontForgetToStoreyourResults();
+            if (!sessionWasCanceledEarly) {
+                showDialogPleaseDontForgetToStoreyourResults();
+            }
+
         }
     }
 

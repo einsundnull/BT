@@ -56,6 +56,7 @@ public class ActivityAbout extends AppCompatActivity {
             textView.setBackground(getResources().getDrawable(R.drawable.alert_background));
             textView.setTextColor(getResources().getColor(R.color.buttonTextColor));
             textView2.setBackgroundColor(getResources().getColor(R.color.menu_background_color));
+            textView2.setTextColor(getResources().getColor(R.color.buttonTextColor));
             layout.setBackgroundColor(getResources().getColor(R.color.menu_background_color));
 //            hintTextViewNBack.setBackgroundColor(getResources().getColor(R.color.menu_background_color));
 //            hintTextViewDuration.setBackgroundColor(getResources().getColor(R.color.menu_background_color));

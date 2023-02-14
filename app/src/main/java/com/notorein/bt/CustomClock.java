@@ -20,7 +20,7 @@ public class CustomClock {
 
     }
 
-    public String getClockTime(boolean countTime) {
+    public String getDuration(boolean countTime) {
         if (!paused) {
             if (countTime) {
                 secondCounterSecondDigit++;
@@ -51,6 +51,35 @@ public class CustomClock {
         return completeTime;
     }
 
+    public String getDuration(double givenTime) {
+        for (int i = 0; i < givenTime; i++) {
+            secondCounterSecondDigit++;
+            if (secondCounterSecondDigit > 9) {
+                secondCounterSecondDigit = 0;
+                secondCounterFirstDigit++;
+                if (secondCounterFirstDigit > 5) {
+                    secondCounterFirstDigit = 0;
+                    minuteCounterSecondDigit++;
+                    if (minuteCounterSecondDigit > 9) {
+                        minuteCounterSecondDigit = 0;
+                        minuteCounterFirstDigit++;
+                        if (minuteCounterFirstDigit > 5) {
+                            minuteCounterFirstDigit = 0;
+                            hourCounterSecondDigit++;
+                            if (hourCounterSecondDigit > 9) {
+                                hourCounterSecondDigit = 0;
+                                hourCounterFirstDigit++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        completeTime = hourCounterFirstDigit + "" + hourCounterSecondDigit + ":" + minuteCounterFirstDigit + "" + minuteCounterSecondDigit + ":" + secondCounterFirstDigit + ""
+                + secondCounterSecondDigit;
+
+        return completeTime;
+    }
 
     public void pauseTimer(boolean paused) {
         this.paused = paused;
@@ -129,6 +158,18 @@ public class CustomClock {
 
     public void setPaused(boolean paused) {
         paused = paused;
+    }
+
+    public static String convertMillisecondsToMinutesAndSeconds(long milliseconds) {
+        int minutes = (int) (milliseconds / 1000) / 60;
+        int seconds = (int) (milliseconds / 1000) % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    public static String convertToMinutes(long milliseconds) {
+        int minutes = (int) (milliseconds / 1000) / 60;
+
+        return String.format("%02d", minutes);
     }
 
 
