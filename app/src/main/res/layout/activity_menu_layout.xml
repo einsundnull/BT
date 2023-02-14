@@ -54,7 +54,7 @@
         android:id="@+id/editTextNBackLevel"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="36dp"
         android:background="@drawable/input_border"
         android:gravity="center"
@@ -62,7 +62,8 @@
         android:textColor="@color/menu_text_color"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/hintTextViewNBack"
@@ -76,8 +77,32 @@
         app:layout_constraintStart_toStartOf="@+id/editTextNBackLevel"
         app:layout_constraintTop_toTopOf="@+id/editTextNBackLevel" />
 
-    <include layout="@layout/edit_text_with_hint"
-        />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextDuration"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/input_border"
+        android:gravity="center"
+        android:inputType="number"
+        android:tag="@string/nback"
+        android:text="@string/standard_value_duration"
+        android:textSize="24sp"
+        android:textColor="@color/menu_text_color"
+        app:layout_constraintStart_toStartOf="@+id/hintTextViewDuration"
+        app:layout_constraintTop_toTopOf="@+id/hintTextViewDuration" />
+
+    <TextView
+        android:id="@+id/hintTextViewDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/input_border_label"
+        android:textColor="@color/menu_text_color"
+        android:text="@string/durationAsTrial"
+        app:layout_constraintStart_toStartOf="@+id/hintTextViewNBack"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNBackLevel" />
 
     <Switch
         android:id="@+id/switchColor"

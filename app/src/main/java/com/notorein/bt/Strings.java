@@ -4,14 +4,21 @@ package com.notorein.bt;
 import static com.notorein.bt.RepeatStorage.shownIndexesAudio;
 import static com.notorein.bt.RepeatStorage.shownIndexesColor;
 import static com.notorein.bt.RepeatStorage.shownIndexesPosition;
+import static com.notorein.bt.SessionParameters.MAX_PRESENT_DEFAULT;
 import static com.notorein.bt.SessionParameters.aud;
 import static com.notorein.bt.SessionParameters.col;
+import static com.notorein.bt.SessionParameters.countDownInterval;
+import static com.notorein.bt.SessionParameters.countDownIntervalDefault;
 import static com.notorein.bt.SessionParameters.counterMatchesAud;
 import static com.notorein.bt.SessionParameters.counterMatchesCol;
 import static com.notorein.bt.SessionParameters.counterMatchesPos;
 import static com.notorein.bt.SessionParameters.developerInfoAreVisible;
 import static com.notorein.bt.SessionParameters.endOfSession;
 import static com.notorein.bt.SessionParameters.endOfTrial;
+import static com.notorein.bt.SessionParameters.estimatedLengthSession;
+import static com.notorein.bt.SessionParameters.estimatedLengthSessionII;
+import static com.notorein.bt.SessionParameters.estimatedTrialLength;
+import static com.notorein.bt.SessionParameters.fadeInterval;
 import static com.notorein.bt.SessionParameters.includedModes;
 import static com.notorein.bt.SessionParameters.maxPresentations;
 import static com.notorein.bt.SessionParameters.nBack;
@@ -22,6 +29,8 @@ import static com.notorein.bt.SessionParameters.percentageRightTrialPosition;
 import static com.notorein.bt.SessionParameters.pos;
 import static com.notorein.bt.SessionParameters.presentedScreens;
 import static com.notorein.bt.SessionParameters.shownAndCounted;
+import static com.notorein.bt.SessionParameters.speedPercentage;
+import static com.notorein.bt.SessionParameters.squareFadeDuration;
 import static com.notorein.bt.SessionParameters.trialCounter;
 import static com.notorein.bt.SessionParameters.trialIsRunning;
 import static com.notorein.bt.SessionParameters.trialsMax;
@@ -35,7 +44,7 @@ public class Strings {
 
     public static String manualText;
     public static BreakIterator lbl_n_back_Info_Pause;
-    public static String trialEndTextPercentage;
+    public static String trialEndTextPercentage= "";
     public static String posText = "Your accuracy in the position task is: ";
     public static String audText = "Your accuracy in the audio task is:     ";
     public static String colText = "Your accuracy in the color task is:     ";
@@ -147,10 +156,10 @@ public class Strings {
     public static String labelEditTextCustomColorTextB= "BLUE";
     public static String estimatedSessionLengthText = " Session: ";
     public static String estimatedTrialLengthText = " Trial: ";
-    public static String lengthSession;
-    public static String lengthSessionII;
+    public static String lengthSession = "";
+    public static String lengthSessionII= "";
 
-    public static String lengthTrial;
+    public static String lengthTrial= "";
 
 
     //    private static String nextLevel = "Next: ";
@@ -168,9 +177,9 @@ public class Strings {
 
     public static String cross = "+";
 
-    public static String time;
-    public static String timeSession;
-    public static String timeTrialDevOps;
+    public static String time= "";
+    public static String timeSession= "";
+    public static String timeTrialDevOps= "";
     public static String timeSessionDevOps;
     public static String languageQualifier = "EN_";
     public static String exitText = "Stop Training?\nAll progress will be lost!";
@@ -304,4 +313,57 @@ public class Strings {
             }
         }
     }
+    public static void setIntervalText() {
+
+
+        if (speedPercentage < 0.25) {
+            speedPercentage = 0.25;
+        }
+        if (speedPercentage > 2.75) {
+            speedPercentage = 2.75;
+        }
+        countDownInterval = countDownIntervalDefault * speedPercentage;
+        double percentage = countDownIntervalDefault / countDownInterval * 100;
+        int tempPercentage = (int) percentage;
+        percentage = tempPercentage;
+        if (percentage == 99) {
+            percentage = 100;
+        }
+        SessionParameters.fadeInterval = (long) (countDownInterval / squareFadeDuration);
+        double percentageCorrected = percentage - 100;
+        String add = "±";
+        if (percentageCorrected > 0) {
+            add = "+";
+        } else if (percentageCorrected == 0) {
+            add = "±";
+        } else if (percentageCorrected < 0) {
+            add = "";
+        }
+        estimatedTrialLength = (long) (countDownInterval * MAX_PRESENT_DEFAULT) * 2;
+
+        estimatedLengthSession = estimatedTrialLength * trialsMax;
+        estimatedLengthSessionII = estimatedTrialLength * (trialsMax + 1);
+        lengthTrial = CustomClock.convertMillisecondsToMinutesAndSeconds(estimatedTrialLength);
+        lengthSession = CustomClock.convertToMinutes(estimatedLengthSession);
+        lengthSessionII = CustomClock.convertToMinutes(estimatedLengthSessionII);
+        if (lengthSessionII.equals(lengthSession)) {
+            lengthSessionII = Strings.textViewTimeAdd_I + lengthSession + textViewTimeAdd_II;
+        } else {
+            lengthSessionII = Strings.textViewTimeAdd_I + lengthSession + " -" + lengthSessionII + textViewTimeAdd_II;
+        }
+
+
+//        add = "    " + Strings.speedText + add;
+//        add = Strings.speedText + Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII;
+        add = Strings.changeIntervalInfoText + fadeInterval
+                + Strings.changeIntervalInfoTextII + Strings.speedText + add
+                + +(percentageCorrected) + "%  "
+                + Strings.estimatedTrialLengthText
+                + lengthTrial
+                + textViewTimeAdd_II
+                + Strings.estimatedSessionLengthText
+                + lengthSessionII;
+        lengthTrial = add;
+    }
+
 }

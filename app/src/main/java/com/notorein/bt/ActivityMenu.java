@@ -1,7 +1,7 @@
 package com.notorein.bt;
 
 import static android.content.ContentValues.TAG;
-import static com.notorein.bt.ActivityTraining.setIntervalText;
+
 import static com.notorein.bt.ResultsFiles.copyResults;
 import static com.notorein.bt.ResultsFiles.deleteResults;
 import static com.notorein.bt.ResultsFiles.initialiseStoringFilePaths;
@@ -42,6 +42,7 @@ import static com.notorein.bt.SessionParameters.useTempResults;
 import static com.notorein.bt.Strings.lengthSession;
 import static com.notorein.bt.Strings.lengthSessionII;
 import static com.notorein.bt.Strings.lengthTrial;
+import static com.notorein.bt.Strings.setIntervalText;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -171,7 +172,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         setActivityTransitions();
         setOnClickListeners();
         setTextToInput();
-        convertedTrialToTimeMethod();
         setSwitchesInPosition();
         getDisplaySize();
         btnStart.setEnabled(true);
@@ -213,6 +213,9 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 //        dialogAdReminder.show();
 //        btnLight.setText("" + adMissedCounter);
         setDayAndNightMode();
+        setIntervalText();
+        textViewTime.setText(lengthSessionII);
+
     }
 
     private void showDialogPleaseDontForgetToStoreyourResults() {
@@ -411,6 +414,7 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         nBack = nBackBegin;
         editTextNBackLevel.setText("" + nBackBegin);
         editTextDuration.setText("" + duration);
+        trialsMax = duration;
     }
 
     private void getViews() {
@@ -472,14 +476,19 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         editTextNBackLevel.setOnClickListener(this);
         editTextDuration.setOnKeyListener(new EditText.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                try {
-                    convertedTrialToTimeMethod();
-                } catch (Exception e) {
+                if (editTextDuration.getText().toString() != null && !editTextDuration.getText().toString().isEmpty()) {
+                    try {
+                        trialsMax = Integer.parseInt(editTextDuration.getText().toString());
+                    } catch (Exception e) {
+                        trialsMax = 0;
+                        e.printStackTrace();
+                    }
                 }
+                setIntervalText();
+                textViewTime.setText(""+lengthSessionII);
                 return false;
             }
         });
-
     }
 
 
@@ -562,12 +571,14 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
 
         if (v.getId() == R.id.editTextDuration) {
             preventEmptyEditTextOrZero();
-            convertedTrialToTimeMethod();
+            setIntervalText();
+            textViewTime.setText(lengthSessionII);
         }
 
         if (v.getId() == R.id.editTextNBackLevel) {
             preventEmptyEditTextOrZero();
-            convertedTrialToTimeMethod();
+            setIntervalText();
+            textViewTime.setText(lengthSessionII);
         }
 
         if (v.getId() == R.id.switchPosition) {
@@ -706,7 +717,8 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
                 }
                 dateOfCurrentUse = RepeatStorage.getDay();
 //                setFadeOutAnimation(fadeoutAnimationDuration, 0, views);
-
+//                convertedTrialToTimeMethod();
+                FileLogicSettings.saveSettings(this);
                 startTransitionToActivityTraining();
             } else {
                 resetStartWithoutMode();
@@ -748,11 +760,6 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void convertedTrialToTimeMethod() {
-        ActivityTraining.setIntervalText();
-        textViewTime.setText(lengthSessionII);
- }
-
     private void preventStartWithoutMode() {
         allowToStartSession = true;
         includedModes = 0;
@@ -776,44 +783,86 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
         includeColor = false;
     }
 
-    private void showDialogAbout() {
+//    private void showDialogAbout() {
+//
+//        dialogAbout = new Dialog(this);
+//        dialogAbout.setContentView(R.layout.view_menu_about);
+////        dialogAbout.setCancelable(false);
+//        ConstraintLayout layout = dialogAbout.findViewById(R.id.layout);
+//        if (darkModeMenu) {
+//            layout.setBackground(getResources().getDrawable(R.drawable.alert_background_dark));
+//        }
+//        btn_manual = (Button) dialogAbout.findViewById(R.id.btnBottom);
+//        btn_manual.setText(Strings.btnManualText);
+//        btn_recommendations = (Button) dialogAbout.findViewById(R.id.btn_about);
+//        btn_recommendations.setText(Strings.btnRecommendationsText);
+//        btn_exit = (Button) dialogAbout.findViewById(R.id.btn_exit);
+//        btn_manual.setOnClickListener(c -> {
+//            openManual = true;
+//            Intent intent = new Intent(ActivityMenu.this, ActivityAbout.class);
+//            try {
+//                Thread.sleep(300);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            startActivity(intent);
+//        });
+//        btn_recommendations.setOnClickListener(c -> {
+//            openManual = false;
+//            Intent intent = new Intent(ActivityMenu.this, ActivityAbout.class);
+//            try {
+//                Thread.sleep(300);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            startActivity(intent);
+//        });
+////        btn_manual.setOnClickListener(c -> {
+//////            initialiseStoringFilePaths();
+//////            ViewMenu.testFile(this);
+////        });
+//        btn_exit.setOnClickListener(c -> {
+//            if (!btnSave.isEnabled()) {
+//                dialogAbout.cancel();
+//                exitButtonWasPressed = true;
+//                finish();
+//            } else {
+//                showAlertPleaseSaveResults(() -> {
+//                    dialogAbout.cancel();
+//                    btnSave.setEnabled(false);
+//                    exitButtonWasPressed = true;
+//                    finish();
+//                }, () -> {
+//                    dialogAbout.cancel();
+//                });
+//            }
+//        });
+//        dialogAbout.show();
+//
+//    }
 
+    private void showDialogAbout() {
         dialogAbout = new Dialog(this);
         dialogAbout.setContentView(R.layout.view_menu_about);
-//        dialogAbout.setCancelable(false);
         ConstraintLayout layout = dialogAbout.findViewById(R.id.layout);
         if (darkModeMenu) {
             layout.setBackground(getResources().getDrawable(R.drawable.alert_background_dark));
         }
-        btn_manual = (Button) dialogAbout.findViewById(R.id.btnBottom);
+        btn_manual = dialogAbout.findViewById(R.id.btnBottom);
         btn_manual.setText(Strings.btnManualText);
-        btn_recommendations = (Button) dialogAbout.findViewById(R.id.btn_about);
-        btn_recommendations.setText(Strings.btnRecommendationsText);
-        btn_exit = (Button) dialogAbout.findViewById(R.id.btn_exit);
         btn_manual.setOnClickListener(c -> {
             openManual = true;
             Intent intent = new Intent(ActivityMenu.this, ActivityAbout.class);
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             startActivity(intent);
         });
+        btn_recommendations = dialogAbout.findViewById(R.id.btn_about);
+        btn_recommendations.setText(Strings.btnRecommendationsText);
         btn_recommendations.setOnClickListener(c -> {
             openManual = false;
             Intent intent = new Intent(ActivityMenu.this, ActivityAbout.class);
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             startActivity(intent);
         });
-//        btn_manual.setOnClickListener(c -> {
-////            initialiseStoringFilePaths();
-////            ViewMenu.testFile(this);
-//        });
+        btn_exit = dialogAbout.findViewById(R.id.btn_exit);
         btn_exit.setOnClickListener(c -> {
             if (!btnSave.isEnabled()) {
                 dialogAbout.cancel();
@@ -831,8 +880,8 @@ public class ActivityMenu extends AppCompatActivity implements View.OnClickListe
             }
         });
         dialogAbout.show();
-
     }
+
 
     private void createDialogAdReminder() {
         if (showReminderDialog) {

@@ -63,9 +63,6 @@ import static com.notorein.bt.SessionParameters.durationSessionTimer;
 import static com.notorein.bt.SessionParameters.endOfSession;
 import static com.notorein.bt.SessionParameters.endOfTrial;
 import static com.notorein.bt.SessionParameters.endOfTrialDialogIsVisible;
-import static com.notorein.bt.SessionParameters.estimatedLengthSession;
-import static com.notorein.bt.SessionParameters.estimatedLengthSessionII;
-import static com.notorein.bt.SessionParameters.estimatedTrialLength;
 import static com.notorein.bt.SessionParameters.fadeInterval;
 import static com.notorein.bt.SessionParameters.fadeoutAnimationDuration;
 import static com.notorein.bt.SessionParameters.firstStart;
@@ -106,7 +103,6 @@ import static com.notorein.bt.SessionParameters.showHideScreen;
 import static com.notorein.bt.SessionParameters.shownAndCounted;
 import static com.notorein.bt.SessionParameters.speedPercentage;
 import static com.notorein.bt.SessionParameters.squareDefaultColorIndex;
-import static com.notorein.bt.SessionParameters.squareFadeDuration;
 import static com.notorein.bt.SessionParameters.stringToStore;
 import static com.notorein.bt.SessionParameters.textSizeMiddleResults;
 import static com.notorein.bt.SessionParameters.textSizeMiddleTrial;
@@ -125,14 +121,12 @@ import static com.notorein.bt.Strings.btnColText;
 import static com.notorein.bt.Strings.btnPosIIText;
 import static com.notorein.bt.Strings.btnPosText;
 import static com.notorein.bt.Strings.cross;
-import static com.notorein.bt.Strings.lengthSession;
-import static com.notorein.bt.Strings.lengthSessionII;
 import static com.notorein.bt.Strings.lengthTrial;
 import static com.notorein.bt.Strings.nBackLevel;
 import static com.notorein.bt.Strings.pressButtonToC;
 import static com.notorein.bt.Strings.pressButtonToS;
 import static com.notorein.bt.Strings.setDeveloperInfoText;
-import static com.notorein.bt.Strings.textViewTimeAdd_II;
+import static com.notorein.bt.Strings.setIntervalText;
 import static com.notorein.bt.Strings.trialEndTextPercentage;
 
 import android.app.Activity;
@@ -267,6 +261,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_training_layout);
+//        FileLogicSettings.readSettings(this);
         allowToChangeSquareSize = false;
         allowToChangeColorStyle = false;
         activity = this;
@@ -276,14 +271,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         includeViewsToFadeInTransition();
         setCustomSize(false, 1);
         setModeColors();
-//        setSquareSize();
         setSounds();
-//        setFadeInAnimation();
-//        setFadeInAnimation(views);
         setFadeInAnimationAndDingSound();
         setActivityTransitions();
         prepareOtherStuff();
-        changeSquaresStandardColor();
         setTextsToView();
         setOnClickListenersToUiElements();
         setOnClickListenersToSquares();
@@ -320,8 +311,11 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 ////            btnColor.setAlpha(0.1f);
 //        }
         txtVwnBackLevelInfo.setText(String.valueOf(nBack));
-        txtVwInterval.setText(lengthTrial);
+
         setSquareSize();
+        changeSquaresStandardColor();
+        setIntervalText();
+        txtVwInterval.setText(lengthTrial);
 //
     }
 
@@ -343,39 +337,19 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
     }
 
-
     private void showFirstScreenSplittedClick() {
-
-        if (screenShowOrder == 0) {
+        String indicator = getTrialIndicator();
+        String text = Strings.firstStartTextPressButtonToS + "\n\n" + nBack + nBackLevel + "\n\n" + indicator;
+        txtVwMiddle.setText(text);
+        txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
+        if (screenShowOrder == 0 || !includePosition) {
             screenShowOrder++;
-            String indicator = getTrialIndicator();
-            String text = Strings.firstStartTextPressButtonToS + "\n\n" + +nBack + nBackLevel + "\n\n" + indicator;
-            txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
-            txtVwMiddle.setText(text);
             if (!includePosition) {
                 setDividersVisibleAddaptToMode(INVISIBLE);
                 setMiddleSquareToRightSizeUI(scaleNoPos, R.color.border_color_no_position, text, textUnit, textSizeMiddleTrial, VISIBLE, VISIBLE);
-            }
-            btnExit.setVisibility(VISIBLE);
-        } else {
-            screenShowOrder = 0;
-            String indicator = getTrialIndicator();
-            String text = Strings.firstStartTextPressButtonToS + "\n\n" + +nBack + nBackLevel + "\n\n" + indicator;
-            txtVwMiddle.setText(text);
-            txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
-            if (!includePosition) {
-                setDividersVisibleAddaptToMode(INVISIBLE);
-                setMiddleSquareToRightSizeUI(scaleNoPos, R.color.border_color_no_position, text, textUnit, textSizeMiddleTrial, VISIBLE, VISIBLE);
-
             }
         }
-
-//        textViewMiddle.setVisibility(VISIBLE);
-//         If these thre lines not exist the
-//        setDividersVisibleAddaptToMode(INVISIBLE);
-//        if(includeColor && !includePosition){
-//            btns.get(4).setVisibility(INVISIBLE);
-//        }
+        btnExit.setVisibility(VISIBLE);
     }
 
 
@@ -383,87 +357,57 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         if (includePosition) {
             try {
                 squares.get(shownIndexesPosition.get(presentedScreens - 1)).setVisibility(INVISIBLE);
-            } catch (Exception e) {
-
+            } catch (Exception ignored) {
+                // Do nothing if an exception occurs
             }
         }
-        if (includeAudio) {
-
-        }
-        if (includeColor && !includePosition) {
+        if (includeColor && !includePosition && !zenMode) {
             GradientDrawable border = new GradientDrawable();
-            if (darkModeTraining) {
-                if (!zenMode) {
-                    border.setColor(getResources().getColor(R.color.menu_background_color_dark)); // Background Color
-                    border.setStroke(1, getResources().getColor(R.color.training_text_color_dark)); // BorderColor
-//                    squares.get(4).setBackground(border);
-//                    squares.get(4).setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
-//                    onlyColor.setBackground(border);
-//                    onlyColor.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
-//                    onlyColor.setAlpha(0);
-                    onlyColor.setVisibility(INVISIBLE);
-                }
-            } else {
-                if (!zenMode) {
-                    border.setColor(getResources().getColor(R.color.menu_background_color)); // Background Color
-                    border.setStroke(1, getResources().getColor(R.color.border_color_no_position)); // BorderColor
-//                    squares.get(4).setBackground(border);
-//                    squares.get(4).setBackgroundColor(getResources().getColor(R.color.menu_background_color));
-//                    onlyColor.setBackground(border);
-//                    onlyColor.setBackgroundColor(getResources().getColor(R.color.menu_background_color_dark));
-                    onlyColor.setVisibility(INVISIBLE);
-                }
-            }
-
-
+            int bgColor = darkModeTraining ? R.color.menu_background_color_dark : R.color.menu_background_color;
+            int borderColor = darkModeTraining ? R.color.training_text_color_dark : R.color.border_color_no_position;
+            border.setColor(getResources().getColor(bgColor));
+            border.setStroke(1, getResources().getColor(borderColor));
+            onlyColor.setVisibility(INVISIBLE);
         }
     }
 
+
+
+
     private void screenTrialShow() {
-
         if (includePosition) {
-            if (zenMode) {
-                if (includeColor) {
-                    squares.get(shownIndexesPosition.get(presentedScreens)).setBackgroundColor(getResources().getColor(colors[shownIndexesColor.get(presentedScreens)]));
-                }
-                setFadeInAnimationSquaresForZenMode(squares.get(shownIndexesPosition.get(presentedScreens)));
-
-            } else {
+            if (!zenMode) {
                 try {
                     squares.get(shownIndexesPosition.get(presentedScreens)).setVisibility(VISIBLE);
                     if (includeColor) {
                         squares.get(shownIndexesPosition.get(presentedScreens)).setBackgroundColor(getResources().getColor(colors[shownIndexesColor.get(presentedScreens)]));
                     }
                 } catch (Exception e) {
-
+                    // handle the exception
                 }
+            } else {
+                if (includeColor) {
+                    squares.get(shownIndexesPosition.get(presentedScreens)).setBackgroundColor(getResources().getColor(colors[shownIndexesColor.get(presentedScreens)]));
+                }
+                setFadeInAnimationSquaresForZenMode(squares.get(shownIndexesPosition.get(presentedScreens)));
             }
         }
         if (includeAudio) {
             try {
-                // Here is still an error. Check Logcat
                 playAudio(shownIndexesAudio.get(presentedScreens));
             } catch (Exception e) {
-
+                // handle the exception
             }
         }
         if (includeColor && !includePosition) {
-            GradientDrawable border = new GradientDrawable();
-            border.setColor(0x00FFFFFF); //white background
-            border.setStroke(1, getResources().getColor(R.color.border_color_no_position)); //black border with full opacity
-            border.setColor(getResources().getColor(colors[shownIndexesColor.get(presentedScreens)])); // Background Color
-//            border.setStroke(1, getResources().getColor(R.color.border_color_default)); // BorderColor
-//            squares.get(4).setBackground(border);
+            onlyColor.setBackground(new GradientDrawable() {{
+                setColor(0x00FFFFFF);
+                setStroke(1, getResources().getColor(R.color.border_color_no_position));
+                setColor(getResources().getColor(colors[shownIndexesColor.get(presentedScreens)]));
+            }});
             if (zenMode) {
-                if (includeColor) {
-//                    squares.get(4).setBackground(border);
-                    onlyColor.setBackground(border);
-//                    squares.get(4).setBackgroundColor(getResources().getColor(colors[shownIndexesColor.get(presentedScreens)]));
-                }
-//                setFadeInAnimationSquaresForZenMode(squares.get(4));
                 setFadeInAnimationSquaresForZenMode(onlyColor);
             } else {
-                onlyColor.setBackground(border);
                 onlyColor.setAlpha(1);
                 onlyColor.setVisibility(VISIBLE);
             }
@@ -472,16 +416,16 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
 
     private void screenInterruptionStart() {
-        String indicator = getTrialIndicator();
-        String text = Strings.firstStartTextPressButtonToS + "\n\n" + +nBack + nBackLevel + "\n\n" + indicator;
-        txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
+        String text = Strings.firstStartTextPressButtonToS + "\n\n" + nBack + nBackLevel + "\n\n" + getTrialIndicator();
         txtVwMiddle.setText(text);
-        btnExit.setVisibility(VISIBLE);
+        txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
+        btnExit.setVisibility(View.VISIBLE);
         if (!includePosition) {
-            setDividersVisibleAddaptToMode(INVISIBLE);
-            setMiddleSquareToRightSizeUI(scaleNoPos, R.color.border_color_no_position, text, textUnit, textSizeMiddleTrial, VISIBLE, VISIBLE);
+            setDividersVisibleAddaptToMode(View.INVISIBLE);
+            setMiddleSquareToRightSizeUI(scaleNoPos, R.color.border_color_no_position, text, textUnit, textSizeMiddleTrial, View.VISIBLE, View.VISIBLE);
         }
     }
+
 
     private void setFullScreen() {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -489,21 +433,17 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         setRequestedOrientation(orientation);
     }
 
-    private void prepareOtherStuff() {
-        // activity_main_layout.setBackgroundColor(Color.BLACK);
-        for (int i = 0; i < squares.size(); i++) {
-            squares.get(i).setVisibility(View.INVISIBLE);
-//            squares.get(i).setBackgroundColor(getResources().getColor(SessionParameters.colors[squareDefaultColorIndex]));
-        }
 
-        squares.get(4).setVisibility(View.INVISIBLE);/**/
-        if (!playButtonSoundDuringTraining) {
-            int resId = darkModeTraining ? R.drawable.button_training_settings_sound_off_dark : R.drawable.button_training_settings_sound_off;
-            btnSoundOff.setImageDrawable(getResources().getDrawable(resId));
-        } else {
-            int resId = darkModeTraining ? R.drawable.button_training_settings_sound_on_dark : R.drawable.button_training_settings_sound_on;
-            btnSoundOff.setImageDrawable(getResources().getDrawable(resId));
+    private void prepareOtherStuff() {
+        for (View square : squares) {
+            square.setVisibility(View.INVISIBLE);
         }
+        squares.get(4).setVisibility(View.INVISIBLE);
+        int resId = darkModeTraining ? R.drawable.button_training_settings_sound_off_dark : R.drawable.button_training_settings_sound_off;
+        if (playButtonSoundDuringTraining) {
+            resId = darkModeTraining ? R.drawable.button_training_settings_sound_on_dark : R.drawable.button_training_settings_sound_on;
+        }
+        btnSoundOff.setImageDrawable(getResources().getDrawable(resId));
     }
 
 
@@ -532,20 +472,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         btnColor = (Button) findViewById(R.id.buttonColor);
         btnAudio = (Button) findViewById(R.id.buttonAudio);
         btnPosition = (Button) findViewById(R.id.buttonPosition);
-//        if(!includeColor){
-//            if (orientation != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-//                btnColor.setScaleY(0.0f);
-//                btnPosition.setScaleY(1.5f);
-//                btnPosition.setY(-100f);
-//                btnAudio.setScaleY(1.5f);
-//                btnAudio.setY(-100f);
-//            } else {
-//
-//
-//            }
-//
-//        }
-
 
         btnAudioII = (Button) findViewById(R.id.buttonAudio2);
         btnPositionII = (Button) findViewById(R.id.buttonPosition2);
@@ -581,20 +507,38 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         txtVwnBackLevelInfo.setTextColor(getResources().getColor(R.color.border_color_no_position));
     }
 
+
     private void includeViewsToFadeInTransition() {
-        // Here it is decided which elements are included in the fade in transition at the beginning of the Session.
-        if (includePosition) {
-            List<View> viewsList = Arrays.asList(btnPosition, btnPositionII, btnAudio, btnAudioII, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid, btnFade,
-                    txtVwMiddle, infoTxt, txtVwInterval, txtVwnBackLevelInfo);
-            if (showGrid) {
-//                viewsList.addAll(Arrays.asList(dividerVertical1, dividerVertical2, dividerHorizontal1, dividerHorizontal2));
-            }
-            views = viewsList.toArray(new View[0]);
-        } else {
-            views = new View[]{btnPosition, btnPositionII, btnAudio, btnAudioII, btnColor, btnExit, btnSoundOff, btnOrientation, btnMode, btnStyle, btnSize, btnGrid, btnFade,
-                    txtVwMiddle, infoTxt, txtVwInterval,
-                    squares.get(4), txtVwnBackLevelInfo};
+        List<View> viewsList = new ArrayList<>();
+        viewsList.add(btnPosition);
+        viewsList.add(btnPositionII);
+        viewsList.add(btnAudio);
+        viewsList.add(btnAudioII);
+        viewsList.add(btnColor);
+        viewsList.add(btnExit);
+        viewsList.add(btnSoundOff);
+        viewsList.add(btnOrientation);
+        viewsList.add(btnMode);
+        viewsList.add(btnStyle);
+        viewsList.add(btnSize);
+        viewsList.add(btnGrid);
+        viewsList.add(btnFade);
+        viewsList.add(txtVwMiddle);
+        viewsList.add(infoTxt);
+        viewsList.add(txtVwInterval);
+
+        if (includePosition && showGrid) {
+            viewsList.addAll(Arrays.asList(dividerVertical1, dividerVertical2, dividerHorizontal1, dividerHorizontal2));
         }
+
+        if (includePosition) {
+            viewsList.add(txtVwnBackLevelInfo);
+        } else {
+            viewsList.add(squares.get(4));
+            viewsList.add(txtVwnBackLevelInfo);
+        }
+
+        views = viewsList.toArray(new View[0]);
     }
 
 
@@ -724,15 +668,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
     private void setMiddleSquareToRightSizeUI(int squareScale, int borderColor, String textMiddle, int unit, int textSize, int middleBtnVisible, int middleTextViewVisible) {
         GradientDrawable border = new GradientDrawable();
-//        border.setStroke(3, getResources().getColor(borderColor)); //white border with full opacity
         // TEST
         border.setColor(0x00FFFFFF); //white background
         border.setStroke(1, getResources().getColor(borderColor)); //black border with full opacity
-        // END TEST
-//        int factor = 1;
-//        if (includeColor && !includePosition) {
-//            factor = 2;
-//        }
 
         squares.get(4).setBackground(border);
         squares.get(4).setScaleX(squareScale);
@@ -767,7 +705,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         if (trialCounter > 0) {
             timeTrial = RepeatStorage.getStartTime();
-//            SessionParameters.dayStartTrial = RepeatStorage.getDay();
         }
         setSquareSize();
         startClockTimer();
@@ -780,21 +717,12 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         timerTrial = new CountDownTimer(durationSessionTimer, (long) countDownInterval) {
             @Override
             public void onTick(long millisUntilFinished) {
-                //###################
-                // These lines make sure that the trial does not start by
-                // out of the sudden showing a square after starting trial by
-                // pressing a button. The integer "presentedScreens" is set to
-                // -2 at every start of a new trial.
-
                 if (presentedScreens < 0) {
                     presentedScreens++;
                     Strings.timeSession = clockSession.getDuration(true);
                     setDeveloperInfoText(infoTxt);
-                    // if presentedScreens >= 0 the  presentedScreens++; will be executed
-                    // 15-20 lines below
                 }
                 Strings.timeTrialDevOps = clockTrialDevOps.getDuration(true);
-                //###################
                 if (endOfTrial) {
                     processInputClicksDuringTrial();
                     onFinish();
@@ -805,14 +733,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                         screenTrialHide();
                     } else {
                         processInputClicksDuringTrial();
-//                        if(endOfTrial){
-//                            onFinish();
-//                        }
                         if (presentedScreens == maxPresentations) {
                             endOfTrial = true;
-//                            onFinish();
                         } else if (presentedScreens != maxPresentations) {
-                            // Sets the aquares visible or plays the sound colro etc.
                             screenTrialShow();
                         }
                         if (presentedScreens >= nBack) {
@@ -820,7 +743,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                         }
                         presentedScreens++;
                     }
-
                 }
             }
 
@@ -832,24 +754,18 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 trialCounter++;
                 if (!sessionWasCanceledEarly) {
                     nBackCulmulated += nBack;
-                    // TEST VARIABLE
                     addedNBACK++;
                     culmulateTrialResultsAtEndOfSession();
                     RepeatStorage.createStringToStoreAndroid(trialCounter >= trialsMax);
                     Log.d(TAG, (trialCounter >= trialsMax) ? "onFinishEndOfSession:\n" + stringToStore : "onFinishEndOfTrial:\n" + stringToStore);
                     setDividersVisibleAddaptToMode();
-                    // These two Strings must be reset here in order to display them right
-//  culmulatedOverAllPercentageStringAllModesTrial = "";
-//  culmulatedStringTrial = "";
                     timeTrial = RepeatStorage.getStartTime();
                     dayTrial = RepeatStorage.getDay();
                     storeTrialResults();
                     if (trialCounter >= trialsMax) {
                         endOfSession = true;
-
                     }
                 }
-
                 inOrDecreaseNBackLevel();
                 showScreenEndTrialResults();
                 Strings.timeTrialDevOps = clockTrialDevOps.getDuration(false);
@@ -862,7 +778,10 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             }
         };
         timerTrial.start();
+
     }
+
+
 
     private void startClockTimer() {
         timerClock = new CountDownTimer(durationSessionTimer, (long) 1000) {
@@ -896,10 +815,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             // That has to be set. Otherwhise the trial results that are shown at
             // the end of the trial will be displayed to large end exceed the screen.
             // That method must be reversed when the trial is continued.
-//            int factor = 1;
-//            if (includeColor && !includePosition) {
-//                factor = 2;
-//            }
             setMiddleSquareToRightSizeUI(scaleDefault, R.color.border_color_default, cross, textUnit, textSizeMiddleTrial, INVISIBLE, VISIBLE);
             dividerVertical1.setVisibility(VISIBLE);
             dividerVertical2.setVisibility(VISIBLE);
@@ -923,47 +838,74 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
     private void storeTrialResults() {
-
+        if (pos) {
+            percentagesTrialPosition.add(percentageRightTrialPosition);
+        }
+        if (aud) {
+            percentagesTrialAudio.add(percentageRightTrialAudio);
+        }
+        if (col) {
+            percentagesTrialColor.add(percentageRightTrialColor);
+        }
         if (pos && aud && col) {
-            percentagesTrialPosition.add(percentageRightTrialPosition);
-            percentagesTrialAudio.add(percentageRightTrialAudio);
-            percentagesTrialColor.add(percentageRightTrialColor);
             percentagesSessionAllModes.add((percentageRightTrialPosition + percentageRightTrialAudio + percentageRightTrialColor) / 3);
-        }
-        if (pos && aud && !col) {
-            percentagesTrialPosition.add(percentageRightTrialPosition);
-            percentagesTrialAudio.add(percentageRightTrialAudio);
+        } else if (pos && aud && !col) {
             percentagesSessionAllModes.add((percentageRightTrialPosition + percentageRightTrialAudio) / 2);
-        }
-        if (pos && !aud && col) {
-            percentagesTrialPosition.add(percentageRightTrialPosition);
-            percentagesTrialColor.add(percentageRightTrialColor);
+        } else if (pos && !aud && col) {
             percentagesSessionAllModes.add((percentageRightTrialPosition + percentageRightTrialColor) / 2);
-        }
-        if (!pos && aud && col) {
-            percentagesTrialAudio.add(percentageRightTrialAudio);
-            percentagesTrialColor.add(percentageRightTrialColor);
+        } else if (!pos && aud && col) {
             percentagesSessionAllModes.add((percentageRightTrialAudio + percentageRightTrialColor) / 2);
-        }
-
-        if (pos && !aud && !col) {
-            percentagesTrialPosition.add(percentageRightTrialPosition);
+        } else if (pos && !aud && !col) {
             percentagesSessionAllModes.add((percentageRightTrialPosition));
-        }
-        if (!pos && aud && !col) {
-            percentagesTrialAudio.add(percentageRightTrialAudio);
+        } else if (!pos && aud && !col) {
             percentagesSessionAllModes.add((percentageRightTrialAudio));
-        }
-        if (!pos && !aud && col) {
-            percentagesTrialColor.add(percentageRightTrialColor);
+        } else if (!pos && !aud && col) {
             percentagesSessionAllModes.add((percentageRightTrialColor));
         }
     }
 
+
+//    private void storeTrialResults() {
+//
+//        if (pos && aud && col) {
+//            percentagesTrialPosition.add(percentageRightTrialPosition);
+//            percentagesTrialAudio.add(percentageRightTrialAudio);
+//            percentagesTrialColor.add(percentageRightTrialColor);
+//            percentagesSessionAllModes.add((percentageRightTrialPosition + percentageRightTrialAudio + percentageRightTrialColor) / 3);
+//        }
+//        if (pos && aud && !col) {
+//            percentagesTrialPosition.add(percentageRightTrialPosition);
+//            percentagesTrialAudio.add(percentageRightTrialAudio);
+//            percentagesSessionAllModes.add((percentageRightTrialPosition + percentageRightTrialAudio) / 2);
+//        }
+//        if (pos && !aud && col) {
+//            percentagesTrialPosition.add(percentageRightTrialPosition);
+//            percentagesTrialColor.add(percentageRightTrialColor);
+//            percentagesSessionAllModes.add((percentageRightTrialPosition + percentageRightTrialColor) / 2);
+//        }
+//        if (!pos && aud && col) {
+//            percentagesTrialAudio.add(percentageRightTrialAudio);
+//            percentagesTrialColor.add(percentageRightTrialColor);
+//            percentagesSessionAllModes.add((percentageRightTrialAudio + percentageRightTrialColor) / 2);
+//        }
+//
+//        if (pos && !aud && !col) {
+//            percentagesTrialPosition.add(percentageRightTrialPosition);
+//            percentagesSessionAllModes.add((percentageRightTrialPosition));
+//        }
+//        if (!pos && aud && !col) {
+//            percentagesTrialAudio.add(percentageRightTrialAudio);
+//            percentagesSessionAllModes.add((percentageRightTrialAudio));
+//        }
+//        if (!pos && !aud && col) {
+//            percentagesTrialColor.add(percentageRightTrialColor);
+//            percentagesSessionAllModes.add((percentageRightTrialColor));
+//        }
+//    }
+
     private void culmulateTrialResultsAtEndOfSession() {
         // Deletes the values from any recent trial
         // so only the previous trial will be shown
-//        culmulatedStringTrial = "";
         percentageTrialPosition = 0;
         percentageTrialAudio = 0;
         percentageTrialColor = 0;
@@ -1045,9 +987,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private void storeSessionResultsTemporarily() {
 
-    }
 
     private void resetSession() {
         //This method must run always after the session was stored
@@ -1124,29 +1064,53 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         colorIsRight = false;
     }
 
+//    private boolean modeButtonClicked() {
+//        boolean clicked = false;
+//        if (playButtonSoundDuringTraining) {
+//            appSounds.play(buttonSound, 1, 1, 1, 0, 1);
+//        }
+//        if (!paused && trialIsRunning) {
+//            clicked = true;
+//        }
+//        if (endOfSession) {
+//            endSession();
+//        } else if (!trialIsRunning) {
+//            if (resultScreenIndex == 0) {
+//                startTrial();
+//            } else {
+//                showScreenEndTrialResults();
+//            }
+//        } else if (paused && trialIsRunning) {
+//
+//            showAndHidePauseScreen();
+//        }
+//        setDeveloperInfoText(infoTxt);
+//        return clicked;
+//    }
+
     private boolean modeButtonClicked() {
-        boolean clicked = false;
         if (playButtonSoundDuringTraining) {
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
         }
-        if (!paused && trialIsRunning) {
-            clicked = true;
-        }
         if (endOfSession) {
             endSession();
-        } else if (!trialIsRunning) {
+        } else if (trialIsRunning) {
+            if (paused) {
+                showAndHidePauseScreen();
+            } else {
+                return true;
+            }
+        } else {
             if (resultScreenIndex == 0) {
                 startTrial();
             } else {
                 showScreenEndTrialResults();
             }
-        } else if (paused && trialIsRunning) {
-
-            showAndHidePauseScreen();
         }
         setDeveloperInfoText(infoTxt);
-        return clicked;
+        return false;
     }
+
 
     private void endSession() {
         resetTrialCounters();
@@ -1163,9 +1127,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //            Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
 //            startActivity(intent);
     }
-
     private void setPausedFromMiddleSplittedClick() {
-
         developerTimerCounting();
 
         if (trialIsRunning) {
@@ -1173,13 +1135,27 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             String indicator = getTrialIndicator();
             setDividersVisibleAddaptToMode(INVISIBLE);
             btnExit.setVisibility(VISIBLE);
-            txtVwMiddle.setText(Strings.pause + "\n\n" + nBack + nBackLevel + "\n\n" + pressButtonToC + "\n\n" + indicator);
+            txtVwMiddle.setText(String.format("%s\n\n%s%s\n\n%s\n\n%s", Strings.pause, nBack, nBackLevel, pressButtonToC, indicator));
             txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
-            for (int i = 0; i < squares.size(); i++) {
-                squares.get(i).setVisibility(View.INVISIBLE);
-            }
+            squares.forEach(square -> square.setVisibility(View.INVISIBLE));
         }
     }
+//    private void setPausedFromMiddleSplittedClick() {
+//
+//        developerTimerCounting();
+//
+//        if (trialIsRunning) {
+//            paused = true;
+//            String indicator = getTrialIndicator();
+//            setDividersVisibleAddaptToMode(INVISIBLE);
+//            btnExit.setVisibility(VISIBLE);
+//            txtVwMiddle.setText(Strings.pause + "\n\n" + nBack + nBackLevel + "\n\n" + pressButtonToC + "\n\n" + indicator);
+//            txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
+//            for (int i = 0; i < squares.size(); i++) {
+//                squares.get(i).setVisibility(View.INVISIBLE);
+//            }
+//        }
+//    }
 
     private void setPausedFromMiddle() {
 
@@ -1217,30 +1193,23 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             allowToChangeSquareSize = false;
             allowToChangeColorStyle = false;
             if (!includePosition && includeColor) {
-//                squares.get(4).setAlpha(0);
-//                squares.get(4).setVisibility(INVISIBLE);
                 onlyColor.setAlpha(0);
                 onlyColor.setVisibility(INVISIBLE);
-
             }
-        }
-        paused = false;
-        if (developerTimer == null) {
-            startDeveloperTimer();
-        }
-
-        // INCLUDES POSITION
-        if (!paused) {
+        } else {
             paused = false;
-            setSettingsButtonVisibility(INVISIBLE);
-            txtVwMiddle.setText(cross);
+            if (developerTimer == null) {
+                startDeveloperTimer();
+            }
+
             if (!includePosition && includeColor) {
                 txtVwMiddle.setText("");
+            } else {
+                txtVwMiddle.setText(cross);
             }
             txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
-            for (int i = 0; i < squares.size(); i++) {
-                squares.get(i).setVisibility(View.INVISIBLE);
-            }
+            squares.forEach(square -> square.setVisibility(View.INVISIBLE));
+
             if (includePosition) {
                 setDividersVisibleAddaptToMode(VISIBLE);
             } else {
@@ -1248,32 +1217,30 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 onlyColor.setVisibility(INVISIBLE);
                 setDividersVisibleAddaptToMode(INVISIBLE);
             }
+            setSettingsButtonVisibility(INVISIBLE);
         }
     }
+
+
+
+
 
     private static void handleColorEdit(EditText editText, Button btn, int colorComponent) {
         try {
             String temp = editText.getText().toString();
             if (!temp.isEmpty()) {
                 colorComponent = Integer.parseInt(temp);
-                if (colorComponent < 0) {
-                    colorComponent = 0;
-                    editText.setText("" + colorComponent);
-                }
-                if (colorComponent > 255) {
-                    colorComponent = 255;
-                    editText.setText("" + colorComponent);
-                }
+                colorComponent = Math.max(0, Math.min(255, colorComponent)); // limit the value to the range [0, 255]
+                editText.setText(Integer.toString(colorComponent)); // update the text in the EditText
             }
             customColorSquare = Color.rgb(r, g, b);
             hexColor = String.format("#%06X", (0xFFFFFF & customColorSquare));
-//            Button btn = findViewById(R.id.btnBottom);
-//            btn.setText(""+hexColor);
             btn.setBackgroundColor(customColorSquare);
         } catch (Exception e) {
-
+            // do nothing if an exception is thrown
         }
     }
+
 
     private void setSettingsButtonVisibility(int visibility) {
         btnPositionII.setVisibility(visibility);
@@ -2000,60 +1967,57 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
 
-    public static void setIntervalText() {
-        if (speedPercentage < 0.25) {
-            speedPercentage = 0.25;
-        }
-        if (speedPercentage > 2.75) {
-            speedPercentage = 2.75;
-        }
-
-
-        countDownInterval = countDownIntervalDefault * speedPercentage;
-        double percentage = countDownIntervalDefault / countDownInterval * 100;
-        int tempPercentage = (int) percentage;
-        percentage = tempPercentage;
-        if (percentage == 99) {
-            percentage = 100;
-        }
-        SessionParameters.fadeInterval = (long) (countDownInterval / squareFadeDuration);
-        double percentageCorrected = percentage - 100;
-        String add = "±";
-        if (percentageCorrected > 0) {
-            add = "+";
-        } else if (percentageCorrected == 0) {
-            add = "±";
-        } else if (percentageCorrected < 0) {
-            add = "";
-        }
-        estimatedTrialLength = (long) (countDownInterval * MAX_PRESENT_DEFAULT) * 2;
-
-        estimatedLengthSession = estimatedTrialLength * trialsMax;
-        estimatedLengthSessionII = estimatedTrialLength * (trialsMax + 1);
-        lengthTrial = CustomClock.convertMillisecondsToMinutesAndSeconds(estimatedTrialLength);
-        lengthSession = CustomClock.convertToMinutes(estimatedLengthSession);
-        lengthSessionII = CustomClock.convertToMinutes(estimatedLengthSessionII);
-        if(lengthSessionII.equals(lengthSession)){
-            lengthSessionII = Strings.textViewTimeAdd_I + lengthSession + textViewTimeAdd_II;
-        } else {
-            lengthSessionII = Strings.textViewTimeAdd_I + lengthSession + " -" + lengthSessionII + textViewTimeAdd_II;
-        }
-
-
-//        add = "    " + Strings.speedText + add;
-//        add = Strings.speedText + Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII;
-        add = Strings.changeIntervalInfoText + fadeInterval
-                + Strings.changeIntervalInfoTextII + Strings.speedText + add
-                + +(percentageCorrected) + "%  "
-                + Strings.estimatedTrialLengthText
-                + lengthTrial
-                + textViewTimeAdd_II
-                + Strings.estimatedSessionLengthText
-                + lengthSessionII;
-        lengthTrial = add;
-
-
-    }
+//    public static void setIntervalText() {
+//
+//        if (speedPercentage < 0.25) {
+//            speedPercentage = 0.25;
+//        }
+//        if (speedPercentage > 2.75) {
+//            speedPercentage = 2.75;
+//        }
+//        countDownInterval = countDownIntervalDefault * speedPercentage;
+//        double percentage = countDownIntervalDefault / countDownInterval * 100;
+//        int tempPercentage = (int) percentage;
+//        percentage = tempPercentage;
+//        if (percentage == 99) {
+//            percentage = 100;
+//        }
+//        SessionParameters.fadeInterval = (long) (countDownInterval / squareFadeDuration);
+//        double percentageCorrected = percentage - 100;
+//        String add = "±";
+//        if (percentageCorrected > 0) {
+//            add = "+";
+//        } else if (percentageCorrected == 0) {
+//            add = "±";
+//        } else if (percentageCorrected < 0) {
+//            add = "";
+//        }
+//        estimatedTrialLength = (long) (countDownInterval * MAX_PRESENT_DEFAULT) * 2;
+//
+//        estimatedLengthSession = estimatedTrialLength * trialsMax;
+//        estimatedLengthSessionII = estimatedTrialLength * (trialsMax + 1);
+//        lengthTrial = CustomClock.convertMillisecondsToMinutesAndSeconds(estimatedTrialLength);
+//        lengthSession = CustomClock.convertToMinutes(estimatedLengthSession);
+//        lengthSessionII = CustomClock.convertToMinutes(estimatedLengthSessionII);
+//        if (lengthSessionII.equals(lengthSession)) {
+//            lengthSessionII = Strings.textViewTimeAdd_I + lengthSession + textViewTimeAdd_II;
+//        } else {
+//            lengthSessionII = Strings.textViewTimeAdd_I + lengthSession + " -" + lengthSessionII + textViewTimeAdd_II;
+//        }
+//
+//
+////        add = "    " + Strings.speedText + add;
+////        add = Strings.speedText + Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII;
+//        add = Strings.changeIntervalInfoText + fadeInterval
+//                + Strings.changeIntervalInfoTextII + Strings.speedText + add
+//                + +(percentageCorrected) + "%  "
+//                + Strings.estimatedTrialLengthText
+//                + lengthTrial
+//                + textViewTimeAdd_II
+//                + Strings.estimatedSessionLengthText
+//                + lengthSessionII;
+//        lengthTrial = add;
+//    }
 
 
     private void setDividersVisible(boolean changeVisibility) {
@@ -2104,7 +2068,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             }
         }
     }
-
 
 
     private final void setModeColors() {
@@ -2290,7 +2253,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         return;
     }
-
 
 
     private final void setFadeInAnimationAndDingSound(long duration, long delay, View... v) {
