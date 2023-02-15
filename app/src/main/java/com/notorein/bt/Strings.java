@@ -82,12 +82,12 @@ public class Strings {
     public static String zenModeSlow = " and calm";
 
 
-    public static String showDayInResultsPercentage = "Show Days Percentage";
-    public static String showSessionInResultsPercentage = "Show Session Percentage";
-    public static String showTrialsInResultsPercentage = "Show Trials Percentage";
-    public static String showDaysInResults = "Show Days N-Back";
-    public static String showSessionInResults = "Show Session N-Back";
-    public static String showTrialInResults = "Show Trials N-Back";
+    public static String showDayInResultsPercentageText = "Show Days Percentage";
+    public static String showSessionInResultsPercentageText = "Show Session Percentage";
+    public static String showTrialsInResultsPercentageText = "Show Trials Percentage";
+    public static String showDaysInResultsText = "Show Days N-Back";
+    public static String showSessionInResultsText = "Show Session N-Back";
+    public static String showTrialInResultsText = "Show Trials N-Back";
     public static String settingsText = "Settings";
     public static String adReminderTextI = "Dear valued user, we hope you have enjoyed using our app on ";
     public static String adReminderTextII = " ad-free occasions. " +

@@ -40,9 +40,9 @@ public class ViewMenu extends Dialog implements View.OnClickListener {
         layout = findViewById(R.id.view_results);
         one = layout.findViewById(R.id.showPercentage);
         two = layout.findViewById(R.id.showNBack);
-        three = layout.findViewById(R.id.showDay);
-        four = layout.findViewById(R.id.showSession);
-        five = layout.findViewById(R.id.showTrial);
+        three = layout.findViewById(R.id.showDayNBack);
+        four = layout.findViewById(R.id.showSessionNBack);
+        five = layout.findViewById(R.id.showTrialNBack);
         setCheckBoxesSelected();
         setOnClickListenersToSettingsView();
         setCheckBoxesText();
@@ -51,11 +51,11 @@ public class ViewMenu extends Dialog implements View.OnClickListener {
     }
 
     public void setCheckBoxesText() {
-        one.setText(Strings.showDayInResultsPercentage);
-        two.setText(Strings.showSessionInResultsPercentage);
-        three.setText(Strings.showDayInResultsPercentage);
-        four.setText(Strings.showSessionInResults);
-        five.setText(Strings.showTrialInResults);
+        one.setText(Strings.showDayInResultsPercentageText);
+        two.setText(Strings.showSessionInResultsPercentageText);
+        three.setText(Strings.showDayInResultsPercentageText);
+        four.setText(Strings.showSessionInResultsText);
+        five.setText(Strings.showTrialInResultsText);
     }
 
     public void setCheckBoxesSelected() {
@@ -84,15 +84,15 @@ public class ViewMenu extends Dialog implements View.OnClickListener {
             SessionParameters.showNBackInResults = two.isSelected();
             Toast.makeText(c,"showNBackInResults " +  SessionParameters.showNBackInResults,Toast.LENGTH_SHORT).show();
         }
-        if (v.getId() == R.id.showDay) {
+        if (v.getId() == R.id.showDayNBack) {
             SessionParameters.showDayInResults = three.isSelected();
             Toast.makeText(c,"showDayInResults " +  SessionParameters.showDayInResults,Toast.LENGTH_SHORT).show();
         }
-        if (v.getId() == R.id.showSession) {
+        if (v.getId() == R.id.showSessionNBack) {
             SessionParameters.showSessionInResults = four.isSelected();
             Toast.makeText(c,"showSessionInResults " +  SessionParameters.showSessionInResults,Toast.LENGTH_SHORT).show();
         }
-        if (v.getId() == R.id.showTrial) {
+        if (v.getId() == R.id.showTrialNBack) {
             SessionParameters.showTrialInResults = five.isSelected();
             Toast.makeText(c,"showTrialInResults " +  SessionParameters.showTrialInResults,Toast.LENGTH_SHORT).show();
         }

@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/showNBack" />
 
     <CheckBox
-        android:id="@+id/showDay"
+        android:id="@+id/showDayNBack"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginStart="2dp"
@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <CheckBox
-        android:id="@+id/showSession"
+        android:id="@+id/showSessionNBack"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginStart="2dp"
@@ -64,10 +64,10 @@
         android:layout_marginEnd="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/showDay" />
+        app:layout_constraintTop_toBottomOf="@+id/showDayNBack" />
 
     <CheckBox
-        android:id="@+id/showTrial"
+        android:id="@+id/showTrialNBack"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginStart="2dp"
@@ -75,6 +75,6 @@
         android:layout_marginEnd="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/showSession" />
+        app:layout_constraintTop_toBottomOf="@+id/showSessionNBack" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

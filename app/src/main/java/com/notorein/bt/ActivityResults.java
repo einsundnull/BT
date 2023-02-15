@@ -13,6 +13,7 @@ import static com.notorein.bt.SessionParameters.showTrialInResultsPercentage;
 import static com.notorein.bt.SessionParameters.stringToStore;
 import static com.notorein.bt.SessionParameters.stringToStoreInitial;
 import static com.notorein.bt.SessionParameters.useTempResults;
+import static com.notorein.bt.Strings.showDaysInResultsText;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -476,10 +477,10 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         dialog.setContentView(R.layout.view_results_settings_layout);
         one = dialog.findViewById(R.id.showDayPercentage);
         two = dialog.findViewById(R.id.showSessionPercentage);
-        three = dialog.findViewById(R.id.showDay);
-        four = dialog.findViewById(R.id.showSession);
-        five = dialog.findViewById(R.id.showTrial);
-        six = dialog.findViewById(R.id.showTrial);
+        three = dialog.findViewById(R.id.showTrialPercentage);
+        four = dialog.findViewById(R.id.showDayNBack);
+        five = dialog.findViewById(R.id.showSessionNBack);
+        six = dialog.findViewById(R.id.showTrialNBack);
 //        layout.setAlpha(0.3f);
 //        dialog.setOwnerActivity(this);
 
@@ -492,12 +493,12 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         }
 
 
-        one.setText(Strings.showDayInResultsPercentage);
-        two.setText(Strings.showSessionInResultsPercentage);
-        three.setText(Strings.showTrialsInResultsPercentage);
-        four.setText(Strings.showDaysInResults);
-        five.setText(Strings.showSessionInResults);
-        six.setText(Strings.showTrialInResults);
+        one.setText(Strings.showDayInResultsPercentageText);
+        two.setText(Strings.showSessionInResultsPercentageText);
+        three.setText(Strings.showTrialsInResultsPercentageText);
+        four.setText(showDaysInResultsText);
+        five.setText(Strings.showSessionInResultsText);
+        six.setText(Strings.showTrialInResultsText);
 
         one.setTextColor(getResources().getColor(R.color.black));
         two.setTextColor(getResources().getColor(R.color.black));
@@ -506,11 +507,11 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         five.setTextColor(getResources().getColor(R.color.black));
         six.setTextColor(getResources().getColor(R.color.black));
 
-        one.setChecked(SessionParameters.showPercentageInResults);
-        two.setChecked(SessionParameters.showNBackInResults);
-        three.setChecked(SessionParameters.showDayInResults);
-        four.setChecked(showSessionInResults);
-        five.setChecked(showTrialInResults);
+        one.setChecked(showDayInResultsPercentage);
+        two.setChecked(showSessionInResultsPercentage);
+        three.setChecked(showTrialInResultsPercentage);
+        four.setChecked(showDayInResults);
+        five.setChecked(showSessionInResults);
         six.setChecked(showTrialInResults);
         setOnClickListeners();
         dialog.show();
@@ -524,8 +525,9 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 
     private void setOnClickListeners() {
 
+
         one.setOnClickListener(c -> {
-            SessionParameters.showTrialInResultsPercentage = one.isChecked();
+            SessionParameters.showDayInResultsPercentage = one.isChecked();
             layout.removeAllViews();
             setDivider();
             addResultLines();
@@ -539,15 +541,16 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
         three.setOnClickListener(c -> {
-            SessionParameters.showDayInResultsPercentage = three.isChecked();
+            SessionParameters.showTrialInResultsPercentage = three.isChecked();
             layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
 
+
         four.setOnClickListener(c -> {
-            SessionParameters.showTrialInResults = four.isChecked();
+            SessionParameters.showDayInResults = four.isChecked();
             layout.removeAllViews();
             setDivider();
             addResultLines();
@@ -561,12 +564,13 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
         six.setOnClickListener(c -> {
-            SessionParameters.showDayInResults = six.isChecked();
+            SessionParameters.showTrialInResults = six.isChecked();
             layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
+
 
     }
 
