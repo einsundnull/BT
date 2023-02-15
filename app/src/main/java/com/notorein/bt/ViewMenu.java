@@ -51,9 +51,9 @@ public class ViewMenu extends Dialog implements View.OnClickListener {
     }
 
     public void setCheckBoxesText() {
-        one.setText(Strings.showPercentageInResults);
-        two.setText(Strings.showNBackInResults);
-        three.setText(Strings.showDayInResults);
+        one.setText(Strings.showDayInResultsPercentage);
+        two.setText(Strings.showSessionInResultsPercentage);
+        three.setText(Strings.showDayInResultsPercentage);
         four.setText(Strings.showSessionInResults);
         five.setText(Strings.showTrialInResults);
     }

@@ -492,11 +492,11 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         }
 
 
-        one.setText(Strings.showPercentageInResults);
-        two.setText(Strings.showNBackInResults);
-        three.setText(Strings.showDayInResults);
-        four.setText(Strings.showSessionInResults);
-        five.setText(Strings.showTrialInResults);
+        one.setText(Strings.showDayInResultsPercentage);
+        two.setText(Strings.showSessionInResultsPercentage);
+        three.setText(Strings.showTrialsInResultsPercentage);
+        four.setText(Strings.showDaysInResults);
+        five.setText(Strings.showSessionInResults);
         six.setText(Strings.showTrialInResults);
 
         one.setTextColor(getResources().getColor(R.color.black));
@@ -554,7 +554,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
         five.setOnClickListener(c -> {
-            showSessionInResults = five.isChecked();
+            SessionParameters.showSessionInResults = five.isChecked();
             layout.removeAllViews();
             setDivider();
             addResultLines();
