@@ -1064,52 +1064,53 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         colorIsRight = false;
     }
 
-//    private boolean modeButtonClicked() {
-//        boolean clicked = false;
-//        if (playButtonSoundDuringTraining) {
-//            appSounds.play(buttonSound, 1, 1, 1, 0, 1);
-//        }
-//        if (!paused && trialIsRunning) {
-//            clicked = true;
-//        }
-//        if (endOfSession) {
-//            endSession();
-//        } else if (!trialIsRunning) {
-//            if (resultScreenIndex == 0) {
-//                startTrial();
-//            } else {
-//                showScreenEndTrialResults();
-//            }
-//        } else if (paused && trialIsRunning) {
-//
-//            showAndHidePauseScreen();
-//        }
-//        setDeveloperInfoText(infoTxt);
-//        return clicked;
-//    }
-
     private boolean modeButtonClicked() {
+        boolean clicked = false;
         if (playButtonSoundDuringTraining) {
             appSounds.play(buttonSound, 1, 1, 1, 0, 1);
         }
+        if (!paused && trialIsRunning) {
+            clicked = true;
+        }
         if (endOfSession) {
             endSession();
-        } else if (trialIsRunning) {
-            if (paused) {
-                showAndHidePauseScreen();
-            } else {
-                return true;
-            }
-        } else {
+        } else if (!trialIsRunning) {
             if (resultScreenIndex == 0) {
                 startTrial();
             } else {
                 showScreenEndTrialResults();
             }
+        } else if (paused && trialIsRunning) {
+
+            showAndHidePauseScreen();
         }
         setDeveloperInfoText(infoTxt);
-        return false;
+        return clicked;
     }
+
+//    private boolean modeButtonClicked() {
+//        boolean clicked = false;
+//        if (playButtonSoundDuringTraining) {
+//            appSounds.play(buttonSound, 1, 1, 1, 0, 1);
+//        }
+//        if (endOfSession) {
+//            endSession();
+//        } else if (trialIsRunning) {
+//            if (paused) {
+//                showAndHidePauseScreen();
+//            } else {
+//                return true;
+//            }
+//        } else {
+//            if (resultScreenIndex == 0) {
+//                startTrial();
+//            } else {
+//                showScreenEndTrialResults();
+//            }
+//        }
+//        setDeveloperInfoText(infoTxt);
+//        return false;
+//    }
 
 
     private void endSession() {
@@ -1187,29 +1188,70 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         return indicator;
     }
 
+//    private void showAndHidePauseScreen() {
+//        if (paused) {
+//            FileLogicSettings.saveSettings(this);
+//            allowToChangeSquareSize = false;
+//            allowToChangeColorStyle = false;
+//            if (!includePosition && includeColor) {
+//                onlyColor.setAlpha(0);
+//                onlyColor.setVisibility(INVISIBLE);
+//            }
+//        } else {
+//            paused = false;
+//            if (developerTimer == null) {
+//                startDeveloperTimer();
+//            }
+//
+//            if (!includePosition && includeColor) {
+//                txtVwMiddle.setText("");
+//            } else {
+//                txtVwMiddle.setText(cross);
+//            }
+//            txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
+//            squares.forEach(square -> square.setVisibility(View.INVISIBLE));
+//
+//            if (includePosition) {
+//                setDividersVisibleAddaptToMode(VISIBLE);
+//            } else {
+//                squares.get(4).setVisibility(View.VISIBLE);
+//                onlyColor.setVisibility(INVISIBLE);
+//                setDividersVisibleAddaptToMode(INVISIBLE);
+//            }
+//            setSettingsButtonVisibility(INVISIBLE);
+//        }
+//    }
+
     private void showAndHidePauseScreen() {
         if (paused) {
             FileLogicSettings.saveSettings(this);
             allowToChangeSquareSize = false;
             allowToChangeColorStyle = false;
             if (!includePosition && includeColor) {
+//                squares.get(4).setAlpha(0);
+//                squares.get(4).setVisibility(INVISIBLE);
                 onlyColor.setAlpha(0);
                 onlyColor.setVisibility(INVISIBLE);
-            }
-        } else {
-            paused = false;
-            if (developerTimer == null) {
-                startDeveloperTimer();
-            }
 
+            }
+        }
+        paused = false;
+        if (developerTimer == null) {
+            startDeveloperTimer();
+        }
+
+        // INCLUDES POSITION
+        if (!paused) {
+            paused = false;
+            setSettingsButtonVisibility(INVISIBLE);
+            txtVwMiddle.setText(cross);
             if (!includePosition && includeColor) {
                 txtVwMiddle.setText("");
-            } else {
-                txtVwMiddle.setText(cross);
             }
             txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
-            squares.forEach(square -> square.setVisibility(View.INVISIBLE));
-
+            for (int i = 0; i < squares.size(); i++) {
+                squares.get(i).setVisibility(View.INVISIBLE);
+            }
             if (includePosition) {
                 setDividersVisibleAddaptToMode(VISIBLE);
             } else {
@@ -1217,11 +1259,8 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
                 onlyColor.setVisibility(INVISIBLE);
                 setDividersVisibleAddaptToMode(INVISIBLE);
             }
-            setSettingsButtonVisibility(INVISIBLE);
         }
     }
-
-
 
 
 

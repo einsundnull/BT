@@ -88,8 +88,10 @@
     <color name="three">#A60000</color>
 <!--    <color name="four">#64DD17</color>-->
     <color name="four">#03491C</color>
+<!--    <color name="five">#6200EA</color>-->
+<!--    <color name="six">#1235B3</color>-->
     <color name="five">#6200EA</color>
-    <color name="six">#1235B3</color>
+    <color name="six">#05379B</color>
     <color name="seven">#533A15</color>
     <color name="eight">#838588</color>
     <color name="nine">#E09E9E</color>
@@ -103,7 +105,9 @@
     <!--    <color name="four">#64DD17</color>-->
     <color name="fourII">#03470C</color>
     <color name="fiveII">#6200EA</color>
-    <color name="sixII">#0F10DE</color>
+<!--    <color name="sixII">#0F10DE</color>-->
+    <color name="sixII">#05379B</color>
+
     <color name="sevenII">#533A15</color>
     <color name="eightII">#FFFFFF</color>
     <color name="nineII">#FF106F</color>

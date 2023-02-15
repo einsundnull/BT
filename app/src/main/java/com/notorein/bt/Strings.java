@@ -357,7 +357,7 @@ public class Strings {
 //        add = Strings.speedText + Strings.changeIntervalInfoText + fadeInterval + Strings.changeIntervalInfoTextII;
         add = Strings.changeIntervalInfoText + fadeInterval
                 + Strings.changeIntervalInfoTextII + Strings.speedText + add
-                + +(percentageCorrected) + "%  "
+                + +((int)percentageCorrected) + "%  "
                 + Strings.estimatedTrialLengthText
                 + lengthTrial
                 + textViewTimeAdd_II

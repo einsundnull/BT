@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class ResultsFiles {
+public class ResultsFilesOLD {
 
 
     private static ArrayList<String> results;
@@ -36,7 +36,7 @@ public class ResultsFiles {
     static ArrayList<ArrayList<Double>> sessionsNBack;
 
     static ArrayList<Double> trialsNBackTemp;
-//    static ArrayList<ArrayList<Double>> sessionsNBackTemp;
+    static ArrayList<ArrayList<Double>> sessionsNBackTemp;
     static ArrayList<ArrayList<ArrayList<Double>>> daysNBackTemp;
 
     //##################################################################################
@@ -72,7 +72,7 @@ public class ResultsFiles {
         daysNBackMax = new ArrayList<>();
 
         trialsNBackTemp = new ArrayList<>();
-//        sessionsNBackTemp = new ArrayList<>();
+        sessionsNBackTemp = new ArrayList<>();
         daysNBackTemp = new ArrayList<>();
 
         trialsPercPre = new ArrayList<>();
@@ -104,6 +104,16 @@ public class ResultsFiles {
                     // If I don't add this if statement it creates an Array list with list.get(0) = NAN;
                     // Here I get the average of the trial
                     sessionsNBack.add(trialsNBackTemp);
+                    sessionsNBackTemp.add(trialsNBackTemp);
+//                    for (int m = 0; m < trialsNBackTemp.size(); m++) {
+//                        try {
+//                            daysNBack.get(daysNBack.size() - 1).add(trialsNBackTemp.get(m));
+//
+//                        } catch (Exception e) {
+//
+//                            e.printStackTrace();
+//                        }
+//                    }
                     trialsNBackTemp = new ArrayList<>();
                 }
                 trialsNBackTempII = trialsNBackTemp;
@@ -131,29 +141,68 @@ public class ResultsFiles {
                 value = results.get(i);
                 try {
                     dayTwo = results.get(i + 4);
+//                    if (dayTwo.equals(dayOne)) {
+//                        try {
+//                            for (int m = 0; m < trialsNBackTempII.size(); m++) {
+//                                daysNBack.get(daysNBack.size() - 1).add(trialsNBackTempII.get(m));
+//                            }
+//
+//                        } catch (Exception ze) {
+//
+//                            for (int m = 0; m < trialsNBackTempII.size(); m++) {
+//                                daysNBack.get(daysNBack.size() - 1).add(trialsNBackTempII.get(m));
+//                            }
+//                        }
+//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     dayOne = dayTwo;
                     sessionsNBack.add(trialsNBackTemp);
-//                    sessionsNBackTemp = new ArrayList<>();
+//                    if (dayTwo.equals(dayOne)) {
+//                        try {
+//                            for (int m = 0; m < trialsNBackTempII.size(); m++) {
+//                                daysNBack.get(daysNBack.size() - 1).add(trialsNBackTempII.get(m));
+//                            }
+//
+//                        } catch (Exception ze) {
+//                            daysNBack.add(new ArrayList<>());
+//                            for (int m = 0; m < trialsNBackTempII.size(); m++) {
+//                                daysNBack.get(daysNBack.size() - 1).add(trialsNBackTempII.get(m));
+//                            }
+//                        }
+//
+//                    }
+                    sessionsNBackTemp = new ArrayList<>();
                 }
                 // In this line it recognizes that a new day has started.
                 if (!dayTwo.equals(dayOne)) {
                     Log.i(TAG, "calculateResultsForDisplay: IN NEW DAY");
                     daysNBack.add(new ArrayList<>());
-
                 }
-            }
-            Log.i(TAG, "calculateResultsForDisplay: " + i);
-        }
-        if(trialsPerc.size() == 1){
 
-            sessionsNBack.add(trialsPerc);
-            trialsPerc.remove(trialsPerc.size()-1);
+                dayOne = dayTwo;
+            }
+
+//            if (value.equals(SessionParameters.nBackTrialMarker)) {
+//                i++;
+//                value = results.get(i);
+//                valueII = Double.parseDouble(value);
+//                trialsNBack.add(Double.parseDouble(value));
+//                trialsNBackTemp.add(Double.parseDouble(value));
+//                if (valueII > nBackMaxAbsolute) {
+//                    nBackMaxAbsolute = (int) valueII;
+//                }
+//                Log.e(TAG, "trialsNBackTemp " + trialsNBackTemp);
+//                value = results.get(i + 2);
+//                valueII = valueII + Double.parseDouble(value);
+//                if (valueII > 0) {
+//                    trialsPerc.add(valueII);
+//                }
+//            }
+            Log.i(TAG, "calculateResultsForDisplay: " + i);
         }
         try {
             // If i don't add these lines the calculated arrays misses one value in the end
-            sessionsNBack.add(new ArrayList<>());
             sessionsNBack.get(sessionsNBack.size() - 1).add(trialsNBackTemp.get(trialsNBackTemp.size() - 1));
         } catch (Exception e) {
             e.printStackTrace();
@@ -411,9 +460,9 @@ public class ResultsFiles {
         if (useTempResults && !tempResultsAlreadyStored) {
             // Here I am reading the original file
             resultsFilePath = initialiseStoringFilePaths(false);
-            stringToStoreInitial = ResultsFiles.readResults(c);
-            ResultsFiles.copyResults(c, resultsFilePath, initialiseStoringFilePaths(true));
-            ResultsFiles.saveResults(c, true, initialiseStoringFilePaths(true));
+            stringToStoreInitial = ResultsFilesOLD.readResults(c);
+            ResultsFilesOLD.copyResults(c, resultsFilePath, initialiseStoringFilePaths(true));
+            ResultsFilesOLD.saveResults(c, true, initialiseStoringFilePaths(true));
             tempResultsAlreadyStored = true;
         }
     }

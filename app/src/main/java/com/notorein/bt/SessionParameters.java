@@ -7,7 +7,7 @@ public class SessionParameters {
 //    public static String user;
 
     public static boolean playButtonSoundDuringTraining = true;
-    public static boolean zenMode = true;
+    public static boolean zenMode = false;
 
     public static boolean positionIsClicked;
     public static boolean audioIsClicked;
@@ -49,8 +49,9 @@ public class SessionParameters {
 
     // Duration
     public static int duration = 7;
-    public static int MAX_PRESENT_DEFAULT = 22;
-    public static int maxPresentations = 22;
+    public static int trialsMax = 7;
+    public static int MAX_PRESENT_DEFAULT = 25;
+    public static int maxPresentations = 25;
     public static int nBackBegin = 1;
     public static int nBack = 1;
     public static int nBackMax = nBackBegin;
@@ -64,7 +65,8 @@ public class SessionParameters {
 //    public static int countDownIntervalDefaultZenMode = 1850;
     //    public static int countDownIntervalDefault = 1720;
 //    public static int countDownIntervalDefault = 1750;
-    public static int countDownIntervalDefault = 1480;
+        public static int countDownIntervalDefault = 1850;
+//    public static int countDownIntervalDefault = 1480;
 
     public static double speedPercentage = 1;
     public static double countDownInterval = countDownIntervalDefault * speedPercentage;
@@ -124,7 +126,7 @@ public class SessionParameters {
     public static int counterMatchesAud = 0;
     public static int counterMatchesCol = 0;
 
-    public static int trialsMax = 10;
+
     public static long estimatedTrialLength = countDownIntervalDefault*MAX_PRESENT_DEFAULT;
     public static long estimatedLengthSession = (long)estimatedTrialLength * trialsMax;
     public static long estimatedLengthSessionII = (long)estimatedTrialLength * (trialsMax+1);
@@ -173,7 +175,7 @@ public class SessionParameters {
     public static String dateOfLastUse;
     public static String dateOfCurrentUse;
     public static boolean firstStart = true;
-    public static int squareDefaultColorIndex = 5;
+    public static int squareDefaultColorIndex = 6;
     public static String lastDayOfUse;
 //    public static String currentDayOfUse;
     public static int displayHeight;
@@ -187,7 +189,7 @@ public class SessionParameters {
     public static boolean showDayInResults = false;
     public static boolean showSessionInResults = true;
     public static boolean orientationWasChangedDuringTraining;
-    public static boolean darkModeTraining;
+    public static boolean darkModeTraining = true;
     public static boolean darkModeMenu;
     public static int fadeoutAnimationDuration = 1220;
     public static boolean allowToChangeColorStyle;

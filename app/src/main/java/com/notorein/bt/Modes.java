@@ -1,5 +1,0 @@
-package com.notorein.bt;
-
-public enum Modes {
-	AUDIO, COLOR, POSITION, AUDIO_COLOR, AUDIO_POSITION, COLOR_POSITION, AUDIO_COLOR_POSITION
-}
