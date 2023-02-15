@@ -213,6 +213,9 @@ public class SessionParameters {
     public static double squareFadeDuration = 1.2;
     private static final long fadeInterval_DEFAULT = (long) (countDownIntervalDefault / squareFadeDuration);
     public static long fadeInterval = fadeInterval_DEFAULT;
+    public static boolean showDayInResultsPercentage;
+    public static boolean showSessionInResultsPercentage;
+    public static boolean showTrialInResultsPercentage;
 
 //    public static SoundPool appSounds;
 //    public static int buttonSound;

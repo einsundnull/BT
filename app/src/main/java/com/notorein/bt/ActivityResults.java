@@ -5,8 +5,11 @@ import static com.notorein.bt.SessionParameters.darkModeMenu;
 import static com.notorein.bt.SessionParameters.loadInterstitialAd;
 import static com.notorein.bt.SessionParameters.resultLineColorIndex;
 import static com.notorein.bt.SessionParameters.showDayInResults;
+import static com.notorein.bt.SessionParameters.showDayInResultsPercentage;
 import static com.notorein.bt.SessionParameters.showSessionInResults;
+import static com.notorein.bt.SessionParameters.showSessionInResultsPercentage;
 import static com.notorein.bt.SessionParameters.showTrialInResults;
+import static com.notorein.bt.SessionParameters.showTrialInResultsPercentage;
 import static com.notorein.bt.SessionParameters.stringToStore;
 import static com.notorein.bt.SessionParameters.stringToStoreInitial;
 import static com.notorein.bt.SessionParameters.useTempResults;
@@ -116,6 +119,10 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
 //            setting_button_result_screen.setBackgroundColor(getResources().getColor(R.color.white));
             setting_button_result_screen.setBackground(getResources().getDrawable(R.drawable.result_screen_settings_button_image_dark));
             setting_button_result_screen.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+        } else {
+            setting_button_result_screen.setBackground(getResources().getDrawable(R.drawable.result_screen_settings_button_image));
+//            setting_button_result_screen.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+
         }
 
     }
@@ -212,7 +219,6 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         int orientation = this.getResources().getConfiguration().orientation;
         portraitMode = orientation == Configuration.ORIENTATION_PORTRAIT;
     }
-
 
 
     void setDivider() {
@@ -368,18 +374,18 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         }
         resultLines = new ArrayList<>();
 
-        if (SessionParameters.showPercentageInResults) {
-            if (showTrialInResults) {
+//        if (SessionParameters.showPercentageInResults) {
+            if (showTrialInResultsPercentage) {
                 resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.trialsPerc, lineColorTrial), ResultsFiles.trialsPerc, lineColorTrial));
             }
-            if (showSessionInResults) {
+            if (showSessionInResultsPercentage) {
                 resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.sessionsPercAverage, lineColorSession), ResultsFiles.sessionsPercAverage, lineColorSession));
             }
-            if (showDayInResults) {
+            if (showDayInResultsPercentage) {
                 resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.daysPercAverage, lineColorDay), ResultsFiles.daysPercAverage, lineColorDay));
             }
-        }
-        if (SessionParameters.showNBackInResults) {
+//        }
+//        if (SessionParameters.showNBackInResults) {
             if (showTrialInResults) {
                 resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.trialsNBack, lineColorTrial), ResultsFiles.trialsNBack, lineColorTrial));
             }
@@ -389,7 +395,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
             if (showDayInResults) {
                 resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.daysNBackMax, lineColorDay), ResultsFiles.daysNBackMax, lineColorDay));
             }
-        }
+//        }
         drawResultLines(resultLines);
         layout.removeView(setting_button_result_screen);
         layout.addView(setting_button_result_screen);
@@ -425,7 +431,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         backgroundColor = Color.rgb(232, 236, 235);
         if (darkModeMenu) {
             backgroundColor = Color.rgb(0, 0, 0);
-     }
+        }
 
 //        if (resultLineColorIndex == 1) {
 //            lineColorDay = Color.rgb(44,135,32);
@@ -455,6 +461,7 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
     private CheckBox three;
     private CheckBox four;
     private CheckBox five;
+    private CheckBox six;
 
     private void createSettingsDialog() {
 
@@ -467,17 +474,18 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         wmlp.alpha = 0.78f;
 //        ConstraintLayout layout = dialog.findViewById(R.id.view_results);
         dialog.setContentView(R.layout.view_results_settings_layout);
-        one = dialog.findViewById(R.id.showPercentage);
-        two = dialog.findViewById(R.id.showNBack);
+        one = dialog.findViewById(R.id.showDayPercentage);
+        two = dialog.findViewById(R.id.showSessionPercentage);
         three = dialog.findViewById(R.id.showDay);
         four = dialog.findViewById(R.id.showSession);
         five = dialog.findViewById(R.id.showTrial);
+        six = dialog.findViewById(R.id.showTrial);
 //        layout.setAlpha(0.3f);
 //        dialog.setOwnerActivity(this);
 
 //        getViews();
 //        setOnClickListeners();
-        if (darkModeMenu){
+        if (darkModeMenu) {
             setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image_dark);
         } else {
             setting_button_result_screen.setBackgroundResource(R.drawable.result_screen_settings_button_image);
@@ -489,19 +497,21 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         three.setText(Strings.showDayInResults);
         four.setText(Strings.showSessionInResults);
         five.setText(Strings.showTrialInResults);
+        six.setText(Strings.showTrialInResults);
 
         one.setTextColor(getResources().getColor(R.color.black));
         two.setTextColor(getResources().getColor(R.color.black));
         three.setTextColor(getResources().getColor(R.color.black));
         four.setTextColor(getResources().getColor(R.color.black));
         five.setTextColor(getResources().getColor(R.color.black));
-
+        six.setTextColor(getResources().getColor(R.color.black));
 
         one.setChecked(SessionParameters.showPercentageInResults);
         two.setChecked(SessionParameters.showNBackInResults);
         three.setChecked(SessionParameters.showDayInResults);
         four.setChecked(showSessionInResults);
         five.setChecked(showTrialInResults);
+        six.setChecked(showTrialInResults);
         setOnClickListeners();
         dialog.show();
     }
@@ -513,41 +523,51 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setOnClickListeners() {
+
         one.setOnClickListener(c -> {
-            SessionParameters.showPercentageInResults = one.isChecked();
+            SessionParameters.showTrialInResultsPercentage = one.isChecked();
             layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
         two.setOnClickListener(c -> {
-            SessionParameters.showNBackInResults = two.isChecked();
+            SessionParameters.showSessionInResultsPercentage = two.isChecked();
             layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
         three.setOnClickListener(c -> {
-            showDayInResults = three.isChecked();
+            SessionParameters.showDayInResultsPercentage = three.isChecked();
             layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
+
         four.setOnClickListener(c -> {
-            showSessionInResults = four.isChecked();
+            SessionParameters.showTrialInResults = four.isChecked();
             layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
         five.setOnClickListener(c -> {
-            showTrialInResults = five.isChecked();
+            showSessionInResults = five.isChecked();
             layout.removeAllViews();
             setDivider();
             addResultLines();
             FileLogicSettings.saveSettings(ActivityResults.this);
         });
+        six.setOnClickListener(c -> {
+            SessionParameters.showDayInResults = six.isChecked();
+            layout.removeAllViews();
+            setDivider();
+            addResultLines();
+            FileLogicSettings.saveSettings(ActivityResults.this);
+        });
+
     }
 
     private void getViews() {
