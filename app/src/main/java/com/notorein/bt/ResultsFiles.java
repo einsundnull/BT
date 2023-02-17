@@ -36,7 +36,7 @@ public class ResultsFiles {
     static ArrayList<ArrayList<Double>> sessionsNBack;
 
     static ArrayList<Double> trialsNBackTemp;
-//    static ArrayList<ArrayList<Double>> sessionsNBackTemp;
+    //    static ArrayList<ArrayList<Double>> sessionsNBackTemp;
     static ArrayList<ArrayList<ArrayList<Double>>> daysNBackTemp;
 
     //##################################################################################
@@ -52,7 +52,6 @@ public class ResultsFiles {
     public static int nBackMaxAbsolute = 0;
     public static boolean test;
     public static int testStringIndex = 0;
-
 
 
     public static void calculateResultsForDisplay() {
@@ -124,6 +123,7 @@ public class ResultsFiles {
                 valueII = valueII + Double.parseDouble(value);
                 if (valueII > 0) {
                     trialsPerc.add(valueII);
+
                 }
             }
             if (value.equals(SessionParameters.daySessionEndMarker)) {
@@ -146,11 +146,19 @@ public class ResultsFiles {
             }
             Log.i(TAG, "calculateResultsForDisplay: " + i);
         }
-        if(trialsPerc.size() == 1){
+        if (trialsPerc.size() == 1) {
 
             sessionsNBack.add(trialsPerc);
-            trialsPerc.remove(trialsPerc.size()-1);
+            trialsPerc.remove(trialsPerc.size() - 1);
         }
+        if (trialsPerc != null && trialsPerc.size() > 1) {
+            trialsPerc.remove(trialsPerc.size() - 1);
+            trialsNBack.remove(trialsNBack.size() - 1);
+//            sessionsNBack.remove(sessionsNBack.size() - 1);
+//            sessionsPercAverage.remove(sessionsPercAverage.size() - 1);
+//            sessionsNBackMax.remove(sessionsNBackMax.size() - 1);
+        }
+
         try {
             // If i don't add these lines the calculated arrays misses one value in the end
             sessionsNBack.add(new ArrayList<>());

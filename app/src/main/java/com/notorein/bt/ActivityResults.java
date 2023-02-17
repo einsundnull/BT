@@ -96,6 +96,14 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
             public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
             }
         });
+
+        if (!showDayInResultsPercentage && !showSessionInResultsPercentage && !showTrialInResultsPercentage && !showDayInResults
+                && !showSessionInResults && !showTrialInResults) {
+            showTrialInResultsPercentage = true;
+            showSessionInResultsPercentage = true;
+            showDayInResultsPercentage = true;
+        }
+
         mAdView = findViewById(R.id.adView);
         adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -376,26 +384,26 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         resultLines = new ArrayList<>();
 
 //        if (SessionParameters.showPercentageInResults) {
-            if (showTrialInResultsPercentage) {
-                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.trialsPerc, lineColorTrial), ResultsFiles.trialsPerc, lineColorTrial));
-            }
-            if (showSessionInResultsPercentage) {
-                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.sessionsPercAverage, lineColorSession), ResultsFiles.sessionsPercAverage, lineColorSession));
-            }
-            if (showDayInResultsPercentage) {
-                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.daysPercAverage, lineColorDay), ResultsFiles.daysPercAverage, lineColorDay));
-            }
+        if (showTrialInResultsPercentage) {
+            resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.trialsPerc, lineColorTrial), ResultsFiles.trialsPerc, lineColorTrial));
+        }
+        if (showSessionInResultsPercentage) {
+            resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.sessionsPercAverage, lineColorSession), ResultsFiles.sessionsPercAverage, lineColorSession));
+        }
+        if (showDayInResultsPercentage) {
+            resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.daysPercAverage, lineColorDay), ResultsFiles.daysPercAverage, lineColorDay));
+        }
 //        }
 //        if (SessionParameters.showNBackInResults) {
-            if (showTrialInResults) {
-                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.trialsNBack, lineColorTrial), ResultsFiles.trialsNBack, lineColorTrial));
-            }
-            if (showSessionInResults) {
-                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.sessionsNBackMax, lineColorSession), ResultsFiles.sessionsNBackMax, lineColorSession));
-            }
-            if (showDayInResults) {
-                resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.daysNBackMax, lineColorDay), ResultsFiles.daysNBackMax, lineColorDay));
-            }
+        if (showTrialInResults) {
+            resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.trialsNBack, lineColorTrial), ResultsFiles.trialsNBack, lineColorTrial));
+        }
+        if (showSessionInResults) {
+            resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.sessionsNBackMax, lineColorSession), ResultsFiles.sessionsNBackMax, lineColorSession));
+        }
+        if (showDayInResults) {
+            resultLines.add(setLinesCoordinates(setPoints(ResultsFiles.daysNBackMax, lineColorDay), ResultsFiles.daysNBackMax, lineColorDay));
+        }
 //        }
         drawResultLines(resultLines);
         layout.removeView(setting_button_result_screen);
@@ -506,6 +514,8 @@ public class ActivityResults extends AppCompatActivity implements View.OnClickLi
         four.setTextColor(getResources().getColor(R.color.black));
         five.setTextColor(getResources().getColor(R.color.black));
         six.setTextColor(getResources().getColor(R.color.black));
+
+
 
         one.setChecked(showDayInResultsPercentage);
         two.setChecked(showSessionInResultsPercentage);

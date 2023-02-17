@@ -50,8 +50,8 @@ public class SessionParameters {
     // Duration
     public static int duration = 7;
     public static int trialsMax = 7;
-    public static int MAX_PRESENT_DEFAULT = 25;
-    public static int maxPresentations = 25;
+    public static int MAX_PRESENT_DEFAULT = 32;
+    public static int maxPresentations = 32;
     public static int nBackBegin = 1;
     public static int nBack = 1;
     public static int nBackMax = nBackBegin;
@@ -65,7 +65,7 @@ public class SessionParameters {
 //    public static int countDownIntervalDefaultZenMode = 1850;
     //    public static int countDownIntervalDefault = 1720;
 //    public static int countDownIntervalDefault = 1750;
-        public static int countDownIntervalDefault = 1850;
+        public static int countDownIntervalDefault = 1900;
 //    public static int countDownIntervalDefault = 1480;
 
     public static double speedPercentage = 1;
@@ -191,7 +191,7 @@ public class SessionParameters {
     public static boolean orientationWasChangedDuringTraining;
     public static boolean darkModeTraining = true;
     public static boolean darkModeMenu;
-    public static int fadeoutAnimationDuration = 1220;
+    public static int fadeoutAnimationDuration = 1020;
     public static boolean allowToChangeColorStyle;
     public static boolean allowToChangeSquareSize;
     public static boolean showGrid = true;

@@ -160,8 +160,9 @@
 <!--    <color name="fiveX">#6200EA</color>-->
 <!--    <color name="four">#065C2A</color>-->
     <color name="fiveX">#03491C</color>
-    <color name="sixX">#1235B3</color>
+<!--    <color name="sixX">#1235B3</color>-->
 <!--    <color name="sixX">#0026FF</color>-->
+    <color name="sixX">#00059B</color>
     <color name="sevenX">#533A15</color>
     <color name="nineX">#838588</color>
     <color name="eightX">#5A5A5A</color>
