@@ -372,8 +372,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
 
-
-
     private void screenTrialShow() {
         if (includePosition) {
             if (!zenMode) {
@@ -782,7 +780,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
 
-
     private void startClockTimer() {
         timerClock = new CountDownTimer(durationSessionTimer, (long) 1000) {
             @Override
@@ -864,44 +861,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
     }
 
-
-//    private void storeTrialResults() {
-//
-//        if (pos && aud && col) {
-//            percentagesTrialPosition.add(percentageRightTrialPosition);
-//            percentagesTrialAudio.add(percentageRightTrialAudio);
-//            percentagesTrialColor.add(percentageRightTrialColor);
-//            percentagesSessionAllModes.add((percentageRightTrialPosition + percentageRightTrialAudio + percentageRightTrialColor) / 3);
-//        }
-//        if (pos && aud && !col) {
-//            percentagesTrialPosition.add(percentageRightTrialPosition);
-//            percentagesTrialAudio.add(percentageRightTrialAudio);
-//            percentagesSessionAllModes.add((percentageRightTrialPosition + percentageRightTrialAudio) / 2);
-//        }
-//        if (pos && !aud && col) {
-//            percentagesTrialPosition.add(percentageRightTrialPosition);
-//            percentagesTrialColor.add(percentageRightTrialColor);
-//            percentagesSessionAllModes.add((percentageRightTrialPosition + percentageRightTrialColor) / 2);
-//        }
-//        if (!pos && aud && col) {
-//            percentagesTrialAudio.add(percentageRightTrialAudio);
-//            percentagesTrialColor.add(percentageRightTrialColor);
-//            percentagesSessionAllModes.add((percentageRightTrialAudio + percentageRightTrialColor) / 2);
-//        }
-//
-//        if (pos && !aud && !col) {
-//            percentagesTrialPosition.add(percentageRightTrialPosition);
-//            percentagesSessionAllModes.add((percentageRightTrialPosition));
-//        }
-//        if (!pos && aud && !col) {
-//            percentagesTrialAudio.add(percentageRightTrialAudio);
-//            percentagesSessionAllModes.add((percentageRightTrialAudio));
-//        }
-//        if (!pos && !aud && col) {
-//            percentagesTrialColor.add(percentageRightTrialColor);
-//            percentagesSessionAllModes.add((percentageRightTrialColor));
-//        }
-//    }
 
     private void culmulateTrialResultsAtEndOfSession() {
         // Deletes the values from any recent trial
@@ -985,8 +944,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
         }
         return percentageSessionPosition;
     }
-
-
 
 
     private void resetSession() {
@@ -1119,7 +1076,11 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //            txtVwMiddle.setTextSize(32f);
 //            txtVwMiddle.setText(Strings.goodJob);
         useTempResults = true;
-
+        if (endOfSession) {
+            if (btnExit.getVisibility() != VISIBLE) {
+                btnExit.setAlpha(0);
+            }
+        }
 //            setFadeOutAnimation(views);
 //            transitionActivityAToB.startAnimation();
         setDividersVisibleAddaptToMode(INVISIBLE);
@@ -1128,6 +1089,7 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 //            Intent intent = new Intent(ActivityTraining.this, ActivityMenu.class);
 //            startActivity(intent);
     }
+
     private void setPausedFromMiddleSplittedClick() {
         developerTimerCounting();
 
@@ -1261,7 +1223,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             }
         }
     }
-
 
 
     private static void handleColorEdit(EditText editText, Button btn, int colorComponent) {
@@ -1543,7 +1504,6 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
     }
 
     private void showScreenEndTrialResults() {
-        btnExit.setVisibility(View.VISIBLE);
 
         if (!sessionWasCanceledEarly) {
             setDividersVisibleAddaptToMode(View.INVISIBLE);
@@ -1560,7 +1520,9 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
             } else {
                 txtVwMiddle.setTextSize(textUnit, textSizeMiddleTrial);
                 String indicator = getTrialIndicator();
+
                 if (endOfSession) {
+                    btnExit.setVisibility(View.VISIBLE);
                     txtVwMiddle.setText(trialEndTextPercentage + "\n\n" + Strings.nBackMax + nBackMax + nBackLevel + "\n\n" + Strings.pressButtonToFinish + "\n\n" + indicator);
                 } else {
                     txtVwMiddle.setText(nBack + nBackLevel + "\n\n" + pressButtonToS + "\n\n" + indicator);
@@ -2295,11 +2257,33 @@ public class ActivityTraining extends AppCompatActivity implements View.OnClickL
 
 
     private final void setFadeInAnimationAndDingSound(long duration, long delay, View... v) {
+
         Animation mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
         mLoadAnimation.setDuration(duration);
         mLoadAnimation.setStartOffset(delay);
+        mLoadAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                if(!includePosition && includeColor){
+                    squares.get(4).setAlpha(1);
+                    squares.get(4).setVisibility(VISIBLE);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+                if(!includePosition && includeColor){
+                    squares.get(4).setAlpha(0);
+                    squares.get(4).setVisibility(INVISIBLE);
+                }
+            }
+        });
         for (View i : v) {
-            i.startAnimation(mLoadAnimation);
+                i.startAnimation(mLoadAnimation);
         }
     }
 
